@@ -1,0 +1,32 @@
+.container{
+  display: flex;
+  align-items: flex-start;
+}
+.calendarContainer{
+    height: 100%; 
+    border:7px solid black;
+    border-radius: 20px;
+    background-color: rgba(233, 192, 115, 0.929);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    h2{
+  text-align: center;
+  font-weight: bold;
+  font-size: 30px;
+  margin: 25px;
+  color: white;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+}
+.sidepanel {
+  margin-left: 20px;
+  padding: 20px;
+  width: 250px;
+  border: 5x solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.close-button {
+  margin-top: 20px;
+}

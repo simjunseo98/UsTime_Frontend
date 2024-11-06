@@ -1,0 +1,10 @@
+.mainLayout {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    right: 70;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    background-color: rgba(245, 222, 179, 0.655); /* 배경색 */
+}
