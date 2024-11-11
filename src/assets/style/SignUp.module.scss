@@ -1,0 +1,125 @@
+
+.Container{
+    width: 2000px;
+    min-height: 500px;
+}
+.SignUpTitle{
+    text-align: center;
+    color:  rgb(165, 119, 119);
+    font-size: 40px;
+    font-weight: lighter;
+    font-family: 'Times New Roman', Times, serif;
+    margin-bottom: 30px;
+}
+
+.signupContainer{
+    margin-left: 10px;
+    justify-items: center;
+    width: 100%;
+    height: 100%;
+
+}
+.SignUpGroup{
+    border: 2px solid rgb(176, 131, 131);
+    border-radius: 5px;
+    margin-bottom: 30px;
+    cursor: pointer;
+    
+}
+
+.inputField{
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 500px;
+    height: 50px;
+    box-sizing: border-box;
+    margin-bottom: 0px;
+    border-bottom: 1px solid black;
+    border-radius: 10px;
+    padding: 10 10px;
+    background-color: #F8F8F8;
+    &input::placeholder{
+        color: #999999;
+        text-align: left;
+    }
+}
+.label{
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url(../img/User.png);
+    width: 50px;
+    height: 30px;
+}
+.label2{
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url(../img/Lock.png);
+    width: 40px;
+    height: 20px;
+    margin-left: 5px;
+}
+.genderButtonContainer{
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* 버튼 간격 */
+    margin-top: 8px; /* 성별 선택 영역 위쪽 여백 */
+}
+.genderButton {
+    padding: 8px 50px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    color: #333;
+    margin-bottom: 10px;
+    transition: background-color 0.3s, color 0.3s;
+    &:hover {
+        background-color: #e0e0e0;
+    }
+}
+
+.selected {
+    background-color:  rgb(176, 131, 131); /* 선택된 버튼 색상 */
+    color: #fff;
+    border-color:  rgb(176, 131, 131);
+}
+.label4{
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url(../img/Calendar.png);
+    width: 40px;
+    height: 20px;
+    margin-left: 5px;
+}
+.label5{
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url(../img/Phone.png);
+    width: 40px;
+    height: 20px;
+    margin-left: 5px;
+}
+.input{
+    display: flex;
+    font-size: 20px;
+    width: 100%;
+    height: 100%;
+    padding: 0px 130px 0 0;
+}
+.SignUpButton{
+    width: 100%;
+    height: 48px;
+    box-sizing: border-box;
+    border-radius: 6px;
+    color: #fff;
+    border: 1px solid black;
+    font-size: 16px;
+    background-color: rgb(165, 119, 119);
+    margin-top:10px;
+    cursor: pointer;
+    &.SignUpButton:hover{
+        background-color: #463e3e;
+    }
+}
