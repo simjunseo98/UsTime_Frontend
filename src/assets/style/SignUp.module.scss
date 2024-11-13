@@ -6,7 +6,7 @@
 .SignUpTitle{
     text-align: center;
     color:  rgb(165, 119, 119);
-    font-size: 40px;
+    font-size: 50px;
     font-weight: lighter;
     font-family: 'Times New Roman', Times, serif;
     margin-bottom: 30px;
@@ -129,4 +129,16 @@
     &.SignUpButton:hover{
         background-color: #463e3e;
     }
+}
+.goBackButton{
+    justify-items: center;
+    text-align: right;
+    margin-left: 450px;
+    cursor: pointer;
+    background-size: contain;
+    background-image: url(../img/Back.png);
+    width: 30px;
+    height: 30px;
+    background-color: unset;
+    background-color: rgba(245, 222, 160, 0.355);
 }

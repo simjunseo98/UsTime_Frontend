@@ -1,7 +1,7 @@
 import React,{useState} from "react";
 import styles from "../assets/style/SignUp.module.scss";
 import { useForm } from "react-hook-form";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import api from "../service/api.js";
@@ -11,7 +11,7 @@ const valid = yup.object().shape({
     email: yup.string().email("이메일 형식으로 입력하세요.").required('ID를 입력하세요.'),
     password: yup.string().min(6,'비밀번호는 최소 6자 이상이어야 합니다.').required('비밀번호를 입력하세요.'),
     name: yup.string().required('이름을 입력하세요.'),
-    birthdate: yup.string().min(8,'생년월일 8자리를 입력하세요.').required('생년월일을 입력하세요.'),
+    birthdate: yup.string().min(10,'생년월일 8자리를 입력하세요.').required('생년월일을 입력하세요.'),
     gender:yup.string().oneOf(["남자","여자"], " 성별을 선택해주세요.").required("성별을 선택해주세요."),
     phone:yup.string().min(13,'전화번호 11자리를 입력하세요.').required('전화번호를 입력하세요.')
 });
@@ -19,21 +19,20 @@ const valid = yup.object().shape({
 const SignUp = () => {
     const [gender, setGender] = useState(''); // 성별 선택 상태 관리
     const navigate = useNavigate();
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm({
+    const { register, handleSubmit,setValue, formState: { errors } } = useForm({
         resolver: yupResolver(valid)
     });
 
     //성별 값 핸들러
     const handleGenderSelect = (selectedGender) => {
         setGender(selectedGender);
-        setValue("gender", selectedGender === "male" ? "남자" : "여자"); //성별 값 설정
+        setValue("gender", selectedGender === "male" ? "남자" : "여자",{ shouldValidate: true }); //성별 값 설정
     };
 
   // 전화번호 포맷 함수
   const formatPhoneNumber = (value) => {
     // 숫자만 남기기
     const onlyNums = value.replace(/[^0-9]/g, "");
-
     if (onlyNums.length <= 3) return onlyNums;
     if (onlyNums.length <= 7) return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
     return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 7)}-${onlyNums.slice(7, 11)}`;
@@ -42,26 +41,25 @@ const SignUp = () => {
   // 전화번호 입력 핸들러
   const handlePhoneInputChange = (e) => {
     const formattedPhoneNumber = formatPhoneNumber(e.target.value);
-    setValue("phone", formattedPhoneNumber); // useForm의 값 설정
+    setValue("phone", formattedPhoneNumber,{ shouldValidate: true }); // useForm의 값 설정
   };
 
 // 생년월일 포맷 함수
 const formatDate = (value) => {
     const onlyNums = value.replace(/[^0-9]/g, ""); // 숫자만 남기기
-
     if (onlyNums.length <= 4) return onlyNums; // "YYYY"
-    if (onlyNums.length <= 6) return `${onlyNums.slice(0, 4)}.${onlyNums.slice(4)}`; // "YYYY.MM"
-    return `${onlyNums.slice(0, 4)}.${onlyNums.slice(4, 6)}.${onlyNums.slice(6, 8)}`; // "YYYY.MM.DD"
+    if (onlyNums.length <= 6) return `${onlyNums.slice(0, 4)}-${onlyNums.slice(4)}`; // "YYYY.MM"
+    return `${onlyNums.slice(0, 4)}-${onlyNums.slice(4, 6)}-${onlyNums.slice(6, 8)}`; // "YYYY.MM.DD"
   };
 
   // 생년월일 입력 핸들러
   const handleDateInputChange = (e) => {
     const formattedDate = formatDate(e.target.value);
-    setValue("birthdate", formattedDate); // useForm의 값 설정
+    setValue("birthdate", formattedDate, { shouldValidate: true }); // useForm의 값 설정
   };
 
     const onSubmit = async (data) => {
-        console.log("전송 데이터",data)
+        console.log("전송 데이터:", JSON.stringify(data, null, 2));
         try {
             const response = await api.post('/user/signup', data, {
                 withCredentials: true
@@ -70,16 +68,21 @@ const formatDate = (value) => {
             alert('회원가입 성공😊')
             navigate('/login');
         } catch (error) {
-            console.error('회원가입 실패 :', error);
+            console.error('회원가입 실패 :', error.response?.data || error.message);
             alert('회원가입 실패했습니다.❌')
             console.log(data);
         }
     };
+    const goBack = () => {
+        navigate(-1);
+    };
+
     return(
         <div className={styles.Container}>
             <h2 className={styles.SignUpTitle}>UsTime</h2>
 
         <div className={styles.signupContainer}>
+        <button onClick={goBack} className={styles.goBackButton}></button>
 
 <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.SignUpGroup}>
@@ -150,7 +153,7 @@ const formatDate = (value) => {
                     </div>
             </div>
             <p className={styles.errorsP}>{errors.name?.message}</p>
-            <p className={styles.errorsP}>{errors.birthdateate?.message}</p>
+            <p className={styles.errorsP}>{errors.birthdate?.message}</p>
             <p className={styles.errorsP}>{errors.phone?.message}</p>   
             <p className={styles.errorsP}>{errors.gender?.message}</p>
                 <button className={styles.SignUpButton} type="submit" >Sign Up</button>
