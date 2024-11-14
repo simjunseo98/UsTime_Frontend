@@ -1,5 +1,5 @@
 // Sidebar.js
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useCallback} from "react";
 import styles from "../assets/style/Sidebar.module.scss";
 
 const Sidebar = ({ width = 280, children, isOpen, onClose }) => {
@@ -7,11 +7,11 @@ const Sidebar = ({ width = 280, children, isOpen, onClose }) => {
     const side = useRef();
 
     // 사이드바 외부 클릭 시 닫기
-    const handleClose = (e) => {
+    const handleClose =useCallback((e) => {
         if (side.current && !side.current.contains(e.target)) {
             onClose(); // 외부에서 전달받은 onClose 함수 호출
         }
-    };
+    },[onClose]);
 
     useEffect(() => {
         window.addEventListener("click", handleClose);
