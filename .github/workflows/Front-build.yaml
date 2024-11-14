@@ -1,0 +1,65 @@
+name: Front Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: react build & deploy
+    runs-on: ubuntu-latest
+    steps:
+      # 레포지토리에 접근하여 CI 서버로 코드를 내려받는 과정입니다.
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # npm 캐시 디렉토리를 가져와 환경 변수에 설정합니다.
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        run: |
+          echo "dir=$(npm config get cache)" >> $GITHUB_ENV
+
+      # npm 캐시를 설정합니다.
+      - uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: ${{ env.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      
+      # npm 패키지를 설치합니다.
+      - name: Install npm dependencies
+        run: npm install --force
+
+      # Vite 애플리케이션을 빌드합니다.
+      - name: react build
+        run: |
+          npm run build || (echo "Build failed"; exit 1)
+
+      # 빌드 출력 디렉토리 내용 확인
+      - name: List build directory
+        run: ls -al ./build
+      
+      # AWS에 접근하기 위한 권한을 설정합니다.
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+      
+      # 빌드된 파일을 S3에 업로드합니다.
+      - name: Upload to S3
+        env:
+          BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
+        run: |
+          aws s3 sync ./build s3://$BUCKET_NAME --delete
+      
+      # CloudFront 캐시를 무효화합니다.
+      - name: CloudFront Invalidation
+        env:
+          CLOUD_FRONT_ID: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
+        run: |
+          aws cloudfront create-invalidation --distribution-id $CLOUD_FRONT_ID --paths '/*'
