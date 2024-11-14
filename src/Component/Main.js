@@ -31,11 +31,7 @@ const Main = () =>{
         ) :  null;
     }
 };
-//추후 사용 예정 일정 컨텐츠 관리
- // tileContent={({ date, view }) => { 
- //    const formattedDate = moment(date).format('YYYY. MM. DD.')
- //    if (createdList.find((x)=> x === moment(date).format('YYYY. MM. DD.'))) ;
- //    }}
+
    // 날짜 클릭 시 패널을 여는 함수
   const onDateClick = (date) => {
     const dateString = moment(date).format('YYYY-MM-DD');
