@@ -3,12 +3,12 @@ import {BrowserRouter,Routes,Route} from 'react-router-dom';
 import Header from './Component/Header';
 import Main from './Component/Main';
 import NotFound from './page/NotFound';
+// import Login from './page/Login';
+// import SignUp from './page/SignUp';
 
 
 //css
 import styles from './assets/style/MainLayout.module.scss';
-import Login from './page/Login';
-import SignUp from './page/SignUp';
 
 
 
