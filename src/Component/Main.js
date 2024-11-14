@@ -5,7 +5,7 @@ import Calendar from 'react-calendar';
 import moment from 'moment';
 import styles from '../assets/style/Main.module.scss';
 // import 'react-calendar/dist/Calendar.css'; // 기본 CSS 스타일링 추가
-import '../assets/style/MyCalendar.css';
+// import '../assets/style/MyCalendar.css';
 
 
 const Main = () =>{
