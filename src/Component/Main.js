@@ -23,7 +23,7 @@ const Main = () =>{
     //tileContent 함수 정의
     const scheduleTileContent = ({date, view}) =>{
       //일정 컨텐츠 표시
-      if(view == 'month'){
+      if(view === 'month'){
         //moment 라이브러리르 사용해 date 객체를 날짜 형식 문자열로 변환 
         const dateString = moment(date).format('YYYY.MM.DD.')
         return schedule[dateString] ? (
