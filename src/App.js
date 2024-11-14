@@ -7,8 +7,8 @@ import NotFound from './page/NotFound';
 
 //css
 import styles from './assets/style/MainLayout.module.scss';
-import Login from './page/Login';
-import SignUp from './page/SignUp';
+// import Login from './page/Login';
+// import SignUp from './page/SignUp';
 
 
 
