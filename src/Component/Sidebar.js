@@ -18,7 +18,7 @@ const Sidebar = ({ width = 280, children, isOpen, onClose }) => {
         return () => {
             window.removeEventListener("click", handleClose);
         };
-    }, []);
+    }, [handleClose]);
 
     return (
         <div className={styles.SidebarContainer}>
