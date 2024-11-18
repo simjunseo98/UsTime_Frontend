@@ -4,8 +4,7 @@ import Calendar from 'react-calendar';
 //자바스크립트에서 날짜 데이터 조작하기 쉽게 해주는 라이브러리
 import moment from 'moment';
 import styles from '../assets/style/Main.module.scss';
-// import 'react-calendar/dist/Calendar.css'; // 기본 CSS 스타일링 추가
-// import '../assets/style/MyCalendar.css';
+import '../assets/style/MyCalendar.css';
 
 
 const Main = () =>{

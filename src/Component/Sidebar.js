@@ -1,24 +1,35 @@
-// Sidebar.js
-import React, { useRef, useEffect, useCallback} from "react";
+import React, { useRef, useEffect, useCallback } from "react";
+import { NavLink } from "react-router-dom";
 import styles from "../assets/style/Sidebar.module.scss";
-
-const Sidebar = ({ width = 280, children, isOpen, onClose }) => {
-    const xPosition = isOpen ? 0 : width;  // 열림 상태에 따라 포지션을 설정
+import { VscEllipsis } from "react-icons/vsc";
+const Sidebar = ({ width = 280, isOpen, onClose, onOpen }) => {
+    const xPosition = isOpen ? 0 : width; // 사이드바 위치
     const side = useRef();
 
     // 사이드바 외부 클릭 시 닫기
-    const handleClose =useCallback((e) => {
+    const handleClose = useCallback((e) => {
         if (side.current && !side.current.contains(e.target)) {
-            onClose(); // 외부에서 전달받은 onClose 함수 호출
+            onClose();
         }
-    },[onClose]);
+    }, [onClose]);
+
+    // 사이드바 외부 클릭 시 열기
+    const handleOpen = useCallback((e) => {
+        if (!isOpen && side.current && !side.current.contains(e.target)) {
+            onOpen();
+        }
+    }, [isOpen, onOpen]);
 
     useEffect(() => {
-        window.addEventListener("click", handleClose);
+        // 이벤트 리스너 등록
+        window.addEventListener("click", handleClose); // 닫기
+        window.addEventListener("click", handleOpen); // 열기
         return () => {
+            // 이벤트 리스너 제거
             window.removeEventListener("click", handleClose);
+            window.removeEventListener("click", handleOpen);
         };
-    }, [handleClose]);
+    }, [handleClose, handleOpen]);
 
     return (
         <div className={styles.SidebarContainer}>
@@ -28,10 +39,15 @@ const Sidebar = ({ width = 280, children, isOpen, onClose }) => {
                 style={{
                     width: `${width}px`,
                     height: "100%",
-                    transform: `translateX(${-xPosition}px)`, // xPosition에 따라 열림/닫힘 설정
+                    transform: `translateX(${-xPosition}px)`, // xPosition에 따라 이동
                 }}
             >
-                <div className={styles.SidebarContent}>{children}</div>
+                <button className={styles.button} onClick={onClose}><VscEllipsis /></button>
+                <ul>
+                    <NavLink to="/" className={styles.SidebarNav} aria-current="page">
+                        <li>사진첩</li>
+                    </NavLink>
+                </ul>
             </div>
         </div>
     );
