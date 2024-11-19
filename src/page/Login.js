@@ -37,7 +37,7 @@ const Login = () => {
       e.preventDefault();
       setLoading(true);
       try {
-        const response = await api.post('/user/login/',{
+        const response = await api.post('/user/login',{
           email: id, 
           password: password
         });
