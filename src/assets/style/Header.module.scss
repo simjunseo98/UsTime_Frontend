@@ -2,10 +2,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 70px;
+    height: 60px;
     padding: 0px 20px;
     margin: 0;
     background-color: white;
+    position: fixed; /* 헤더 고정 */
+    top: 0; /* 화면 상단에 고정 */
+    left: 0; /* 화면 왼쪽에 고정 */
+    right: 0; /* 화면 오른쪽에 고정 */
 
 }
 .ustime{
@@ -16,13 +20,13 @@
     text-decoration: none;
 }
 
-// .sidebarIcon{
-//     text-align:left;
-//     font-size: 45px;
-//     border: 0;
-//     background-color: white;
-//     cursor: pointer;
-// }
+.sidebarIcon{
+    text-align:left;
+    font-size: 45px;
+    border: 0;
+    background-color: white;
+    cursor: pointer;
+}
 .messageIcon{
     text-align: right !important;
     font-size: 40px;
