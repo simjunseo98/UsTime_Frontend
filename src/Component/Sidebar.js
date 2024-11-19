@@ -33,10 +33,19 @@ const Sidebar = ({ width = 280}) => {
                 <button className={styles.button} onClick={toggleMenu} > {isOpen ? 
             <span>X</span> :<VscEllipsis />
             }</button>
+
                 <ul>
+                    <NavLink to="/" className={styles.SidebarNav} aria-current="page">
+                        <li>프로필 관리</li>
+                    </NavLink>
                     <NavLink to="/" className={styles.SidebarNav} aria-current="page">
                         <li>사진첩</li>
                     </NavLink>
+                    <NavLink to="/" className={styles.SidebarNav} aria-current="page">
+                        <li>연동 관리</li>
+                    </NavLink>
+                        <button className={styles.SidebarNav}>로그아웃</button>
+   
                 </ul>
             </div>
         </div>
