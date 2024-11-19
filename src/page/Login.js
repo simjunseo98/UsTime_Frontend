@@ -1,6 +1,6 @@
 import React,{useEffect, useState} from 'react';
 import styles from '../assets/style/Login.module.scss';
-import { Navigate, useNavigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 import Loading from '../Component/Loading.js';
 import api from '../service/api';
 import {useCookies} from 'react-cookie';
