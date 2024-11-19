@@ -51,15 +51,25 @@ const Login = () => {
           setCookies("rememberID", id, { path: '/', expires: new Date(Date.now() + 604800000) });
           alert('로그인 성공했습니다.😊');
           console.log("도킹이 완료됬다~ 이 말이야",response.data);
-          Navigate('/main');
+          navigate('/main');
         } else {
           console.error('응답 상태 코드가 200이 아닙니다:', response.status);
           alert('로그인이 실패했습니다.❌');
         }
       } catch (error) {
-        console.error('Login error:', error.response ? error.response.data : error.message);
-        alert('로그인이 실패했습니다.❌');
-        console.log("뭐가 문제냐 이 말이야",error.response.data);
+        if (error.response) {
+          // error.response가 존재하면 에러 데이터를 확인
+          console.error('응답 데이터 에러:', error.response.data);
+          alert('로그인 실패! 응답이 잘못되었습니다.❌');
+      } else if (error.request) {
+          // 요청은 보냈으나 응답을 받지 못한 경우
+          console.error('요청이 전송되었으나 응답이 없음:', error.request);
+          alert('서버 응답이 없습니다.❌');
+      } else {
+          // 다른 에러
+          console.error('로그인 에러:', error.message);
+          alert('로그인 중 에러가 발생했습니다.❌');
+      }
       } finally {
         setLoading(false);
       }
@@ -101,7 +111,7 @@ const Login = () => {
                   </input>아이디 저장하기
         </label>
         <button type='submit' value='Login' className={styles.Login_button}>Login</button>
-        <button type='submit' onClick={Sign} value='SignUp' className={styles.Login_button}> 
+        <button type='button' onClick={Sign} value='SignUp' className={styles.Login_button}> 
           Sign Up
           </button>
     </form>
