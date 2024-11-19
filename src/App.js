@@ -16,12 +16,20 @@ const App = () => {
   return (
     <div className='App'>
   <BrowserRouter>
-          <Header/>
     <div className={styles.mainLayout}>
     <Routes>
           <Route path="/" element={<Login/>}/>
           <Route path='/signup' element={<SignUp/>}/>
-          <Route path='/main' element={<Main/>}/>
+         {/* Main 페이지부터 Header를 포함 */}
+         <Route
+            path="/main"
+            element={
+              <>
+                <Header />
+                <Main />
+              </>
+            }
+          />
           {/* 일치하는 라우트가 없는 경우 처리 */}
           <Route path="*" element={<NotFound/>}/>
     </Routes>

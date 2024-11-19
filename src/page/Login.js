@@ -1,12 +1,13 @@
 import React,{useEffect, useState} from 'react';
 import styles from '../assets/style/Login.module.scss';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import Loading from '../Component/Loading.js';
 import api from '../service/api';
 import {useCookies} from 'react-cookie';
 
 const Login = () => {
   const navigate = useNavigate();
+
     const [id, setID] = useState('');
     const [password, setPassword] = useState('');
     const [cookies, setCookies, removeCookie]=useCookies(["rememberID","autoID"])
@@ -36,7 +37,7 @@ const Login = () => {
       e.preventDefault();
       setLoading(true);
       try {
-        const response = await api.post('/jwt/authenticate', {
+        const response = await api.post('/user/login/',{
           email: id, 
           password: password
         });
@@ -50,7 +51,7 @@ const Login = () => {
           setCookies("rememberID", id, { path: '/', expires: new Date(Date.now() + 604800000) });
           alert('로그인 성공했습니다.😊');
           console.log("도킹이 완료됬다~ 이 말이야",response.data);
-          window.location.href = '/Main';
+          Navigate('/main');
         } else {
           console.error('응답 상태 코드가 200이 아닙니다:', response.status);
           alert('로그인이 실패했습니다.❌');

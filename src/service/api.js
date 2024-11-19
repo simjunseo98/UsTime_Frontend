@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const baseURL = 'https://trendy-UsTime-backend.store'; 
-const baseURL = 'http://ec2-52-79-90-1.ap-northeast-2.compute.amazonaws.com:8085';
+const baseURL = 'http://www.ustime-backend.store:8085'; 
+// const baseURL = 'http://ec2-52-79-90-1.ap-northeast-2.compute.amazonaws.com:8085';
 
 const api = axios.create({
     baseURL: baseURL,
