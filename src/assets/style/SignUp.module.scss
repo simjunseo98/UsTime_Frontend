@@ -1,16 +1,36 @@
 
+.header {
+    position: absolute; 
+    top: 30px;        
+    left: 45px;      
+    z-index: 1000;   
+}
+
+.logo {
+    font-size: 35px;    
+    font-weight: lighter; 
+    color: #333;   
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;  
+    color: rgb(165, 119, 119);
+}
 .Container{
     width: 620px;
     min-height: 600px;
     border: 2px solid white;
-    border-radius: 10px;
+    border-radius: 30px;
+    background-color: snow;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.36);
+    padding: 10px 0px;
+   
 }
+
 .SignUpTitle{
     text-align: center;
     color:  rgb(165, 119, 119);
-    font-size: 45px;
+    font-size: 30px;
     font-weight: lighter;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
     margin-top: 25px;
 }
 .errorsP{
@@ -142,5 +162,5 @@
     width: 30px;
     height: 30px;
     background-color: unset;
-    background-color: rgba(245, 222, 160, 0.355);
+    background-color: snow;
 }

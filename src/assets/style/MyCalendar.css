@@ -1,14 +1,14 @@
 .react-calendar {
-    width: 650px;
+    width: 850px;
     max-width: 100%;
-    height: 550px;
+    height: 650px;
     max-height: 100%;
-    background: rgb(249, 248, 223);
-    border-top: 6px solid black;
-    border-radius: 10px;
+    background: rgb(255, 254, 219);
     font-family: 'Arial', 'Helvetica', sans-serif;
-    line-height: 3.125em;
+    line-height: 4.025em;
     justify-content: center;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.301);
+    border-radius: 10px;
   }
   
   .react-calendar--doubleView {
@@ -108,24 +108,34 @@
     font-size: 0.75em;
     font-weight: bold;
   }
-  /* 토요일에 빨간색 적용 */
-.react-calendar__month-view__days__day:nth-child(7n) {
-  color: #001cd1;
+  /* 기본 주말 스타일 */
+.react-calendar__month-view__days__day--weekend {
+  color: inherit; /* 기본 색상 유지 */
 }
 
-/* 일요일에 빨간색 적용 */
-.react-calendar__month-view__days__day:nth-child(7n + 1) {
-  color: #d10000;
+/* 기본 주말 스타일 (현재 달 주말) */
+.current-saturday {
+  color: #001cd1; /* 파란색 */
+}
+.current-sunday {
+  color: #d10000; /* 빨간색 */
 }
 
-  /* .react-calendar__month-view__days__day--weekend {
-    color: #d10000;
-  }
-   */
+/* 다음 달(이웃 달)의 토요일 스타일 */
+.neighboring-saturday {
+  color: #001cd1; /* 파란색 */
+}
+
+/* 다음 달(이웃 달)의 일요일 스타일 */
+.neighboring-sunday {
+  color: #d10000; /* 빨간색 */
+}
   .react-calendar__month-view__days__day--neighboringMonth,
   .react-calendar__decade-view__years__year--neighboringDecade,
-  .react-calendar__century-view__decades__decade--neighboringCentury {
-    color: #757575;
+  .react-calendar__century-view__decades__decade--neighboringCentury,
+  .react-calendar__month-view__days__day--neighboring-saturday,
+  .react-calendar__month-view__days__day--neighboring-sunday  {
+    color: #ccc4c4;
   }
   
   .react-calendar__year-view .react-calendar__tile,
@@ -158,19 +168,19 @@
   /*마우스 포인터 타일*/
   .react-calendar__tile:enabled:hover,
   .react-calendar__tile:enabled:focus {
-    background-color: rgba(245, 222, 179, 0.541);
+    background-color: #f7f3c4ab;
     border-radius: 100px;
   }
   
   /* 현재 날짜 타일부분*/
-  .react-calendar__tile--now {
-    background: #eddf20a5;
+  .react-calendar__tile--now { 
+    background: rgb(244, 207, 137);
     border-radius: 100px;
   }
   
   .react-calendar__tile--now:enabled:hover,
   .react-calendar__tile--now:enabled:focus {
-    background: #ffffa9;
+    background: #e2d95ea5;
   }
   
   .react-calendar__tile--hasActive {
@@ -184,14 +194,14 @@
   
   /* 선택 타일*/
   .react-calendar__tile--active {
-    background: rgb(244, 207, 137);
+    background: rgba(247, 232, 120, 0.719);
     color: white;
     border-radius: 100px;
   }
   
   .react-calendar__tile--active:enabled:hover,
   .react-calendar__tile--active:enabled:focus {
-    background: rgb(244, 207, 137);
+    background: rgba(247, 232, 120, 0.719);
     border-radius: 100px;
     
   }

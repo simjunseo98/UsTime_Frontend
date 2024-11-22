@@ -49,7 +49,7 @@ const Login = () => {
           sessionStorage.setItem('email', email);
           setIsRemember(true);
           setCookies("rememberID", id, { path: '/', expires: new Date(Date.now() + 604800000) });
-          alert('로그인 성공했습니다.😊');
+          alert('로그인 성공했습니다.');
           console.log("도킹이 완료됬다~ 이 말이야",response.data);
           navigate('/main');
         } else {
@@ -85,8 +85,11 @@ const Login = () => {
   }
   return (
  <>
+ <div className={styles.Header}>
+ <h1 className={styles.Logo}>Us_Time</h1>
+ </div>
  <div className={styles.Login_box}>
-    <h2 className={styles.login}>UsTime</h2>
+    <h2 className={styles.login}>Login</h2>
     <form className={styles.Login_form} onSubmit={handleSubmit}>
         <input type='text' 
                name='email' 

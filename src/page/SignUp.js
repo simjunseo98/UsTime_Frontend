@@ -78,8 +78,10 @@ const formatDate = (value) => {
     };
 
     return(
+        <>
+        <div className={styles.header}><h1 className={styles.logo}>Us_Time</h1></div>
         <div className={styles.Container}>
-            <h2 className={styles.SignUpTitle}>UsTime</h2>
+            <h2 className={styles.SignUpTitle}>회원 가입</h2>
 
         <div className={styles.signupContainer}>
         <button onClick={goBack} className={styles.goBackButton}></button>
@@ -160,6 +162,7 @@ const formatDate = (value) => {
             </form>
         </div>
         </div>
+        </>
     );
 }
 export default SignUp;

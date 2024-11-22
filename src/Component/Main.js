@@ -53,12 +53,29 @@ const Main = () =>{
         onChange(date);
     }
    
+    const tileClassName = ({ date, view }) => {
+      if (view === "month") {
+        const isNeighboringMonth =
+          date.getMonth() !== value.getMonth() || date.getFullYear() !== value.getFullYear();
+  
+        const isSaturday = date.getDay() === 6;
+        const isSunday = date.getDay() === 0;
+  
+        // 다음 달과 이전 달의 주말 스타일 지정
+        if (isNeighboringMonth && isSaturday) return "neighboring-saturday";
+        if (isNeighboringMonth && isSunday) return "neighboring-sunday";
+         // 현재 달의 주말
+        if (!isNeighboringMonth && isSaturday) return "current-saturday";
+        if (!isNeighboringMonth && isSunday) return "current-sunday";
+      }
+      return null;
+    };
     
     return(
 <div children>
     <div className={styles.container}>
 <div className={`${styles.calendarContainer} no-underline`}>
-      <h2>Calendar</h2>
+
       <Calendar 
         onChange={handleDateChange} 
         value={value}
@@ -70,12 +87,13 @@ const Main = () =>{
         prev2Label={null}  // ""   
         onClickDay={onDateClick} // 날짜 클릭 이벤트 추가 
         tileContent={scheduleTileContent}  
-        // selectRange={true} 선택한 날짜 기간 표시   
+        tileClassName={tileClassName}
+        // selectRange={true} 선택한 날짜 기간 표시
             />
     </div>
       {isPanelOpen && (
         <div className={styles.sidepanel}>
-          <h3>일정 세부 정보</h3>
+          <h3>일정</h3>
           {selectedDate && (
             <div>
               <p><strong>날짜:</strong> {selectedDate.date}</p>
