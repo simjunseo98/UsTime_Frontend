@@ -9,6 +9,7 @@ import NotFound from './page/NotFound';
 import styles from './assets/style/MainLayout.module.scss';
 import Login from './page/Login';
 import SignUp from './page/SignUp';
+import MyProfile from './page/MyProfile';
 
 
 
@@ -30,6 +31,14 @@ const App = () => {
               </>
             }
           />
+          <Route path="/myprofile" element={
+            <>
+            <Header/>
+            <MyProfile/>
+            </>
+            }>
+
+            </Route>
           {/* 일치하는 라우트가 없는 경우 처리 */}
           <Route path="*" element={<NotFound/>}/>
     </Routes>

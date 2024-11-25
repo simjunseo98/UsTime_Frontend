@@ -1,0 +1,37 @@
+.MyProfileContainer {
+    margin: 0 auto;
+    max-width: 600px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .profileInfo {
+    margin-top: 20px;
+    line-height: 1.6;
+  }
+  
+  .infobutton {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+  }
+  
+  .infobutton:hover {
+    background-color: #0056b3;
+  }
+  

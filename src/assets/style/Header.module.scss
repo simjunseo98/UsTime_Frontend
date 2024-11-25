@@ -5,7 +5,7 @@
     height: 70px;
     padding: 0px 20px;
     margin: 0;
-    background-color: white;
+    background-color:snow;
     position: fixed; /* 헤더 고정 */
     top: 0; /* 화면 상단에 고정 */
     left: 0; /* 화면 왼쪽에 고정 */
@@ -13,24 +13,87 @@
 
 }
 .ustime{
+    flex: 1; /* 가운데 요소를 정렬하기 위해 flex 속성 추가 */
     text-align: center;
-    font-size: 25px;
+    font-size: 40px;
     font-weight: lighter;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .sidebarIcon{
+    flex: 0;
     text-align:left;
     font-size: 45px;
     border: 0;
-    background-color: white;
+    background-color:rgba(245, 229, 198, 0);
     cursor: pointer;
 }
-.messageIcon{
+.alramIcon{
     text-align: right !important;
     font-size: 40px;
     border: 0;
-    background-color: white;
+    background-color: rgba(245, 229, 198, 0);
     cursor: pointer;
 }
+.badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .alarmDropdown {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  .alarmItem {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .alarmItem:last-child {
+    border-bottom: none;
+  }
+  
+  .timestamp {
+    display: block;
+    font-size: 12px;
+    color: gray;
+    margin-top: 5px;
+  }
+  
+  .noalarms {
+    padding: 10px;
+    text-align: center;
+    min-height: 100%;
+    color: gray;
+    font-size: 14px;
+    overflow: auto;
+  }
+  .statusAccepted {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .statusRejected {
+    color: red;
+    font-weight: bold;
+  }
