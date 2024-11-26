@@ -27,3 +27,32 @@
   margin-top: 20px;
   cursor: pointer;
 }
+@media (max-width: 480px) {
+  .container {
+    flex-direction: column; /* 세로 정렬 */
+    align-items: center; /* 중앙 정렬 */
+  }
+
+  /* 캘린더 컨테이너 */
+  .calendarContainer {
+    width: 100%;
+    border: none;
+  }
+
+  /* 사이드 패널 */
+  .sidepanel {
+    position: static; /* 고정 해제 */
+    width: 100%; /* 화면 너비에 맞춤 */
+    height: auto; /* 높이 자동 */
+    padding: 15px;
+    box-shadow: none; /* 그림자 제거 */
+    background-color: rgb(255, 254, 219);
+    font-size: 12px; /* 텍스트 크기 축소 */
+  }
+
+  /* 닫기 버튼 */
+  .close-button {
+    font-size: 12px;
+    margin-top: 10px;
+  }
+}
