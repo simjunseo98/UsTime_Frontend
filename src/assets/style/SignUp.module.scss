@@ -188,8 +188,16 @@
         min-height: 500px;
     }
 
+    .goBackButton{
+        margin: 0;
+        position: fixed;
+        top: 185px;
+        right: 40px;
+        width: 27px;
+    }
     .SignUpTitle {
         font-size: 20px;
+        
     }
 
     .inputField {
