@@ -5,22 +5,19 @@ import styles from "../assets/style/Sidebar.module.scss";
 const Sidebar = ({ isOpen, onClose }) => {
   //로그아웃
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
     console.log('토큰 여부' + token);
-    if (token) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
+
   }, []); // 빈 배열로 useEffect가 컴포넌트 마운트 시에만 실행되도록 설정
 
   //로그아웃 로직
   const handleLogout = () => {
     sessionStorage.removeItem('token');
-    setIsLoggedIn(false);
+    sessionStorage.removeItem('name');
+    sessionStorage.removeItem('email');
+    sessionStorage.removeItem('userId');
     alert('로그아웃 되었습니다.')
     navigate('/');
   }

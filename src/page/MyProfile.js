@@ -15,7 +15,7 @@ const MyProfile = () => {
             const userId = sessionStorage.getItem('userId');
             if (!userId) {
                 alert('로그인 상태가 아닙니다. 로그인 페이지로 이동합니다.');
-                navigate('/login');
+                navigate('/');
                 return;
             }
 
