@@ -27,6 +27,7 @@
  box-sizing: border-box;
  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.36);
  overflow: auto;
+ margin: auto;
 }
 /* 전체 스크롤바 */
 ::-webkit-scrollbar {
@@ -103,5 +104,40 @@
     cursor: pointer;
     &.Login_button:hover{
         background-color: #463e3e;
+    }
+}
+@media (max-width: 480px) { /* 모바일 화면 */
+    .Header {
+        top: 15px;
+        left: 20px;
+    }
+
+    .Logo {
+        font-size: 35px; /* 로고 크기 축소 */
+        position: fixed;
+        right: 100px;
+        margin-top: 45px;
+    }
+
+    .Login_box {
+        width: 90%; /* 화면 너비에 맞춤 */
+        border-radius: 30px; /* 모서리 둥글게 */
+        max-height: 350px;
+        padding: 30px;
+    }
+
+    .login {
+        font-size: 24px; /* 로그인 텍스트 크기 축소 */
+        margin-bottom: 30px;
+    }
+
+    .Login_form > input {
+        height: 35px; /* 입력창 높이 축소 */
+        font-size: 14px; /* 글자 크기 축소 */
+    }
+
+    .Login_button {
+        height: 35px; /* 버튼 높이 축소 */
+        font-size: 12px; /* 글자 크기 축소 */
     }
 }
