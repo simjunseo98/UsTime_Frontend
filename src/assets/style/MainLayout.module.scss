@@ -5,6 +5,12 @@
     right: 70;
     align-items: center;
     width: 100%;
-    min-height: 100vh;
     background-color: rgba(245, 229, 198, 0.655); /* 배경색 */
+}
+@media (max-width: 480px) {
+    .mainLayout {
+        justify-content: flex-start; /* 상단 정렬 */
+        background-color: rgba(255, 240, 200, 0.8); /* 약간 밝은 배경색 */
+        height: auto;
+    }
 }

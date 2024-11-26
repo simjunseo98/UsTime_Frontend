@@ -211,3 +211,68 @@
     
   }
   
+  @media (max-width: 480px) {
+    /* 컨테이너 */
+    .container {
+      flex-direction: column; /* 가로 → 세로로 배치 변경 */
+      align-items: center; /* 가운데 정렬 */
+      padding-top: 10px; /* 위쪽 간격 축소 */
+    }
+  
+    /* 달력 컨테이너 */
+    .calendarContainer {
+      width: 100%; /* 화면 너비에 맞게 조정 */
+      padding: 0 10px; /* 좌우 여백 추가 */
+      margin-bottom: 20px; /* 아래 여백 추가 */
+      background-color: rgba(255, 255, 255, 0.95); /* 약간 밝게 조정 */
+    }
+  
+    /* 달력 */
+    .react-calendar {
+      width: 100%; /* 달력 너비를 화면에 맞춤 */
+      font-size: 14px; /* 글자 크기 축소 */
+      height: auto; /* 높이 자동 조정 */
+    }
+  
+    .react-calendar__navigation {
+      height: 40px; /* 네비게이션 높이 축소 */
+      margin-bottom: 0.5em; /* 여백 축소 */
+    }
+  
+    .react-calendar__navigation__label > span {
+      font-size: 16px; /* 네비게이션 텍스트 축소 */
+    }
+  
+    .react-calendar__month-view__weekdays__weekday abbr {
+      font-size: 12px; /* 요일 글자 크기 축소 */
+    }
+  
+    .react-calendar__month-view__days__day abbr {
+      font-size: 10px; /* 날짜 글자 크기 축소 */
+    }
+  
+    /* 사이드 패널 */
+    .sidepanel {
+      width: 100%; /* 화면 전체 너비 */
+      position: static; /* 고정 해제 */
+      height: auto; /* 높이 자동 조정 */
+      margin-top: 10px;
+      padding: 15px; /* 내부 여백 축소 */
+      box-shadow: none; /* 그림자 제거 */
+      font-size: 12px; /* 텍스트 크기 축소 */
+    }
+  
+    .close-button {
+      font-size: 12px; /* 버튼 크기 축소 */
+      margin-top: 10px; /* 간격 조정 */
+    }
+  
+    /* 달력의 주말 색상 유지 */
+    .current-saturday {
+      color: #001cd1;
+    }
+  
+    .current-sunday {
+      color: #d10000;
+    }
+  }
