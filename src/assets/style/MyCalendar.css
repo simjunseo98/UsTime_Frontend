@@ -216,7 +216,6 @@
     .container {
       flex-direction: column; /* 가로 → 세로로 배치 변경 */
       align-items: center; /* 가운데 정렬 */
-      padding-top: 10px; /* 위쪽 간격 축소 */
     }
   
     /* 달력 컨테이너 */
