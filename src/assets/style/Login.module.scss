@@ -110,14 +110,13 @@
     .Header {
         top: 15px;
         left: 20px;
+        position: relative;
     }
 
     .Logo {
         font-size: 35px; /* 로고 크기 축소 */
         font-weight: bold;
-        position: relative;
         margin-top: 100px;
-        margin-left: 150px;
     }
 
     .Login_box {
