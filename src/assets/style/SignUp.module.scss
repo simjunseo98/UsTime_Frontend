@@ -21,6 +21,7 @@
     background-color: snow;
     box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.36);
     padding: 10px 0px;
+    margin: auto;
    
 }
 
@@ -52,6 +53,7 @@
     margin-top: 30px;
     margin-bottom: 5px;
     cursor: pointer;
+    padding: 3px; /* 간격 추가 */
     
 }
 
@@ -163,4 +165,46 @@
     height: 30px;
     background-color: unset;
     background-color: snow;
+}
+@media (max-width: 480px) { /* 모바일 화면 */
+
+    .header {
+        top: 15px;
+        left: 20px;
+    }
+
+    .logo {
+        font-size: 35px; /* 로고 크기 축소 */
+        font-weight: bold;
+        position: fixed;
+        right: 125px;
+        margin-top: 45px;
+    }
+
+    .Container {
+        width: 90%;
+        padding: 10px;
+        border-radius: 30px;
+        min-height: 500px;
+    }
+
+    .SignUpTitle {
+        font-size: 20px;
+    }
+
+    .inputField {
+        width: 100%;
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .SignUpButton {
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .genderButton {
+        padding: 8px 30px;
+        font-size: 14px;
+    }
 }
