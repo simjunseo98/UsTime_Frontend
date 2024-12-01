@@ -30,10 +30,10 @@ const Sidebar = ({ isOpen, onClose }) => {
         <NavLink to="/myprofile" className={styles.SidebarNav} aria-current="page">
           <li>프로필 관리</li>
         </NavLink>
-        <NavLink to="/" className={styles.SidebarNav} aria-current="page">
+        <NavLink to="/picture" className={styles.SidebarNav} aria-current="page">
           <li>사진첩</li>
         </NavLink>
-        <NavLink to="/" className={styles.SidebarNav} aria-current="page">
+        <NavLink to="/matching" className={styles.SidebarNav} aria-current="page">
           <li>연동 관리</li>
         </NavLink>
         <button className={styles.SidebarNav}
