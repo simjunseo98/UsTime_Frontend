@@ -84,9 +84,9 @@ const MyProfile = () => {
                 <Modal isOpen={openModal} onClose={() => setOpenModal(false)}>                    
                         <h3 className={styles.modalHeader}>연동 보낼 사람</h3>   
                         <UserSearch onSelectUser={handleSelectUser} />
-                        {selectedUser && (
+                        {selectedUser &&(
         <div>
-          <p>선택된 유저: {selectedUser.name}</p>
+          <p className={styles.selectuser}>선택된 유저:{selectedUser}</p>
         </div>
       )}
                 </Modal>

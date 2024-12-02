@@ -5,12 +5,11 @@
     align-items: center;
     justify-content: center;
     padding: 20px;
-    gap: 15px;
   }
   
   /* 검색 입력창 스타일 */
   .userSearchInput {
-    width: 100%;
+    width: 90%;
     max-width: 400px;
     padding: 10px 15px;
     font-size: 1rem;
@@ -41,7 +40,7 @@
   }
   
   .userSearchResults li {
-    padding: 10px 15px;
+    padding: 0px 15px;
     border-bottom: 1px solid #f0f0f0;
     cursor: pointer;
     transition: background-color 0.2s ease;

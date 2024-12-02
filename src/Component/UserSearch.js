@@ -57,15 +57,15 @@ const UserSearch = ({ onSelectUser }) => {
     };
 
     const handleUserClick = (user) => {
-        console.log("Selected User ID: ", user.userId);
-        onSelectUser(user.userId);
+        console.log("Selected User ID: ", user.name);
+        onSelectUser(user.name);
         
         // myUserId가 존재할 때만 커플 신청
-        if (myUserId) {
-            createCoupleRequest(myUserId, user.userId);
-        } else {
-            alert("로그인 정보가 없습니다.");
-        }
+        // if (myUserId) {
+        //     createCoupleRequest(myUserId, user.userId);
+        // } else {
+        //     alert("로그인 정보가 없습니다.");
+        // }
     };
 
     // 커플 신청 API 호출
