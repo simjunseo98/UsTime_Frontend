@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styles from '../assets/style/UserSearch.module.scss';
 import api from '../service/api.js';
 
 const UserSearch = ({ onSelectUser }) => {
-    const [query, setQuery] = useState('');
+    const [name, setName] = useState('');
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-  
+
+    // debounce 함수
     const debounce = (func, delay) => {
       let timer;
       return function (...args) {
@@ -15,16 +16,17 @@ const UserSearch = ({ onSelectUser }) => {
         timer = setTimeout(() => func(...args), delay);
       };
     };
-  
-    const searchUsers = async (query) => {
-      if (!query) {
+
+    // 사용자 검색 함수
+    const searchUsers = async (name) => {
+      if (!name) {
         setResults([]);
         return;
       }
-  
+
       setLoading(true);
       try {
-        const response = await api.get(`/users/search?query=${query}`);
+        const response = await api.get(`/couple/search?name=${name}`);
         setResults(response.data);
       } catch (error) {
         setError(error);
@@ -32,34 +34,35 @@ const UserSearch = ({ onSelectUser }) => {
         setLoading(false);
       }
     };
-  
-    const debouncedSearch = debounce(searchUsers, 500);
-  
+
+    // debouncedSearch는 useCallback으로 메모이제이션
+    const debouncedSearch = useCallback(debounce(searchUsers, 500), []);
+
     useEffect(() => {
-        if(query.trim()=== ''){
+        if(name.trim() === '') {
             setError(null);
             setResults([]);
-        }else{
-      debouncedSearch(query);
+        } else {
+            debouncedSearch(name);
         }
-    }, [query]);
-  
+    }, [name, debouncedSearch]);  // debouncedSearch를 의존성 배열에 추가
+
     const handleChange = (e) => {
-      setQuery(e.target.value);
+      setName(e.target.value);
       if (e.target.value.trim() === '') {
         setError(null); // 입력값이 비어있을 때 에러 초기화
       }
     };
-  
+
     const handleUserClick = (user) => {
       onSelectUser(user);
     };
-  
+
     return (
       <div className={styles.userSearchContainer}>
         <input
           type="text"
-          value={query}
+          value={name}
           onChange={handleChange}
           placeholder="이름을 입력하세요"
           className={styles.userSearchInput}
@@ -75,7 +78,6 @@ const UserSearch = ({ onSelectUser }) => {
         </ul>
       </div>
     );
-  };
-  
-  export default UserSearch;
-  
+};
+
+export default UserSearch;
