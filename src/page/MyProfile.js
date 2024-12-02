@@ -5,7 +5,6 @@ import api from '../service/api';
 import { useNavigate } from 'react-router-dom';
 import profileImage from '../assets/img/G.jpg';
 
-import profileImage from '../assets/img/G.jpg';
 const MyProfile = () => {
     const [myProfile, setMyProfile] = useState(null);
     const [loading, setLoading] = useState(true);
