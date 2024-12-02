@@ -6,7 +6,6 @@ const baseURL = 'https://www.ustime-backend.store';
 const api = axios.create({
     baseURL: baseURL,
     timeout: 30000, 
-    withCredentials: true,
 });
 
 
