@@ -23,7 +23,7 @@ const Header = () => {
         const userId = sessionStorage.getItem('userId');
         if (!userId) {
           alert('로그인 상태가 아닙니다. 로그인 페이지로 이동합니다.');
-          navigate('/login');
+          navigate('/');
           return;
         }
 
@@ -42,13 +42,13 @@ const Header = () => {
   }, [navigate]);
 
   // 승인 버튼 클릭 처리
-  const handleAccept = async (id) => {
+  const handleAccept = async (coupleId) => {
     try {
-      const response = await api.put(`/couple/approve?requestId=${id}`);
+      const response = await api.put(`/couple/approve?requestId=${coupleId}`);
       if (response.status === 200) {
         setAlarm((prev) =>
           prev.map((notif) =>
-            notif.id === id ? { ...notif, status: "accepted" } : notif
+            notif.coupleId === coupleId ? { ...notif, status: "accepted" } : notif
           )
         );
       }
@@ -58,13 +58,13 @@ const Header = () => {
   };
 
   // 거절 버튼 클릭 처리
-  const handleReject = async (id) => {
+  const handleReject = async (coupleId) => {
     try {
-      const response = await api.put(`/couple/decline?requestId=${id}`);
+      const response = await api.put(`/couple/decline?requestId=${coupleId}`);
       if (response.status === 200) {
         setAlarm((prev) =>
           prev.map((notif) =>
-            notif.id === id ? { ...notif, status: "rejected" } : notif
+            notif.coupleId === coupleId ? { ...notif, status: "rejected" } : notif
           )
         );
       }

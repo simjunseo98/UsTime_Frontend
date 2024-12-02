@@ -3,13 +3,15 @@ import {BrowserRouter,Routes,Route} from 'react-router-dom';
 import Header from './Component/Header';
 import Main from './Component/Main';
 import NotFound from './page/NotFound';
+import Login from './page/Login';
+import SignUp from './page/SignUp';
+import MyProfile from './page/MyProfile';
+import Matching from './page/Matching';
+import MyProfileUpdate from './page/MyProfileUpdate';
 
 
 //css
 import styles from './assets/style/MainLayout.module.scss';
-import Login from './page/Login';
-import SignUp from './page/SignUp';
-import MyProfile from './page/MyProfile';
 
 
 
@@ -37,8 +39,9 @@ const App = () => {
             <MyProfile/>
             </>
             }>
-
             </Route>
+            <Route path='/matching' element={<Matching/>}/>
+            <Route path='/myprofileupdate' element={<MyProfileUpdate/>}/>
           {/* 일치하는 라우트가 없는 경우 처리 */}
           <Route path="*" element={<NotFound/>}/>
     </Routes>
