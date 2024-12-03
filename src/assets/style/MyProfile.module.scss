@@ -45,6 +45,17 @@
   font-size: 0.9rem;
   transition: background 0.3s ease;
 }
+.matchingButton{
+  background-color: #cca278;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+  margin-left: 10px;
+}
 
 .editButton:hover {
   background-color: #16385c;
@@ -113,67 +124,113 @@
 .selectuser{
   font-size: 15px;
 }
+// 수정모드
+.editInput{
+  border: 3px solid rgba(0, 0, 0, 0.504);
+  border-radius: 10px;
+  padding: 10px;
+}
+.editInput:hover{
+  border:3px solid rgba(240, 206, 141, 0.842);
+}
+.buttonGroup {
+  display: flex;
+}
+
+.saveButton {
+  background-color: #cca278;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+  margin-right: 20px;
+}
+
+.saveButton:hover {
+  background-color: #45a049;
+}
+
+.cancelButton {
+  background-color: #cca278;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+}
+
+.cancelButton:hover {
+  background-color: #e53935;
+}
+
 /* 모바일 대응 미디어 쿼리 */
 @media (max-width: 480px) {
   .MyProfileContainer {
-    min-height: auto; /* 화면 크기에 맞게 높이 조정 */
+    padding: 10px;
+    background-color: rgba(245, 229, 198, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* 위쪽부터 채움 */
+    min-height: 100vh; /* 전체 화면을 채움 */
+    padding-top: 60px; /* 헤더 높이만큼 여백 추가 */
+    box-sizing: border-box; /* 여백 포함한 크기 계산 */
   }
 
   .profileWrapper {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 그림자 간소화 */
+    border-radius: 10px;
+    padding: 15px;
+    width: 100%;
+    max-width: 420px; /* 모바일에서 적당한 너비로 제한 */
+    overflow: hidden; /* 여백 깔끔하게 정리 */
   }
 
   .profileHeader {
-    flex-direction: column;
-    align-items: flex-start;
     text-align: left;
-    padding-bottom: 15px;
-  }
-
-  .profileHeader h1 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-  }
-
-  .editButton {
-    padding: 10px 19px;
-    font-size: 0.8rem;
+    padding-bottom: 10px;
   }
 
   .profileContent {
     flex-direction: column;
     gap: 15px;
+    overflow-y: auto; /* 컨텐츠가 많아질 경우 스크롤 가능 */
   }
 
   .profileImageSection {
-    border-right: none;
-    border-bottom: 2px solid #eee; /* 하단 구분선으로 변경 */
-    padding-bottom: 15px;
     text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #eee;
   }
 
   .profileImage {
-    width: 200px;
-    height: 200px;
-    margin-right: 0;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
   }
-
-  .profileImageSection p {
-    font-size: 1rem;
-    line-height: 1.8rem;
-  }
-
+.profileDetails{
+  border-bottom: 2px solid #eee;
+}
   .profileDetails, 
   .profileDetails2 {
-    border-right: none; /* 모바일에서 구분선 제거 */
-    font-size: 1rem;
-    line-height: 1.6;
-    text-align: left;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    padding: 5px;
   }
 
-  .profileDetails p,
-  .profileDetails2 p {
-    font-size: 0.9rem;
+  .saveButton, .cancelButton {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .modalHeader {
+    font-size: 1.2rem;
   }
 }
 
