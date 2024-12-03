@@ -1,31 +1,49 @@
 
-.container{
+.container {
   display: flex;
-  align-items: flex-start;
-  justify-content: center; /* 가운데 정렬 */
-  padding-top: 70px; /* 패딩 조정 */
-
+  flex-direction: row; /* 가로로 나란히 배치 */
+  align-items: flex-start; /* 세로 정렬 */
+  justify-content: center; /* 수평 가운데 정렬 */
+  padding-top: 70px;
+  // gap: 5px; /* 달력과 패널 사이의 간격 */
 }
-.calendarContainer{
-  flex: 1; /* 공간을 균등하게 차지 */
-  height: auto; /* 자동 높이 조정 */
-    background-color: rgba(233, 233, 233, 0.929);
-    border-radius: 10px;
+
+.calendarContainer {
+  flex: 1; /* 동일한 비율로 크기 조정 */
+  height: auto; /* 높이는 내용에 따라 자동 조정 */
+  border-right: 2px solid black;
 }
 .sidepanel {
-  position: fixed; /* 고정 위치 제거 */
-  top: 75px;
-  right: 0px;
-  width: 300px; /* 패널 너비 */
-  height: 607px; /* 내용에 따라 자동 조정 */
+  flex: 1; /* 동일한 비율로 크기 조정 */
+  height: 94%; /* 높이는 내용에 따라 자동 조정 */
   padding: 20px;
-  background-color:rgb(255, 254, 219); /* 달력 배경색과 통일 */
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5); /* 달력과 동일한 그림자 */
+  background-color: rgb(255, 254, 219);
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
 }
-
-.close-button {
-  margin-top: 20px;
-  cursor: pointer;
+.sidepanel h3{
+  font-size: 40px;
+  margin-bottom: 20px;
+  font-weight: lighter;
+}
+.sidepanel p{
+  font-size: 25px;
+}
+.coment p{
+  font-size: 15px;
+}
+.backgroundimageSection{
+  flex: 1;
+  text-align: center;
+  background-image: url(../img/G.jpg);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  width: 500px;
+  height: 90vh;
+  opacity: 0.7;
+}
+.backgroundimageSection p {
+  color: white;
+  margin-top: 170px;
 }
 @media (max-width: 480px) {
   .container {

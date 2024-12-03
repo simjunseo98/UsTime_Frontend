@@ -44,8 +44,7 @@ const App = () => {
             <Route path='/myprofileupdate' element={<MyProfileUpdate/>}/>
           {/* 일치하는 라우트가 없는 경우 처리 */}
           <Route path="*" element={<NotFound/>}/>
-    </Routes>
-    
+    </Routes>  
     </div>
   </BrowserRouter>
     </div>
