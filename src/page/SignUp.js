@@ -66,7 +66,7 @@ const formatDate = (value) => {
             });
             console.log('회원가입 성공 :', response.data);
             alert('회원가입 성공😊')
-            navigate('/login');
+            navigate('/Login');
         } catch (error) {
             console.error('회원가입 실패 :', error.response?.data || error.message);
             alert('회원가입 실패했습니다.❌')

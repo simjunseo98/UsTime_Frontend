@@ -1,26 +1,15 @@
-import React, { useEffect, useState } from "react";
-import styles from '../assets/style/UserSearch.module.scss';
-import api from '../service/api.js';
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import styles from "../assets/style/UserSearch.module.scss";
+import api from "../service/api.js";
 
 const UserSearch = ({ onSelectUser }) => {
-    const [name, setName] = useState('');
+    const [name, setName] = useState("");
     const [results, setResults] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [lastSearch, setLastSearch] = useState('');  // 이전 검색어를 추적하는 상태
-    const [myUserId, setMyUserId] = useState(null); // myUserId 상태 추가
-    const navigate = useNavigate();
+    const [lastSearch, setLastSearch] = useState("");
 
-    // 세션 스토리지에서 myUserId를 가져오기
-    useEffect(() => {
-        const userId = sessionStorage.getItem('userId'); // sessionStorage에서 값 가져오기
-        if (userId) {
-            setMyUserId(userId); // myUserId 상태 업데이트
-        }
-    }, []);
-
-    // 사용자 검색 함수
     const searchUsers = async (name) => {
         if (!name) {
             setResults([]);
@@ -38,50 +27,47 @@ const UserSearch = ({ onSelectUser }) => {
         }
     };
 
-    // useEffect를 사용하여 이름이 바뀔 때만 검색
     useEffect(() => {
-        if (name.trim() === '') {
+        if (name.trim() === "") {
             setError(null);
             setResults([]);
         } else if (name !== lastSearch) {
-            setLastSearch(name);  // 검색어가 바뀔 때마다 업데이트
-            searchUsers(name);    // 새 검색어로 검색 요청
+            setLastSearch(name);
+            searchUsers(name);
         }
-    }, [name, lastSearch]);  // name이나 lastSearch가 바뀌면 실행
+    }, [name, lastSearch]);
 
     const handleChange = (e) => {
         setName(e.target.value);
-        if (e.target.value.trim() === '') {
-            setError(null); // 입력값이 비어있을 때 에러 초기화
+        if (e.target.value.trim() === "") {
+            setError(null);
         }
     };
 
     const handleUserClick = (user) => {
-        console.log("Selected User ID: ", user.name);
-        onSelectUser(user.name);
-        
-        // myUserId가 존재할 때만 커플 신청
-        // if (myUserId) {
-        //     createCoupleRequest(myUserId, user.userId);
-        // } else {
-        //     alert("로그인 정보가 없습니다.");
-        // }
+        setSelectedUser(user); // 선택된 유저 정보 업데이트
     };
 
-    // 커플 신청 API 호출
-    const createCoupleRequest = async (fromUserId, toUserId) => {
+    const handleSendRequest = async () => {
+        if (!selectedUser) {
+            alert("연동할 사용자를 선택해주세요.");
+            return;
+        }
+
         try {
-            const response = await api.post('/couple/request', null, {
+            const fromUserId = sessionStorage.getItem("userId");
+            await api.post("/couple/request", null, {
                 params: {
                     fromUserId,
-                    toUserId
-                }
+                    toUserId: selectedUser.userId,
+                },
             });
-            console.log("보내진 데이터: ", response);
-            navigate("/main")
             alert("신청이 성공적으로 보내졌습니다.");
+            onSelectUser(selectedUser); // 성공 시 부모 컴포넌트에 알림
+            setSelectedUser(null); // 선택된 유저 초기화
         } catch (error) {
             alert("커플 신청에 실패했습니다.");
+            console.error(error);
         }
     };
 
@@ -103,6 +89,16 @@ const UserSearch = ({ onSelectUser }) => {
                     </li>
                 ))}
             </ul>
+            {selectedUser && (
+                <div className={styles.selectedUserContainer}>
+                    <p className={styles.selectedUserText}>
+                        선택된 유저: <strong>{selectedUser.name}</strong>
+                    </p>
+                    <button className={styles.sendButton} onClick={handleSendRequest}>
+                        요청 보내기
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
