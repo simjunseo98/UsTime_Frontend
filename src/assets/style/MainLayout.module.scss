@@ -3,7 +3,6 @@ html, body {
     padding: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* 스크롤바 제거 */
 }
 .mainLayout {
     display: flex;
@@ -16,7 +15,8 @@ html, body {
 }
 @media (max-width: 480px) {
     .mainLayout {
-        justify-content: flex-start; /* 상단 정렬 */
+        overflow-y: scroll;
+        overflow-x: scroll;
         background-color: rgba(255, 240, 200, 0.8); /* 약간 밝은 배경색 */
     }
 }

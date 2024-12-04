@@ -15,7 +15,7 @@
 }
 .sidepanel {
   flex: 1; /* 동일한 비율로 크기 조정 */
-  height: 94%; /* 높이는 내용에 따라 자동 조정 */
+  height: 93%; /* 높이는 내용에 따라 자동 조정 */
   padding: 20px;
   background-color: rgb(255, 254, 219);
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
@@ -66,6 +66,8 @@
     box-shadow: none; /* 그림자 제거 */
     background-color: rgb(255, 254, 219);
     font-size: 12px; /* 텍스트 크기 축소 */
+    overflow-x: scroll;
+    overflow-y: scroll;
   }
 
   /* 닫기 버튼 */
