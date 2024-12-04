@@ -13,8 +13,7 @@ const Main = () => {
     const [newSchedule, setNewSchedule] = useState(""); // 추가할 일정 입력 값
 
     // 서버에서 특정 날짜의 일정을 가져오는 함수
-    const fetchSchedulesForDate = async (date) => {
-        const dateString = moment(date).format('YYYY-MM-DD');
+    const fetchSchedulesForDate = async () => {
         const coupleId = sessionStorage.getItem('coupleId');
     
         if (!coupleId) {
