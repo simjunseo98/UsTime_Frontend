@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Calendar from 'react-calendar';
 import moment from 'moment';
-import axios from 'axios';
 // import backImage from '../assets/img/G.jpg';
 import styles from '../assets/style/Main.module.scss';
 import '../assets/style/MyCalendar.css';
+import api from "../service/api";
 
 const Main = () => {
     const [value, onChange] = useState(new Date());
@@ -15,8 +15,15 @@ const Main = () => {
     // 서버에서 특정 날짜의 일정을 가져오는 함수
     const fetchSchedulesForDate = async (date) => {
         const dateString = moment(date).format('YYYY-MM-DD');
+        const coupleId = sessionStorage.getItem('coupleId');
+    
+        if (!coupleId) {
+            console.error("Couple ID가 없습니다.");
+            return;
+        }
         try {
-            const response = await axios.get(`/calendar/${dateString}`);
+            const response = await api.get('/calendar/all');
+            console.log(response.data);
             const schedules = response.data.reduce((acc, curr) => {
                 acc[curr.date] = curr.schedule;
                 return acc;
@@ -26,6 +33,7 @@ const Main = () => {
             console.error("일정 가져오기 실패:", error);
         }
     };
+    
     // 일정 추가 요청
 // const addSchedule = async () => {
 //     if (selectedDate && newSchedule.trim() !== "") {
@@ -58,7 +66,8 @@ const Main = () => {
 //         }
 //     }
 // };
-    //tileContent 함수 수정
+
+    //전체 스케줄을 타일로 나타내는 함수
     const scheduleTileContent = ({ date, view }) => {
         if (view === 'month') {
             const dateString = moment(date).format('YYYY-MM-DD');

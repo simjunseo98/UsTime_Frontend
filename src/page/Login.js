@@ -43,9 +43,10 @@ const Login = () => {
       });
 
       if (response.status === 200) {
-        const { token, userId, name, email } = response.data;
+        const { token, userId, coupleId, name, email } = response.data;
         sessionStorage.setItem('token', token);
         sessionStorage.setItem('userId', userId);
+        sessionStorage.setItem('coupleId',coupleId);
         sessionStorage.setItem('name', name);
         sessionStorage.setItem('email', email);
         setIsRemember(true);

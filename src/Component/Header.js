@@ -27,10 +27,8 @@ const Header = () => {
           return;
         }
 
-        const response = await api.get(`/couple/getrequest?userId=${userId}`);
-        // 대기 상태의 알림만 필터링
-        const pendingAlarms = response.data.filter((notif) => notif.status === "대기");
-        setAlarm(pendingAlarms);
+        const response = await api.get(`/notifications/getNotify?userId=${userId}`);
+        setAlarm(response.data);
       } catch (error) {
         console.error("Error fetching Alarm:", error);
       }
@@ -39,23 +37,20 @@ const Header = () => {
     fetchAlarm();
   }, [navigate]);
 
-  // 승인 버튼 클릭 처리
-  const handleAccept = async (requestId) => {
+  // 알림 읽음 처리
+  const handleMarkAsRead = async (notificationId) => {
     try {
-      await api.put(`/couple/approve?requestId=${requestId}`);
-      setAlarm((prev) => prev.filter((notif) => notif.requestId !== requestId));
+      await api.put(`/notifications/markAsRead?notificationId=${notificationId}`);
+      // 알림 상태 업데이트
+      setAlarm((prev) =>
+        prev.map((notif) =>
+          notif.notificationId === notificationId
+            ? { ...notif, status: "읽음" }
+            : notif
+        )
+      );
     } catch (error) {
-      console.error("Error accepting request:", error);
-    }
-  };
-
-  // 거절 버튼 클릭 처리
-  const handleReject = async (requestId) => {
-    try {
-      await api.put(`/couple/decline?requestId=${requestId}`);
-      setAlarm((prev) => prev.filter((notif) => notif.requestId !== requestId));
-    } catch (error) {
-      console.error("Error rejecting request:", error);
+      console.error("Error marking notification as read:", error);
     }
   };
 
@@ -91,15 +86,18 @@ const Header = () => {
         <div className={styles.alarmDropdown}>
           {alarm.length > 0 ? (
             alarm.map((notif) => (
-              <div key={notif.requestId} className={styles.alarmItem}>
-                <p>
-                  요청자: {notif.fromUserName} → 수신자: {notif.toUserName}
-                </p>
-                <p>요청 시간: {notif.requestedAt}</p>
-                <div>
-                  <button onClick={() => handleAccept(notif.requestId)}>승인</button>
-                  <button onClick={() => handleReject(notif.requestId)}>거절</button>
-                </div>
+              <div
+                key={notif.notificationId}
+                className={styles.alarmItem}
+                onClick={() => handleMarkAsRead(notif.notificationId)}
+                style={{
+                  backgroundColor: notif.status === "읽음" ? "#f0f0f0" : "#ffffff",
+                  cursor: "pointer",
+                }}
+              >
+                <p><strong>메시지:</strong> {notif.message}</p>
+                <p><strong>상태:</strong> {notif.status}</p>
+                <p><strong>생성일시:</strong> {new Date(notif.createdAt).toLocaleString()}</p>
               </div>
             ))
           ) : (
