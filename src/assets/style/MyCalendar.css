@@ -60,7 +60,7 @@
   .react-calendar__navigation button {
     min-width: 100px;
     background: none;
-    border-radius: 100px;
+    border-radius: 10px;
   }
   
   .react-calendar__navigation button:disabled {
@@ -92,22 +92,30 @@
       color: rgb(173, 154, 115);
     }
   }
+
   /*달력 일자 부분*/
   .react-calendar__month-view__days__day{
     abbr{
       font-size: 18px;
       font-style: inherit;
       font-family: 'Courier New', Courier, monospace;
+      
     }
   }
+
   .react-calendar__month-view__weekNumbers .react-calendar__tile {
     display: flex;
     align-items: center;
-    justify-content: center;
+    flex-direction: column; /* 세로 방향 정렬 */
+    justify-content: flex-start; /* 상단 정렬 */
     font: inherit;
+    position: relative; /* 날짜 텍스트 위치 조정을 위해 상대 위치 설정 */
     font-size: 0.75em;
     font-weight: bold;
   }
+
+
+
   /* 기본 주말 스타일 */
 .react-calendar__month-view__days__day--weekend {
   color: inherit; /* 기본 색상 유지 */
@@ -148,11 +156,12 @@
     max-width: 100%;
     padding: 10px 6.6667px;
     background: none;
-    text-align: center;
+    text-align: start;
     font: inherit;
     font-size: 0.833em;
+    position: relative; /* 상대 위치 지정 */
   }
-  
+
   .react-calendar__tile:disabled {
     background-color: #f0f0f0;
     color: #ababab;
@@ -169,13 +178,13 @@
   .react-calendar__tile:enabled:hover,
   .react-calendar__tile:enabled:focus {
     background-color: #f7f3c4ab;
-    border-radius: 100px;
+    border-radius: 10px;
   }
   
   /* 현재 날짜 타일부분*/
   .react-calendar__tile--now { 
     background: rgb(244, 207, 137);
-    border-radius: 100px;
+    border-radius: 10px;
   }
   
   .react-calendar__tile--now:enabled:hover,
@@ -196,13 +205,13 @@
   .react-calendar__tile--active {
     background: rgba(247, 232, 120, 0.719);
     color: white;
-    border-radius: 100px;
+    border-radius: 10px;
   }
   
   .react-calendar__tile--active:enabled:hover,
   .react-calendar__tile--active:enabled:focus {
     background: rgba(247, 232, 120, 0.719);
-    border-radius: 100px;
+    border-radius: 10px;
     
   }
   
@@ -267,15 +276,42 @@
       color: #d10000;
     }
   }
-  /* 라벨 스타일 */
-.schedule-label {
+
+  /* 라벨 스타일 준서 버전 */
+/* .schedule-label {
   background-color: #cca278;
   color: white;
   padding: 2px 5px;
   border-radius: 5px;
-  font-size: 0.8rem;
+  font-size: 10px;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  height: auto;
+} */
+
+/* 수정본 원래 css는 위에 꺼 */
+.schedule-label {
+  background-color: #cca278;
+  color: white;
+  padding: 3px 6px;  /* 패딩을 적절히 조정 */
+  border-radius: 5px;
+  font-size: 10px;
+  text-align: center;
+  white-space: nowrap;  /* 텍스트가 한 줄로 표시되도록 */
+  overflow: hidden;     /* 텍스트가 넘치면 잘리게 함 */
+  text-overflow: ellipsis; /* 텍스트가 잘릴 때 '...'으로 표시 */
+  height: auto; /* 높이를 자동으로 조정 */
+  max-height: 20px; /* 최대 높이를 설정하여 박스 크기 조정 */
+  line-height: 1.2em; /* 줄 간격을 조정하여 텍스트가 잘리지 않도록 */
 }
+
+
+
+
+
+
+
+
+

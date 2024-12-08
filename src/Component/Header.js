@@ -96,7 +96,6 @@ const Header = () => {
                 }}
               >
                 <p><strong>메시지:</strong> {notif.message}</p>
-                <p><strong>상태:</strong> {notif.status}</p>
                 <p><strong>생성일시:</strong> {new Date(notif.createdAt).toLocaleString()}</p>
               </div>
             ))
