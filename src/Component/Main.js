@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Calendar from './Calendar';
+import CalendarComponent from './Calendar';
 import CalendarDetail from './CalendarDetail';
 import styles from '../assets/style/Main.module.scss';
 import '../assets/style/MyCalendar.css';
@@ -9,7 +9,7 @@ const Main = () => {
 
     return (
         <div className={styles.container}>
-            <Calendar setSelectedDate={setSelectedDate} />
+            <CalendarComponent setSelectedDate={setSelectedDate} />
             <CalendarDetail selectedDate={selectedDate} />
         </div>
     );
