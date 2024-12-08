@@ -6,7 +6,7 @@ import api from "../service/api";
 
 const CalendarComponent = ({ setSelectedDate }) => {
     const [value, onChange] = useState(new Date()); // 달력의 현재 날짜 상태
-    const [schedule, setSchedule] = useState({}); // 전체 일정을 저장하는 객체
+    const [schedules, setSchedules] = useState({}); // 전체 일정을 저장하는 객체
 
     /* 전체 일정 조회 함수 */
     const fetchAllSchedules = async () => {
@@ -14,18 +14,19 @@ const CalendarComponent = ({ setSelectedDate }) => {
             const response = await api.get('/calendar/all');
             console.log("전체 일정 데이터:", response.data);
 
-            const schedules = response.data.reduce((acc, curr) => {
-                if (!acc[curr.startDate]) {
-                    acc[curr.startDate] = []; // 해당 날짜에 일정이 없으면 배열을 초기화
+            const scheduleData = response.data.reduce((acc, curr) => {
+                const dateString = moment(curr.startDate).format('YYYY-MM-DD');
+                if (!acc[dateString]) {
+                    acc[dateString] = []; // 해당 날짜에 일정이 없으면 배열을 초기화
                 }
-                acc[curr.startDate].push({
+                acc[dateString].push({
                     title: curr.title,
-                    label: curr.label
+                    label: curr.label,
                 });
                 return acc;
             }, {});
 
-            setSchedule(schedules); // 전체 일정 저장
+            setSchedules(scheduleData); // 전체 일정 저장
         } catch (error) {
             console.error("전체 일정 가져오기 실패:", error);
         }
@@ -62,7 +63,7 @@ const CalendarComponent = ({ setSelectedDate }) => {
     const scheduleTileContent = ({ date, view }) => {
         if (view === 'month') {
             const dateString = moment(date).format('YYYY-MM-DD');
-            const scheduleData = schedule[dateString]; // 해당 날짜의 일정 데이터
+            const scheduleData = schedules[dateString]; // 해당 날짜의 일정 데이터
 
             if (scheduleData && Array.isArray(scheduleData)) {
                 return (
@@ -117,7 +118,7 @@ const CalendarComponent = ({ setSelectedDate }) => {
     };
 
     useEffect(() => {
-        fetchAllSchedules();
+        fetchAllSchedules(); // 컴포넌트가 마운트될 때 전체 일정을 가져옵니다.
     }, []);
 
     return (
