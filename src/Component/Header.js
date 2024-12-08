@@ -54,6 +54,18 @@ const Header = () => {
     }
   };
 
+  // 알림 삭제 처리
+  const handleDeleteNotification = async (notificationId) => {
+    try {
+      await api.delete(`/notifications/delete?notificationId=${notificationId}`);
+      // 삭제된 알림을 상태에서 제거
+      setAlarm((prev) => prev.filter((notif) => notif.notificationId !== notificationId));
+      alert("알림이 삭제되었습니다.");
+    } catch (error) {
+      console.error("Error deleting notification:", error);
+    }
+  };
+
   // 사이드바 열기/닫기 토글
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);
@@ -80,7 +92,11 @@ const Header = () => {
       {/* 알림창 */}
       <button className={styles.alramIcon} onClick={toggleAlarm}>
         <VscBell />
-        {alarm.length > 0 && <span className={styles.badge}>{alarm.length}</span>}
+        {alarm.filter((notif) => notif.status === "읽지 않음").length > 0 && (
+          <span className={styles.badge}>
+            {alarm.filter((notif) => notif.status === "읽지 않음").length}
+          </span>
+        )}
       </button>
       {alarmOpen && (
         <div className={styles.alarmDropdown}>
@@ -95,8 +111,21 @@ const Header = () => {
                   cursor: "pointer",
                 }}
               >
-                <p><strong>메시지:</strong> {notif.message}</p>
-                <p><strong>생성일시:</strong> {new Date(notif.createdAt).toLocaleString()}</p>
+                <div className={styles.alarmContent}>
+                  <div className={styles.alarmMessage}>
+                    <p><strong>메시지:</strong> {notif.message}</p>
+                    <p><strong>생성일시:</strong> {new Date(notif.createdAt).toLocaleString()}</p>
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation(); // 클릭 이벤트가 부모 요소로 전파되지 않도록 막음
+                      handleDeleteNotification(notif.notificationId);
+                    }}
+                    className={styles.deleteButton}
+                  >
+                    삭제
+                  </button>
+                </div>
               </div>
             ))
           ) : (
