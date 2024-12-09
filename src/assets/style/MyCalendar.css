@@ -5,8 +5,7 @@
     height: 600px;
     max-height: 100%;
     background: rgb(255, 254, 219);
-    font-family: 'Arial', 'Helvetica', sans-serif;
-    line-height: 4.025em;
+    line-height: 4.525em;
     justify-content: center;
     box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.301);
   }
@@ -88,7 +87,6 @@
       padding: 0.5em;
       text-decoration: none;
       font-size: 25px;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: rgb(173, 154, 115);
     }
   }
@@ -97,10 +95,19 @@
   .react-calendar__month-view__days__day{
     abbr{
       font-size: 18px;
-      font-style: inherit;
-      font-family: 'Courier New', Courier, monospace;
-      
+      text-align: center;
+      font-style: inherit;  
     }
+  }
+  .react-calendar__month-view__days__day{
+      position: relative;
+      display: flex;
+      flex-direction: column; /* 라벨과 날짜를 세로로 정렬 */
+      align-items: center; /* 수평 중앙 정렬 */
+      justify-content: flex-start; /* 위에서부터 정렬 */
+      height: 93px; /* 타일 높이를 충분히 늘림 */
+      box-sizing: border-box; /* 경계 포함 크기 계산 */
+      overflow: visible; /* 내부 내용이 잘리지 않도록 */
   }
 
   .react-calendar__month-view__weekNumbers .react-calendar__tile {
@@ -156,11 +163,16 @@
     max-width: 100%;
     padding: 10px 6.6667px;
     background: none;
-    text-align: start;
+    text-align: center;
     font: inherit;
     font-size: 0.833em;
-    position: relative; /* 상대 위치 지정 */
   }
+  
+  .react-calendar__month-view__days__day abbr{
+   position: relative;
+   top: -30px;
+  }
+
 
   .react-calendar__tile:disabled {
     background-color: #f0f0f0;
@@ -184,8 +196,9 @@
   /* 현재 날짜 타일부분*/
   .react-calendar__tile--now { 
     background: rgb(244, 207, 137);
-    border-radius: 10px;
+    border-radius: 5px;
   }
+  
   
   .react-calendar__tile--now:enabled:hover,
   .react-calendar__tile--now:enabled:focus {
@@ -204,7 +217,6 @@
   /* 선택 타일*/
   .react-calendar__tile--active {
     background: rgba(247, 232, 120, 0.719);
-    color: white;
     border-radius: 10px;
   }
   
@@ -254,11 +266,14 @@
     .react-calendar__month-view__weekdays__weekday abbr {
       font-size: 12px; /* 요일 글자 크기 축소 */
     }
+    .react-calendar__month-view__days__day {
+      width: calc(100% / 7); /* 모바일에서도 한 줄에 7개 유지 */
+      height: 80px; /* 모바일에서는 높이를 줄임 */
+    }
     .react-calendar__month-view__days__day{
       abbr{
         font-size: 18px;
         font-style: inherit;
-        font-family: 'Courier New', Courier, monospace;
       }
     }
   
@@ -276,36 +291,25 @@
       color: #d10000;
     }
   }
-
-  /* 라벨 스타일 준서 버전 */
-/* .schedule-label {
-  background-color: #cca278;
-  color: white;
-  padding: 2px 5px;
-  border-radius: 5px;
-  font-size: 10px;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  height: auto;
-} */
-
-/* 수정본 원래 css는 위에 꺼 */
 .schedule-label {
-  background-color: #cca278;
   color: white;
-  padding: 3px 6px;  /* 패딩을 적절히 조정 */
+  padding: 4px 20px;  /* 패딩을 적절히 조정 */
   border-radius: 5px;
   font-size: 10px;
   text-align: center;
   white-space: nowrap;  /* 텍스트가 한 줄로 표시되도록 */
   overflow: hidden;     /* 텍스트가 넘치면 잘리게 함 */
   text-overflow: ellipsis; /* 텍스트가 잘릴 때 '...'으로 표시 */
-  height: auto; /* 높이를 자동으로 조정 */
-  max-height: 20px; /* 최대 높이를 설정하여 박스 크기 조정 */
-  line-height: 1.2em; /* 줄 간격을 조정하여 텍스트가 잘리지 않도록 */
+  height: auto; 
+  max-height: 18px; /* 최대 높이를 설정하여 박스 크기 조정 */
+  line-height: 0.7em; /* 줄 간격을 조정하여 텍스트가 잘리지 않도록 */
+  position: absolute;
+  top: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
 }
+
 
 
 

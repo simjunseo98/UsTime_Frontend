@@ -66,13 +66,22 @@ const CalendarComponent = ({ setSelectedDate }) => {
             const scheduleData = schedules[dateString]; // 해당 날짜의 일정 데이터
 
             if (scheduleData && Array.isArray(scheduleData)) {
+                let topOffset =35;
                 return (
                     <div className="schedule-label-container">
-                        {scheduleData.map((data, index) => (
-                            <div key={index} className="schedule-label" style={{ backgroundColor: getLabelColor(data.label) }}>
+                           {scheduleData.map((data, index) => {
+                        const labelStyle = {
+                            backgroundColor: getLabelColor(data.label),
+                            zIndex: 2 + index, // 각 라벨의 z-index를 다르게 설정
+                            top: `${topOffset}px`,
+                        };
+                        topOffset += 17; // 다음 일정의 top 값을 아래로 밀어줌 (라벨 높이에 맞춰 조정)
+                        return (
+                            <div key={index} className="schedule-label" style={labelStyle}>
                                 <span className="schedule-title">{data.title}</span>
                             </div>
-                        ))}
+                        );
+                    })}
                     </div>
                 );
             } else if (scheduleData) {
@@ -122,6 +131,15 @@ const CalendarComponent = ({ setSelectedDate }) => {
     }, []);
 
     return (
+        <>
+        <div className={styles.backgroundimageSection}>
+            <img src="../assets/style/img/G.jpg" alt="눈사람" className={styles.image}></img>
+        </div>
+            <div className={styles.textSection}>
+                <p>안녕</p>
+                <p>나는</p>
+                <p>눈사람이야</p>
+            </div>
         <div className={styles.calendarContainer}>
             <Calendar
                 onChange={onChange}
@@ -137,6 +155,7 @@ const CalendarComponent = ({ setSelectedDate }) => {
                 tileClassName={tileClassName}
             />
         </div>
+        </>
     );
 };
 

@@ -67,11 +67,12 @@ const CalendarDetail = ({ selectedDate }) => {
             console.error("일정 생성 실패:", error);
         }
     };
-
+    
     return (
         <div className={styles.sidepanel}>
             <div className={styles.scheduleHeader}>
                 <h3>Schedule</h3>
+            <button onClick={() => setIsEditing(true)} className={styles.addSchedule}>+</button>
             </div>
 
             {isEditing ? (
@@ -175,7 +176,6 @@ const CalendarDetail = ({ selectedDate }) => {
                     ) : (
                         <p>날짜를 선택하거나 새로운 일정을 추가하세요!</p>
                     )}
-                    <button onClick={() => setIsEditing(true)}>일정 추가</button>
                 </div>
             )}
         </div>
