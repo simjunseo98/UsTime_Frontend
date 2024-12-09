@@ -24,7 +24,6 @@
     top: 15px;
     width: 50px;
     height: 40px;
-    z-index: 99;
     transition: 0.8s ease;
     border: 0;
     overflow: hidden;
@@ -34,10 +33,12 @@
   }
   .SidebarNav {
     display: block;
-    text-decoration: none;
     padding: 10px;
     font-size: 18px;
     color: #202020;
+    .SidebarNav:hover{
+       color: #6266a5;
+    }
 }
 
 /* 상단에 프로필 관리 크게 배치 */
