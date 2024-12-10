@@ -153,6 +153,7 @@ const CalendarComponent = ({ setSelectedDate }) => {
                 onClickDay={onDateClick}
                 tileContent={scheduleTileContent}
                 tileClassName={tileClassName}
+                // selectRange={true}
             />
         </div>
         </>

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import styles from "../assets/style/Sidebar.module.scss";
 
-const Sidebar = ({ isOpen, onClose }) => {
+const Sidebar = ({ isOpen, onClose, }) => {
   //로그아웃
   const navigate = useNavigate();
 
