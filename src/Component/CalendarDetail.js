@@ -150,8 +150,10 @@ const CalendarDetail = ({ selectedDate }) => {
                             onChange={handleInputChange}
                         />
                     </div>
-                    <button onClick={createSchedule}>일정 생성</button>
-                    <button onClick={() => setIsEditing(false)}>취소</button>
+                  
+                    <button onClick={createSchedule} className={styles.detailButton}>생성</button>
+                    <button onClick={() => setIsEditing(false)} className={styles.detailButton}>취소</button>
+             
                 </div>
             ) : (
                 // 기존 일정 보여주는 부분

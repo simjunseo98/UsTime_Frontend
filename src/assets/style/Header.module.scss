@@ -10,6 +10,7 @@
   top: 0; /* 화면 상단에 고정 */
   left: 0; /* 화면 왼쪽에 고정 */
   right: 0; /* 화면 오른쪽에 고정 */
+  z-index: 1000;
 }
 
 .ustime {
@@ -30,6 +31,10 @@
   background-color: rgba(245, 229, 198, 0);
   cursor: pointer;
 }
+.sidebarIcon:hover{
+  transform: scale(1.2);
+  transition-duration:0.5s;
+  }
 
 .alramIcon {
   text-align: right !important;
@@ -38,11 +43,15 @@
   background-color: rgba(245, 229, 198, 0);
   cursor: pointer;
 }
+.alramIcon:hover{
+transform: scale(1.2);
+transition-duration:0.5s;
+}
 
 .badge {
   position: absolute;
-  top: 7px;
-  right: 18px;
+  top: 5px;
+  right: 20px;
   background-color: red;
   color: white;
   font-size: 12px;
@@ -53,25 +62,32 @@
   align-items: center;
   justify-content: center;
 }
-
 .alarmDropdown {
   position: absolute;
+  z-index: 1000;
   top: 50px;
   right: 0;
   background-color: white;
   border: 1px solid #ddd;
   border-radius: 5px;
-  width: 300px;
+  width: 350px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+}
+.alarmDropdown h3{
+  padding: 10px;
+  border-bottom: 2px solid #eee;
 }
 
 .alarmItem {
-  display: flex;
   justify-content: space-between; /* 메시지와 생성일시, 삭제 버튼을 양쪽으로 배치 */
   align-items: center;
   padding: 10px;
   border-bottom: 1px solid #eee;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.alarmItem:hover {
+  transform: scale(1.01); /* 살짝 확대 */
 }
 
 .alarmItem:last-child {
@@ -79,23 +95,30 @@
 }
 
 .alarmContent {
-  display: flex;
   flex-direction: unset; 
 }
 
 .alarmMessage {
   display: flex;
-  flex-direction: column; /* 세로로 정렬 */
-  justify-content: flex-start;
+  font-size: 18px;
+  justify-content: space-between;
 }
+
 
 .timestamp {
-  display: block;
-  font-size: 12px;
-  color: gray;
-  margin-top: 5px;
+  font-size: 15px;
+  color: #595555;
+  font-weight: lighter;
 }
-
+.readText {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
+  color: black;
+  font-size: 0.95rem;
+  font-weight: bold;
+  transition: opacity 0.5s ease-in; /* 0.5초 동안 서서히 표시 */
+}
 .noalarms {
   padding: 10px;
   text-align: center;
@@ -117,18 +140,17 @@
 
 // 삭제버튼 스타일
 .deleteButton {
-  background-color: red;
-  color: white;
+  color: black;
   border: none;
+  background:none;
   padding: 5px 10px;
-  font-size: 10px;
+  font-size: 15px;
   cursor: pointer;
-  border-radius: 5px;
-  margin-top: 5px;
-  margin-left: 10px;
-  align-self: flex-start; /* 삭제 버튼을 오른쪽에 고정 */
+  border-radius: 50px;
+  align-items: end;
 }
 
 .deleteButton:hover {
-  background-color: darkred;
+  background-color: #373232;
+  color: white;
 }

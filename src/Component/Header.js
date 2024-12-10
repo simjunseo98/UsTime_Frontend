@@ -5,6 +5,14 @@ import { VscBell, VscMenu } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import api from "../service/api";
 
+//상대 시간 설정라이브러리
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/ko"; // 로케일 불러오기
+
+dayjs.locale("ko"); // 한국어 설정
+dayjs.extend(relativeTime);
+
 const Header = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false); // 사이드바 상태 관리
   const [alarm, setAlarm] = useState([]); // 알람 데이터 상태 관리
@@ -45,7 +53,7 @@ const Header = () => {
       setAlarm((prev) =>
         prev.map((notif) =>
           notif.notificationId === notificationId
-            ? { ...notif, status: "읽음" }
+            ? { ...notif, status: "읽음",readText: "읽음" }
             : notif
         )
       );
@@ -99,32 +107,37 @@ const Header = () => {
         )}
       </button>
       {alarmOpen && (
-        <div className={styles.alarmDropdown}>
+        <div className={styles.alarmDropdown}
+        onClick={(e) => e.stopPropagation()}>
+          <h3>알림</h3>
           {alarm.length > 0 ? (
             alarm.map((notif) => (
               <div
-                key={notif.notificationId}
-                className={styles.alarmItem}
-                onClick={() => handleMarkAsRead(notif.notificationId)}
-                style={{
-                  backgroundColor: notif.status === "읽음" ? "#f0f0f0" : "#ffffff",
-                  cursor: "pointer",
-                }}
+              key={notif.notificationId}
+              className={styles.alarmItem}
+              onClick={() => handleMarkAsRead(notif.notificationId)}
+              style={{
+                backgroundColor: notif.status === "읽음" ? "#f0f0f0" : "#ffffff",
+                cursor: "pointer",
+              }}
               >
                 <div className={styles.alarmContent}>
                   <div className={styles.alarmMessage}>
                     <p><strong>메시지:</strong> {notif.message}</p>
-                    <p><strong>생성일시:</strong> {new Date(notif.createdAt).toLocaleString()}</p>
-                  </div>
-                  <button
+             <button
                     onClick={(e) => {
                       e.stopPropagation(); // 클릭 이벤트가 부모 요소로 전파되지 않도록 막음
                       handleDeleteNotification(notif.notificationId);
                     }}
                     className={styles.deleteButton}
                   >
-                    삭제
+                    X
                   </button>
+                  </div>
+                  <div className={styles.readText}>
+                    <p className={styles.timestamp}><strong></strong> {dayjs(notif.createdAt).fromNow()}</p>
+              <p >{notif.readText || ""}</p>
+              </div> 
                 </div>
               </div>
             ))

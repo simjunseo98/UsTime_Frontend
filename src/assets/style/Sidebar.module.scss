@@ -17,35 +17,22 @@
   }
 }
 
-  .button {
-    position: relative;
-    justify-content: space-between;
-    left: 300px; 
-    top: 15px;
-    width: 50px;
-    height: 40px;
-    transition: 0.8s ease;
-    border: 0;
-    overflow: hidden;
-    background-color:rgba(245, 229, 198, 0);
-    cursor: pointer;
-  font-size: 40px;
-  }
   .SidebarNav {
     display: block;
-    padding: 10px;
+    width: 130px;
+    margin: 30px;
     font-size: 18px;
     color: #202020;
-    .SidebarNav:hover{
-       color: #6266a5;
-    }
-}
+    text-decoration: none;
+  }
+  .SidebarNav:hover{
+     color: #6266a5;
+  }
 
 /* 상단에 프로필 관리 크게 배치 */
 .SidebarNav:first-child {
-    font-size: 24px;
+    font-size: 30px;
     font-weight: bold;
-    padding: 20px 10px; /* 상단 항목에 여백 추가 */
     text-align: left;
 }
 
@@ -53,6 +40,7 @@
 .SidebarNav:nth-child(2),
 .SidebarNav:nth-child(3) {
     font-size: 20px;
+    margin: 30px;
     padding: 12px 10px;
     text-align: left;
 }
@@ -62,11 +50,10 @@
   margin-top: auto; /* 나머지 공간을 채워 우측 하단으로 이동 */
   font-size: 18px;
   text-align: right; /* 우측 정렬 */
-  padding: 12px 20px;
   cursor: pointer;
   position: absolute; /* 절대 위치로 고정 */
-  bottom: 10px;
-  right: 10px;
+  bottom: 0;
+  right: 0;
   border: none;
   background-color: #f6e3c6;
 }
@@ -76,6 +63,10 @@
   right: 10px;
   background: none;
   border: none;
-  font-size: 38px;
+  font-size:28px;
   cursor: pointer;
+}
+.closeButton:hover{
+  transform: scale(1.2);
+  transition-duration: 0.5s;
 }
