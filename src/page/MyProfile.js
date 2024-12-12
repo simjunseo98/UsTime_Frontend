@@ -193,7 +193,7 @@ const MyProfile = () => {
                         </p>
 
                         <Modal isOpen={openModal} onClose={() => setOpenModal(false)}>
-                            <h3 className={styles.modalHeader}>연동 보낼 사람</h3>
+                            <h3 className={styles.modalHeader}>커플신청 보낼 사람</h3>
                             <UserSearch
                                 onSelectUser={() => {
                                     setOpenModal(false); 

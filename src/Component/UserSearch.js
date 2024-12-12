@@ -92,10 +92,10 @@ const UserSearch = ({ onSelectUser }) => {
             {selectedUser && (
                 <div className={styles.selectedUserContainer}>
                     <p className={styles.selectedUserText}>
-                        선택된 유저: <strong>{selectedUser.name}</strong>
+                       <strong>{selectedUser.name}</strong>    님에게 요청을 보내시겠습니까?
                     </p>
                     <button className={styles.sendButton} onClick={handleSendRequest}>
-                        요청 보내기
+                        보내기
                     </button>
                 </div>
             )}

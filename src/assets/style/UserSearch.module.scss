@@ -73,4 +73,20 @@
     margin-top: 10px;
     text-align: center;
   }
-  
+  //서치된 유저 컨테이너
+  .selectedUserContainer{
+    display: grid;
+  }
+  .sendButton{
+    padding: 5px;
+    color: white;
+    background-color: #cca278;
+    border: none;
+    border-radius: 100px;
+
+  }
+  .sendButton:hover{
+    transform: scale(1.1);
+    transition-duration: 0.5s;
+    background-color: #666;
+  }

@@ -16,6 +16,7 @@
 }
 .sidepanel {
   flex: 1; /* 동일한 비율로 크기 조정 */
+  width: 300px;
   height: 93%; /* 높이는 내용에 따라 자동 조정 */
   padding: 20px;
   background-color: rgb(255, 254, 219);
@@ -23,6 +24,7 @@
 }
 .scheduleHeader{
   display: flex;
+  color: rgb(173, 154, 115);;
   justify-content: space-between;
   margin-bottom: 20px;
 }
@@ -46,8 +48,21 @@
   transform: scale(1.4);
   transition-duration: 0.5s;
 }
-.coment{
-  border: 2px solid #eee;
+.scheduleContainer{
+  display: flex;
+  
+}
+.scheduleTitles{
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  background-color: green;
+  padding: 5px;
+}
+.scheduleTitles:hover{
+  transform: scale(1.03);
+  transition-duration: 0.3s;
 }
 .scheduleForm{
   justify-items: center;
@@ -85,31 +100,15 @@ background-color: #F8F8F8;
   transform: scale(1.01);
   transition-duration:0.5s ;
 }
+
+//사이드패널 일정
+
+.coment{
+  justify-content: space-between;
+}
 .coment p{
   font-size: 15px;
 }
-.backgroundimageSection {
-  flex: 1;
-  display: flex;
-  flex-direction: column; /* 세로 방향으로 배치 */
-  align-items: center; /* 가로 중앙 정렬 */
-  width: 230px; /* 컨테이너 너비 */
-  margin: 10px auto; /* 상하 여백, 가운데 정렬 */
-}
-
-.image {
-  width: 100%; /* 컨테이너의 너비에 맞게 */
-  border-radius: 50%; /* 원형 이미지 */
-}
-
-.textSection {
-  margin-top: 20px; /* 이미지와 텍스트 간격 */
-  text-align: center;
-  color: white; /* 텍스트 색상 */
-  font-size: 1.2em; /* 텍스트 크기 */
-}
-
-
 @media (max-width: 480px) {
   .backgroundimageSection{
     overflow: hidden;

@@ -298,16 +298,15 @@
   border-radius: 5px;
   font-size: 10px;
   text-align: center;
+  word-spacing: 2px;
   white-space: nowrap;  /* 텍스트가 한 줄로 표시되도록 */
-  overflow: hidden;     /* 텍스트가 넘치면 잘리게 함 */
   text-overflow: ellipsis; /* 텍스트가 잘릴 때 '...'으로 표시 */
   height: auto; 
+  width: 100px;
   max-height: 18px; /* 최대 높이를 설정하여 박스 크기 조정 */
   line-height: 0.7em; /* 줄 간격을 조정하여 텍스트가 잘리지 않도록 */
   position: absolute;
-  top: 35px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 12%;
   margin: 0;
 }
 
