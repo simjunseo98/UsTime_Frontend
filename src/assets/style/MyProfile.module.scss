@@ -39,28 +39,31 @@
   background-color: #cca278;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   padding: 8px 16px;
   cursor: pointer;
   font-size: 0.9rem;
-  transition: background 0.3s ease;
+}
+.editButton:hover{
+  transform: scale(1.1);
+  transition-duration: 0.5s;
+  background-color: #16385c;
 }
 .matchingButton{
   background-color: #cca278;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   padding: 8px 16px;
   cursor: pointer;
   font-size: 0.9rem;
-  transition: background 0.3s ease;
-  margin-left: 10px;
+  margin-left: 20px;
 }
-
-.editButton:hover {
+.matchingButton:hover{
+  transform: scale(1.1);
+  transition-duration: 0.5s;
   background-color: #16385c;
 }
-
 .profileContent {
   display: flex;
   flex-direction: row;

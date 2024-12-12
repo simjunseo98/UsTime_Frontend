@@ -3,6 +3,7 @@ import api from "../service/api";
 import styles from '../assets/style/Main.module.scss';
 
 const CalendarDetail = ({ selectedDate }) => {
+    const [selectedDetailIndex, setSelectedDetailIndex] = useState(null); // 클릭된 제목의 인덱스 상태
     const [isEditing, setIsEditing] = useState(false); // 일정 추가/수정 여부
     const [newSchedule, setNewSchedule] = useState({
         title: '',
@@ -18,6 +19,14 @@ const CalendarDetail = ({ selectedDate }) => {
     const coupleId = Number(sessionStorage.getItem('coupleId'));
     const createdBy = Number(sessionStorage.getItem('userId'));
 
+    const handleTitleClick = (idx) => {
+        setSelectedDetailIndex(idx); // 클릭된 제목의 인덱스를 저장
+      };
+    
+      const handleBackToList = () => {
+        setSelectedDetailIndex(null); // 상세 보기에서 목록으로 돌아가기
+      };
+    
     useEffect(() => {
         if (selectedDate && selectedDate.date) {
             setNewSchedule((prevSchedule) => ({
@@ -155,33 +164,59 @@ const CalendarDetail = ({ selectedDate }) => {
                     <button onClick={() => setIsEditing(false)} className={styles.detailButton}>취소</button>
              
                 </div>
-            ) : (
-                // 기존 일정 보여주는 부분
-                <div className={styles.coment}>
-                    {selectedDate ? (
-                        selectedDate.details.length > 0 ? (
-                            selectedDate.details.map((item, idx) => (
-                                <div key={idx}>
-                                    <p>제목: {item.title}</p>
-                                    <p>설명: {item.description}</p>
-                                    <p>라벨: {item.label}</p>
-                                    <p>위치: {item.location}</p>
-                                    <p>작성자: {item.createdBy}</p>
-                                    <p>공개 범위: {item.scope}</p>
-                                    <p>작성일: {item.createdAt}</p>
-                                    <br />
-                                </div>
-                            ))
-                        ) : (
-                            <p>일정이 없습니다.</p>
-                        )
-                    ) : (
-                        <p>날짜를 선택하거나 새로운 일정을 추가하세요!</p>
-                    )}
-                </div>
-            )}
+           ) : selectedDetailIndex !== null ? (
+            // 클릭된 제목의 상세 정보 보기
+            <div className={styles.detailContainer}>
+              <button
+                onClick={handleBackToList}
+                className={styles.backButton}
+              >
+                목록으로 돌아가기
+              </button>
+              <div>
+                <p>제목: {selectedDate.details[selectedDetailIndex].title}</p>
+                <p>
+                  설명: {selectedDate.details[selectedDetailIndex].description}
+                </p>
+                <p>라벨: {selectedDate.details[selectedDetailIndex].label}</p>
+                <p>위치: {selectedDate.details[selectedDetailIndex].location}</p>
+                <p>공개 범위: {selectedDate.details[selectedDetailIndex].scope}</p>
+                <p>
+                  작성일: {selectedDate.details[selectedDetailIndex].createdAt}
+                </p>
+              </div>
+            </div>
+          ) : (
+            // 기존 일정 목록 표시
+            <div className={styles.scheduleContainer}>
+              <div className={styles.comentContainer}>
+                {selectedDate ? (
+                    selectedDate.details.length > 0 ? (
+                        selectedDate.details.map((item, idx) => (
+                            <div key={idx}>
+                                <div className={styles.coment}>
+                          <p>색깔자리</p>
+                        <p
+                          className={styles.scheduleTitles}
+                          onClick={() => handleTitleClick(idx)}
+                          style={{backgroundColor:item.color}}
+                          >
+                          {item.title}
+                        </p>
+                            </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p>일정이 없습니다.</p>
+                  )
+                ) : (
+                  <p>날짜를 선택하거나 새로운 일정을 추가하세요!</p>
+                )}
+              </div>
+            </div>
+          )}
         </div>
-    );
-};
-
-export default CalendarDetail;
+      );
+    };
+    
+    export default CalendarDetail;

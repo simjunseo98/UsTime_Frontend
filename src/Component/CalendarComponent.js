@@ -132,14 +132,6 @@ const CalendarComponent = ({ setSelectedDate }) => {
 
     return (
         <>
-        <div className={styles.backgroundimageSection}>
-            <img src="../assets/style/img/G.jpg" alt="눈사람" className={styles.image}></img>
-        </div>
-            <div className={styles.textSection}>
-                <p>안녕</p>
-                <p>나는</p>
-                <p>눈사람이야</p>
-            </div>
         <div className={styles.calendarContainer}>
             <Calendar
                 onChange={onChange}
