@@ -6,8 +6,6 @@ import NotFound from './page/NotFound';
 import Login from './page/Login';
 import SignUp from './page/SignUp';
 import MyProfile from './page/MyProfile';
-import Matching from './page/Matching';
-import MyProfileUpdate from './page/MyProfileUpdate';
 
 
 //css
@@ -40,8 +38,6 @@ const App = () => {
             </>
             }>
             </Route>
-            <Route path='/matching' element={<Matching/>}/>
-            <Route path='/myprofileupdate' element={<MyProfileUpdate/>}/>
           {/* 일치하는 라우트가 없는 경우 처리 */}
           <Route path="*" element={<NotFound/>}/>
     </Routes>  

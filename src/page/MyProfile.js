@@ -3,7 +3,7 @@ import Loading from '../Component/Loading';
 import styles from '../assets/style/MyProfile.module.scss';
 import api from '../service/api';
 import { useNavigate } from 'react-router-dom';
-import profileImage from '../assets/img/G.jpg';
+import profileImage from '../assets/img/이미지 없음.jpg';
 import Modal from '../Component/Modal';
 import UserSearch from '../Component/UserSearch';
 
@@ -52,7 +52,7 @@ const MyProfile = () => {
         const userId = sessionStorage.getItem('userId');
 
         try {
-            await api.put(`/user/userinfo`, {
+            await api.put(`/user/update`, {
                 userId,
                 ...myProfile,
             });
