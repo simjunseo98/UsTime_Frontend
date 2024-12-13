@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from "../service/api";
 import styles from '../assets/style/Main.module.scss';
 
-const CalendarDetail = ({ selectedDate }) => {
+const CalendarDetail = ({ selectedDate,onClose}) => {
     const [selectedDetailIndex, setSelectedDetailIndex] = useState(null); // 클릭된 제목의 인덱스 상태
     const [isEditing, setIsEditing] = useState(false); // 일정 추가/수정 여부
     const [newSchedule, setNewSchedule] = useState({
@@ -34,6 +34,7 @@ const CalendarDetail = ({ selectedDate }) => {
                 startDate: selectedDate.date,
                 endDate: selectedDate.date,
             }));
+            setIsEditing(false);//날짜 변경시  편집 모드 초기화
         }
     }, [selectedDate]);
 
@@ -80,9 +81,22 @@ const CalendarDetail = ({ selectedDate }) => {
     return (
         <div className={styles.sidepanel}>
             <div className={styles.scheduleHeader}>
-                <h3>Schedule</h3>
+                <div className={styles.left}>Schedule</div>
+                <div className={styles.right}>
             <button onClick={() => setIsEditing(true)} className={styles.addSchedule}>+</button>
-            </div>
+                <button onClick={onClose} className={styles.closeButton}>X</button></div></div>
+              <div className={styles.nowDate}>
+       {selectedDate && selectedDate.date ? (
+            <span>{new Date(selectedDate.date).toLocaleDateString('ko-KR', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+          })}</span>
+      ) : (
+            <span>...</span> // 선택된 날짜가 없을 때 메시지 표시
+        )}
+    </div>
+            
 
             {isEditing ? (
                 // 일정 추가 폼
@@ -118,23 +132,34 @@ const CalendarDetail = ({ selectedDate }) => {
                         />
                     </div>
                     <div>
-                        <label>라벨</label>
-                        <select
-                            name="label"
-                            value={newSchedule.label}
-                            onChange={handleInputChange}
-                        >
-                            <option value="빨강">빨강</option>
-                            <option value="파랑">파랑</option>
-                            <option value="초록">초록</option>
-                        </select>
-                    </div>
+    <label>색상</label>
+    <div style={{ display: 'flex', gap: '30px',margin:'7px' }}>
+        {['빨강', '파랑', '초록'].map((color) => (
+            <div
+                key={color}
+                onClick={() => setNewSchedule((prevSchedule) => ({ ...prevSchedule, label: color }))}
+                style={{
+                    width: '25px',
+                    height: '25px',
+                    backgroundColor: color === '빨강' ? 'red' : color === '파랑' ? 'blue' : 'green',
+                    border: newSchedule.label === color ? '2px solid black' : '1px solid gray',
+                    cursor: 'pointer',
+                    borderRadius: '50px',
+                }}
+                title={color} // 마우스 올리면 색상 이름 표시
+            />
+        ))}
+    </div>
+</div>
+
                     <div>
                         <label>범위</label>
                         <select
                             name="scope"
                             value={newSchedule.scope}
                             onChange={handleInputChange}
+                            className={styles.select}
+                             placeholder="공유"
                         >
                             <option value="공유">공유</option>
                             <option value="개인">개인</option>
@@ -158,11 +183,10 @@ const CalendarDetail = ({ selectedDate }) => {
                             value={newSchedule.endDate}
                             onChange={handleInputChange}
                         />
-                    </div>
-                  
+                    </div>               
                     <button onClick={createSchedule} className={styles.detailButton}>생성</button>
                     <button onClick={() => setIsEditing(false)} className={styles.detailButton}>취소</button>
-             
+        
                 </div>
            ) : selectedDetailIndex !== null ? (
             // 클릭된 제목의 상세 정보 보기
@@ -190,7 +214,7 @@ const CalendarDetail = ({ selectedDate }) => {
             // 기존 일정 목록 표시
             <div className={styles.scheduleContainer}>
               <div className={styles.comentContainer}>
-                {selectedDate ? (
+                {selectedDate && selectedDate.details ? (
                     selectedDate.details.length > 0 ? (
                         selectedDate.details.map((item, idx) => (
                             <div key={idx}>

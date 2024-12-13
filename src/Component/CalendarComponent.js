@@ -3,10 +3,15 @@ import Calendar from 'react-calendar';
 import moment from 'moment';
 import styles from '../assets/style/Main.module.scss';
 import api from "../service/api";
-
-const CalendarComponent = ({ setSelectedDate }) => {
+import CalendarDetail from "./CalendarDetail";
+const CalendarComponent = (props) => {
+    //props 필요시 사용
+    console.log(props);
+    
     const [value, onChange] = useState(new Date()); // 달력의 현재 날짜 상태
     const [schedules, setSchedules] = useState({}); // 전체 일정을 저장하는 객체
+    const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜의 일정
+    const [isSidePanelOpen, setIsSidePanelOpen] = useState(false); // 사이드 패널 열림 상태
 
     /* 전체 일정 조회 함수 */
     const fetchAllSchedules = async () => {
@@ -48,6 +53,7 @@ const CalendarComponent = ({ setSelectedDate }) => {
                 date,
                 details: response.data,
             });
+            setIsSidePanelOpen(true); //날짜 클릭시 사이드 패널 열리게
         } catch (error) {
             console.error(`특정 날짜(${date}) 일정 가져오기 실패:`, error);
         }
@@ -132,21 +138,29 @@ const CalendarComponent = ({ setSelectedDate }) => {
 
     return (
         <>
-        <div className={styles.calendarContainer}>
-            <Calendar
-                onChange={onChange}
-                value={value}
-                formatDay={(local, date) => moment(date).format("D")}
-                locale="en"
-                calendarType="hebrew"
-                showNeighboringMonth={true}
-                next2Label={null}
-                prev2Label={null}
-                onClickDay={onDateClick}
-                tileContent={scheduleTileContent}
-                tileClassName={tileClassName}
-                // selectRange={true}
-            />
+        <div className={styles.calendarWrapper}>
+            <div className={styles.calendarContainer}>
+                <Calendar
+                    onChange={onChange}
+                    value={value}
+                    formatDay={(local, date) => moment(date).format("D")}
+                    locale="en"
+                    calendarType="hebrew"
+                    showNeighboringMonth={true}
+                    next2Label={null}
+                    prev2Label={null}
+                    onClickDay={onDateClick}
+                    tileContent={scheduleTileContent}
+                    tileClassName={tileClassName}
+                    // selectRange={true}
+                />
+            </div>
+            {isSidePanelOpen && (
+                <CalendarDetail
+                    selectedDate={selectedDate}
+                    onClose={() => setIsSidePanelOpen(false)} // 닫기 버튼을 위한 콜백
+                />
+            )}
         </div>
         </>
     );

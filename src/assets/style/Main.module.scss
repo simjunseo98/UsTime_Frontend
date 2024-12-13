@@ -1,41 +1,58 @@
 
-.container {
+.calendarWrapper {
   display: flex;
   flex-direction: row; /* 가로로 나란히 배치 */
   align-items: flex-start; /* 세로 정렬 */
   justify-content: center; /* 수평 가운데 정렬 */
   padding-top: 70px;
-  // gap: 5px; /* 달력과 패널 사이의 간격 */
   z-index:2;
 }
 
 .calendarContainer {
   flex: 1; /* 동일한 비율로 크기 조정 */
   height: auto; /* 높이는 내용에 따라 자동 조정 */
-  border-right: 2px solid black;
 }
 .sidepanel {
   flex: 1; /* 동일한 비율로 크기 조정 */
   width: 300px;
-  height: 93%; /* 높이는 내용에 따라 자동 조정 */
+  height: 560px;
   padding: 20px;
   background-color: rgb(255, 254, 219);
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+  border-left: 2px solid black;
+  transition-duration: 0.1s;
 }
 .scheduleHeader{
   display: flex;
   color: rgb(173, 154, 115);;
   justify-content: space-between;
-  margin-bottom: 20px;
+  align-items: center;
+ 
 }
-.sidepanel h3{
-  text-align: left;
+.scheduleHeader .left{
   font-size: 30px;
   font-weight: lighter;
+  flex-grow: 1;
+}
+.scheduleHeader .right{
+  display: flex;
+  gap:25px;
+}
+.nowDate{
+  display: flex;
+  margin-top: 10px;
+  background-color: plum;
+  color: white;
+  text-align: center;
+  align-items: center;
+  width: 110px;
+  padding: 4px 10px;
+  border-radius: 10px;
 }
 .sidepanel p{
   font-size: 25px;
 }
+//일정 추가폼폼
 .addSchedule{
   display: flex;
   border: none;
@@ -47,10 +64,6 @@
 .addSchedule:hover{
   transform: scale(1.4);
   transition-duration: 0.5s;
-}
-.scheduleContainer{
-  display: flex;
-  
 }
 .scheduleTitles{
   cursor: pointer;
@@ -65,18 +78,19 @@
   transition-duration: 0.3s;
 }
 .scheduleForm{
-  justify-items: center;
+  justify-content:space-between;
   width: 100%;
   height: 100%;
+  align-items: center;
 }
 .scheduleForm input{
 display: flex;
 align-items: center;
 position: relative;
 width: 250px;
-height: 35px;
+height: 25px;
 box-sizing: border-box;
-margin-bottom:20px;
+margin:10px;
 box-shadow: 3px 3px 3px #eee;
 border-radius: 100px;
 padding: 10px;
@@ -86,25 +100,61 @@ background-color: #F8F8F8;
     text-align: left;
 }
 }
-
+.select{
+  width: 250px;
+  height: 25px;
+  box-sizing: border-box;
+  margin:10px;
+  box-shadow: 3px 3px 3px #eee;
+  border-radius: 100px;
+  padding: 3px;
+  background-color: snow;
+  &input::placeholder{
+    color: #999999;
+    text-align: left;
+}
+}
+.scheduleForm label{
+  display: flex;
+  align-items: center;
+}
 .detailButton{
   justify-content: space-between;
   background-color: rgb(244, 231, 231);
   border: none;
   border-radius: 50px;
   margin: 10px;
-  padding: 10px 10px;
+  padding: 10px 50px;
   cursor: pointer;
+  gap: 30px;
 }
 .detailButton:hover{
   transform: scale(1.01);
   transition-duration:0.5s ;
+  border: 1px solid black;
 }
 
+.closeButton{
+  display: flex;
+  border: none;
+  background: none;
+  font-size: 25px;
+  cursor: pointer;
+  color: #4b4848;
+}
+.closeButton:hover{
+  transform: scale(1.1);
+  transition-duration:0.5s;
+}
 //사이드패널 일정
 
-.coment{
+.scheduleContainer{
   justify-content: space-between;
+  border-top: 1px solid rgba(0, 0, 0, 0.145);
+  margin-top: 10px;
+}
+.comentContainer{
+  margin-top: 10px;
 }
 .coment p{
   font-size: 15px;
