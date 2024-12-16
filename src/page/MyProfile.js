@@ -12,10 +12,8 @@ const MyProfile = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isEditing , setIsEditing] = useState(false);
-    const navigate = useNavigate();
-
-    // 모달 관리 상태
     const [openModal, setOpenModal] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getUserInfo = async () => {
@@ -39,16 +37,38 @@ const MyProfile = () => {
         getUserInfo();
     }, [navigate]);
 
-    //수정 모드
-    const handleInputChange = (e)=>{
-           const {name ,value} =e.target;
-           setMyProfile((prev)=>({
+// 커플 해지
+const handleUnlinkCouple = async () => {
+    const coupleId = myProfile.coupleId;
+    const isConfirmed = window.confirm('정말로 커플 관계를 해지하시겠습니까?');
+
+    if (!isConfirmed) {
+        return; // 사용자가 취소하면 메소드 실행을 중지합니다.
+    }
+
+    try {
+        await api.delete(`/couple/delete?coupleId=${coupleId}`);
+        alert('커플 관계가 해지되었습니다.');
+        setMyProfile((prev) => ({
             ...prev,
-            [name] : value,
-           }));
+            coupleId: null,
+        }));
+    } catch (err) {
+        console.error('커플 해지 실패:', err);
+        alert('커플 해지에 실패했습니다.');
+    }
+};
+
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setMyProfile((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
     };
-    //수정모드 저장
-    const handleSave = async ()=>{
+
+    const handleSave = async () => {
         const userId = sessionStorage.getItem('userId');
 
         try {
@@ -62,7 +82,8 @@ const MyProfile = () => {
             console.error('정보 수정 실패:', err);
             alert('정보 수정에 실패했습니다.');
         }
-    }
+    };
+
     if (loading) {
         return <Loading />;
     }
@@ -84,7 +105,7 @@ const MyProfile = () => {
                             정보 수정
                         </button>
                     )}
-                      {isEditing && (
+                    {isEditing && (
                         <div className={styles.buttonGroup}>
                             <button
                                 className={styles.saveButton}
@@ -98,14 +119,14 @@ const MyProfile = () => {
                             >
                                 취소
                             </button>
-                            </div>
-                            )}
+                        </div>
+                    )}
                 </div>
                 <div className={styles.profileContent}>
                     <div className={styles.profileImageSection}>
                         <img src={profileImage} alt="프로필 사진" className={styles.profileImage} />
                         <p>
-                        <strong>이름:</strong>{' '}
+                            <strong>이름:</strong>{' '}
                             {isEditing ? (
                                 <input
                                     className={styles.editInput}
@@ -123,7 +144,7 @@ const MyProfile = () => {
 
                     <div className={styles.profileDetails}>
                         <p>
-                        <strong>전화번호:</strong>{' '}
+                            <strong>전화번호:</strong>{' '}
                             {isEditing ? (
                                 <input
                                     className={styles.editInput}
@@ -137,7 +158,7 @@ const MyProfile = () => {
                             )}
                         </p>
                         <p>
-                        <strong>이메일:</strong>{' '}
+                            <strong>이메일:</strong>{' '}
                             {isEditing ? (
                                 <input
                                     className={styles.editInput}
@@ -151,7 +172,7 @@ const MyProfile = () => {
                             )}
                         </p>
                         <p>
-                        <strong>생년월일:</strong>{' '}
+                            <strong>생년월일:</strong>{' '}
                             {isEditing ? (
                                 <input
                                     className={styles.editInput}
@@ -167,7 +188,7 @@ const MyProfile = () => {
                     </div>
                     <div className={styles.profileDetails2}>
                         <p>
-                        <strong>성별:</strong>{' '}
+                            <strong>성별:</strong>{' '}
                             {isEditing ? (
                                 <select
                                     className={styles.editInput}
@@ -190,15 +211,23 @@ const MyProfile = () => {
                             >
                                 연동
                             </button>
+                            {myProfile.coupleId && (
+                                <button
+                                    className={styles.deleteButton}
+                                    onClick={handleUnlinkCouple} // 커플 해지
+                                >
+                                    해지
+                                </button>
+                            )}
                         </p>
 
                         <Modal isOpen={openModal} onClose={() => setOpenModal(false)}>
                             <h3 className={styles.modalHeader}>커플신청 보낼 사람</h3>
                             <UserSearch
                                 onSelectUser={() => {
-                                    setOpenModal(false); 
+                                    setOpenModal(false);
                                 }}
-                                />
+                            />
                         </Modal>
                         <p>
                             <strong>생성일:</strong>{' '}

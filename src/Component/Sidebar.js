@@ -30,11 +30,14 @@ const Sidebar = ({ isOpen, onClose, }) => {
         <NavLink to="/myprofile" className={styles.SidebarNav} aria-current="page">
           <li>프로필 관리</li>
         </NavLink>
+        <NavLink to="/changePassword" className={styles.SidebarNav} aria-current="page">
+          <li>비밀번호 변경</li>
+        </NavLink>
+        <NavLink to="/couple" className={styles.SidebarNav} aria-current="page">
+          <li>My Couple</li>
+        </NavLink>
         <NavLink to="/picture" className={styles.SidebarNav} aria-current="page">
           <li>사진첩</li>
-        </NavLink>
-        <NavLink to="/matching" className={styles.SidebarNav} aria-current="page">
-          <li>연동 관리</li>
         </NavLink>
         <button className={styles.SidebarNav}
           onClick={handleLogout}>로그아웃</button>

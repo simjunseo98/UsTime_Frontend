@@ -64,6 +64,21 @@
   transition-duration: 0.5s;
   background-color: #16385c;
 }
+.deleteButton{
+  background-color: #e53935;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-left: 20px;
+}
+.deleteButton:hover{
+  transform: scale(1.1);
+  transition-duration: 0.5s;
+  background-color: #16385c;
+}
 .profileContent {
   display: flex;
   flex-direction: row;
