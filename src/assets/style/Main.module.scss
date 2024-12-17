@@ -52,7 +52,7 @@
 .sidepanel p{
   font-size: 25px;
 }
-//일정 추가폼폼
+//일정 추가폼
 .addSchedule{
   display: flex;
   border: none;
@@ -70,7 +70,7 @@
   border: none;
   border-radius: 10px;
   color: white;
-  background-color: green;
+  background-color: plum;
   padding: 5px;
 }
 .scheduleTitles:hover{
@@ -145,6 +145,103 @@ background-color: #F8F8F8;
 .closeButton:hover{
   transform: scale(1.1);
   transition-duration:0.5s;
+}
+
+//일정 상세보기
+.detailContainer{
+ width: 100%;
+ height: 78%;
+ border: 1px solid #f1e7e7;
+ margin-top: 10px;
+ background-color: snow;
+}
+.detailContainer p{
+  align-items: center;
+  font-size: 17px;
+}
+.detailHeader{
+  border-bottom: 1px solid #f1e7e7;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+}
+.detailHeader .left{
+  display: flex;
+  align-content: center;
+  font-size: 25px;
+  margin: 5px;
+}
+.detailHeader p{
+  font-size: 18px;
+  align-content: center;
+  text-decoration: none;
+  white-space: nowrap;
+  text-overflow: ellipsis; 
+}
+.detailScheduleButton{
+  border: none;
+  cursor: pointer;
+  font-size: 25px;
+  background: none;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+.detailScheduleButton:hover{
+  transform: scale(1.1);
+  transition-duration: 0.5s;
+}
+.detailDescription{
+  border-bottom: 1px solid #f1e7e7;
+  width: 100%;
+  min-height:340px;
+  padding: 5px;
+  overflow-y: auto;
+  word-wrap: break-word;
+  box-sizing: border-box;
+  font-size: 20px;
+}
+.detailDescription p{
+  font-size: 15px;
+  align-items: center;
+  margin: 5px;
+}
+.location{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 25px;
+  margin-left: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  text-overflow: ellipsis; 
+}
+.location:hover{
+  transform: scale(1.05);
+  transition-duration: 0.5s;
+}
+.location p{
+  font-size: 17px;
+  color: #999999;
+}
+.detailScope{
+  display: flex;
+  margin-top: 10px;
+  justify-content: space-around;
+  color: #999999;
+}
+.detailEditingInputField{
+  width: 70%;
+  margin-top: 5px;
+  font-size: 0.6em;
+  font-family:'RixXladywatermelonR';
+}
+.textArea {
+  width: 294px;
+  height: 300px;
+  font-size: 0.8em;
+  resize: none;
+  text-decoration: none;
+  font-family:'RixXladywatermelonR';
 }
 //사이드패널 일정
 

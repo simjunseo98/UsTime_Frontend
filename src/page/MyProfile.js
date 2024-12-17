@@ -78,6 +78,8 @@ const handleUnlinkCouple = async () => {
             });
             alert('정보가 성공적으로 수정되었습니다.');
             setIsEditing(false);
+              // 페이지 새로 고침 또는 데이터 갱신 필요
+          window.location.reload(); 
         } catch (err) {
             console.error('정보 수정 실패:', err);
             alert('정보 수정에 실패했습니다.');

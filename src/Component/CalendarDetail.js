@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import api from "../service/api";
 import styles from '../assets/style/Main.module.scss';
-
+import { VscArrowLeft,VscEdit,VscLocation} from "react-icons/vsc";
 const CalendarDetail = ({ selectedDate,onClose}) => {
     const [selectedDetailIndex, setSelectedDetailIndex] = useState(null); // 클릭된 제목의 인덱스 상태
-    const [isEditing, setIsEditing] = useState(false); // 일정 추가/수정 여부
+    const [isAdd, setIsAdd] = useState(false); // 일정 추가 여부
+
+    const [schedule ,setSchedule] =useState(null); //수정대상 인덱스 상태관리
+    const [editiedSchedule,setEditiedSchedule] =useState({}); //수정 데이터 저장관리
+    const [isEditing , setIsEditing] =useState(false); // 일정 수정 여부
     const [newSchedule, setNewSchedule] = useState({
         title: '',
         description: '',
@@ -34,7 +38,7 @@ const CalendarDetail = ({ selectedDate,onClose}) => {
                 startDate: selectedDate.date,
                 endDate: selectedDate.date,
             }));
-            setIsEditing(false);//날짜 변경시  편집 모드 초기화
+            setIsAdd(false);//날짜 변경시  편집 모드 초기화
         }
     }, [selectedDate]);
 
@@ -70,7 +74,7 @@ const CalendarDetail = ({ selectedDate,onClose}) => {
             await api.post('/calendar/create', scheduleData); // 서버에 일정 생성 요청
             console.log("보낸 데이터: ", scheduleData);
             alert('일정이 추가 되었습니다.')
-            setIsEditing(false);
+            setIsAdd(false);
             // 일정 추가 후 페이지 새로 고침
             window.location.reload(); // 페이지 새로 고침
         } catch (error) {
@@ -78,12 +82,53 @@ const CalendarDetail = ({ selectedDate,onClose}) => {
         }
     };
     
+    //수정모드
+    const handleEditing = (idx) =>{
+      setSchedule(idx);
+      setIsEditing(true);
+    }
+
+    useEffect(()=>{
+      if(schedule !== null && selectedDate && selectedDate.details){
+        setEditiedSchedule(selectedDate.details[schedule])
+      }
+    },[schedule ,selectedDate]);
+
+    //수정 입력 핸들러
+    const handleInputEditing = (e) =>{
+      const {name , value} =e.target;
+      setEditiedSchedule((prev) =>({
+        ...prev,
+        [name]: value,
+      }));
+    };
+
+    //수정 내용 저장 핸들러
+    const handleSaveEdit = async () => {
+      const userId = sessionStorage.getItem('userId');
+      try {
+          await api.put(`/calendar/update`, {
+               userId,
+               ...editiedSchedule,
+          });
+          alert('일정이 성공적으로 수정되었습니다.');
+          setIsEditing(false);
+          setSchedule(null);
+
+          // 페이지 새로 고침 또는 데이터 갱신 필요
+          window.location.reload(); 
+      } catch (error) {
+          console.error('일정 수정 실패:', error);
+          alert('일정 수정에 실패했습니다.');
+      }
+  };
+  
     return (
         <div className={styles.sidepanel}>
             <div className={styles.scheduleHeader}>
                 <div className={styles.left}>Schedule</div>
                 <div className={styles.right}>
-            <button onClick={() => setIsEditing(true)} className={styles.addSchedule}>+</button>
+            <button onClick={() => setIsAdd(true)} className={styles.addSchedule}>+</button>
                 <button onClick={onClose} className={styles.closeButton}>X</button></div></div>
               <div className={styles.nowDate}>
        {selectedDate && selectedDate.date ? (
@@ -98,7 +143,7 @@ const CalendarDetail = ({ selectedDate,onClose}) => {
     </div>
             
 
-            {isEditing ? (
+            {isAdd ? (
                 // 일정 추가 폼
                 <div className={styles.scheduleForm}>
                     <div>
@@ -134,14 +179,15 @@ const CalendarDetail = ({ selectedDate,onClose}) => {
                     <div>
     <label>색상</label>
     <div style={{ display: 'flex', gap: '30px',margin:'7px' }}>
-        {['빨강', '파랑', '초록'].map((color) => (
+        {['빨강', '파랑', '초록' ,'핑크' , '보라'].map((color) => (
             <div
                 key={color}
                 onClick={() => setNewSchedule((prevSchedule) => ({ ...prevSchedule, label: color }))}
                 style={{
                     width: '25px',
                     height: '25px',
-                    backgroundColor: color === '빨강' ? 'red' : color === '파랑' ? 'blue' : 'green',
+                    backgroundColor: color === '빨강' ? 'red' : color === '파랑' ? 'blue' :  
+                    color === '초록' ? 'green' :  color === '핑크' ? 'pink' : 'purple',
                     border: newSchedule.label === color ? '2px solid black' : '1px solid gray',
                     cursor: 'pointer',
                     borderRadius: '50px',
@@ -151,7 +197,6 @@ const CalendarDetail = ({ selectedDate,onClose}) => {
         ))}
     </div>
 </div>
-
                     <div>
                         <label>범위</label>
                         <select
@@ -185,31 +230,81 @@ const CalendarDetail = ({ selectedDate,onClose}) => {
                         />
                     </div>               
                     <button onClick={createSchedule} className={styles.detailButton}>생성</button>
-                    <button onClick={() => setIsEditing(false)} className={styles.detailButton}>취소</button>
+                    <button onClick={() => setIsAdd(false)} className={styles.detailButton}>취소</button>
         
                 </div>
            ) : selectedDetailIndex !== null ? (
-            // 클릭된 제목의 상세 정보 보기
-            <div className={styles.detailContainer}>
-              <button
-                onClick={handleBackToList}
-                className={styles.backButton}
-              >
-                목록으로 돌아가기
-              </button>
-              <div>
-                <p>제목: {selectedDate.details[selectedDetailIndex].title}</p>
-                <p>
-                  설명: {selectedDate.details[selectedDetailIndex].description}
-                </p>
-                <p>라벨: {selectedDate.details[selectedDetailIndex].label}</p>
-                <p>위치: {selectedDate.details[selectedDetailIndex].location}</p>
-                <p>공개 범위: {selectedDate.details[selectedDetailIndex].scope}</p>
-                <p>
-                  작성일: {selectedDate.details[selectedDetailIndex].createdAt}
-                </p>
-              </div>
-            </div>
+
+// 클릭된 제목의 상세 정보 보기        
+<div className={styles.detailContainer}>
+  <div className={styles.detailHeader}>
+    <div className={styles.left}>
+      <span>제목:</span>
+      {isEditing ? (
+        <input
+          type="text"
+          name="title"
+          value={editiedSchedule.title || ''}
+          onChange={handleInputEditing}
+          className={styles.detailEditingInputField}
+        />
+      ) : (
+        <p>{selectedDate.details[selectedDetailIndex]?.title || '제목 없음'}</p>
+      )}
+    </div>
+    <div className={styles.right}>
+      <button
+        className={styles.detailScheduleButton}
+        onClick={(e)=>{
+          e.stopPropagation();
+          handleEditing(selectedDetailIndex)}}
+      >
+        <VscEdit />
+      </button>
+      <button
+        onClick={handleBackToList}
+        className={styles.detailScheduleButton}
+      >
+        <VscArrowLeft />
+      </button>
+    </div>
+  </div>
+
+  <div className={styles.detailDescription}>
+    <span>설명:</span>
+    {isEditing ? (
+      <textarea
+        name="description"
+        value={editiedSchedule.description || ''}
+        onChange={handleInputEditing}
+        className={styles.textArea}
+      />
+    ) : (
+      <p>{selectedDate.details[selectedDetailIndex]?.description || '내용 없음'}</p>
+    )}
+  </div>
+
+
+  {/* 기타 하단 정보 */}
+  <div className={styles.detailFooter}>
+    <div className={styles.location}><VscLocation/>
+      <p>{selectedDate.details[selectedDetailIndex]?.location || '위치 없음'}</p></div>
+    <div className={styles.detailScope}>
+    <p>공유 범위: {selectedDate.details[selectedDetailIndex]?.scope || ''}</p>
+    <p>작성일: {selectedDate.details[selectedDetailIndex]?.createdAt || ''}</p></div>
+  </div>
+  {isEditing && (
+    <div className={styles.buttonContainer}>
+      <button onClick={handleSaveEdit} className={styles.detailButton}>
+        저장
+      </button>
+      <button onClick={() => setIsEditing(false)} className={styles.detailButton}>
+        취소
+      </button>
+    </div>
+  )}
+</div>
+            
           ) : (
             // 기존 일정 목록 표시
             <div className={styles.scheduleContainer}>

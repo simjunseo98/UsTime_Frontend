@@ -110,6 +110,10 @@ const CalendarComponent = (props) => {
                 return '#32cd32';
             case '파랑':
                 return '#1e90ff';
+            case '핑크':
+                return '#f89cf0';
+            case '보라':
+                return '#7a3689';
             default:
                 return '#d3d3d3';
         }
