@@ -4,104 +4,127 @@ import moment from 'moment';
 import styles from '../assets/style/Main.module.scss';
 import api from "../service/api";
 import CalendarDetail from "./CalendarDetail";
+
 const CalendarComponent = (props) => {
-    //props 필요시 사용
     console.log(props);
-    
+
+    const userId = sessionStorage.getItem("userId"); // 사용자 ID
+    const coupleId = sessionStorage.getItem("coupleId"); // 커플 ID
+
     const [value, onChange] = useState(new Date()); // 달력의 현재 날짜 상태
     const [schedules, setSchedules] = useState({}); // 전체 일정을 저장하는 객체
     const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜의 일정
     const [isSidePanelOpen, setIsSidePanelOpen] = useState(false); // 사이드 패널 열림 상태
+    const [scheduleScope, setScheduleScope] = useState("전체"); // 일정 범위 (개인, 공유, 전체)
 
-    /* 전체 일정 조회 함수 */
-    const fetchAllSchedules = async () => {
-        try {
-            const response = await api.get('/calendar/all');
-            console.log("전체 일정 데이터:", response.data);
+    useEffect(() => {
+        const fetchAllSchedules = async () => {
+            try {
+                const params = {
+                    userId,
+                    coupleId,
+                    scope: scheduleScope,
+                };
+        
+                const response = await api.get('/calendar/all', { params });
+                console.log("전체 일정 데이터:", response.data);
+        
+                const scheduleData = response.data.reduce((acc, curr) => {
+                    const startDate = moment(curr.startDate);
+                    const endDate = moment(curr.endDate);
+                    let currentDate = startDate.clone();
+        
+                    // startDate부터 endDate까지 반복하면서 일정 추가
+                    while (currentDate.isBefore(endDate) || currentDate.isSame(endDate, 'day')) {
+                        const dateString = currentDate.format('YYYY-MM-DD');
+                        if (!acc[dateString]) {
+                            acc[dateString] = [];
+                        }
+                        acc[dateString].push({
+                            scheduleId: curr.scheduleId,
+                            title: curr.title,
+                            description: curr.description,
+                            startDate: curr.startDate,
+                            endDate: curr.endDate,
+                            label: curr.label,
+                            location: curr.location,
+                            scope: curr.scope,
+                            createdAt: curr.createdAt,
+                        });
+                        currentDate.add(1, 'days'); // 다음 날로 이동
+                    }
+        
+                    return acc;
+                }, {});
 
-            const scheduleData = response.data.reduce((acc, curr) => {
-                const dateString = moment(curr.startDate).format('YYYY-MM-DD');
-                if (!acc[dateString]) {
-                    acc[dateString] = []; // 해당 날짜에 일정이 없으면 배열을 초기화
-                }
-                acc[dateString].push({
-                    title: curr.title,
-                    label: curr.label,
-                });
-                return acc;
-            }, {});
+                setSchedules(scheduleData);
+            } catch (error) {
+                console.error("전체 일정 가져오기 실패:", error);
+            }
+        };
 
-            setSchedules(scheduleData); // 전체 일정 저장
-        } catch (error) {
-            console.error("전체 일정 가져오기 실패:", error);
-        }
-    };
+        fetchAllSchedules();
+    }, [userId, coupleId, scheduleScope]); // `scheduleScope`가 변경될 때마다 재요청
 
-    /* 특정 날짜 일정 조회 함수 */
-    const fetchSchedulesForDate = async (date) => {
-        const coupleId = sessionStorage.getItem('coupleId');
-        if (!coupleId) {
-            console.error("Couple ID가 없습니다.");
-            return;
-        }
-        try {
-            const response = await api.get(`/calendar/${date}`, {
-                params: { coupleId },
-            });
-
-            setSelectedDate({
-                date,
-                details: response.data,
-            });
-            setIsSidePanelOpen(true); //날짜 클릭시 사이드 패널 열리게
-        } catch (error) {
-            console.error(`특정 날짜(${date}) 일정 가져오기 실패:`, error);
-        }
-    };
-
-    /* 달력의 날짜 클릭 이벤트 핸들러 */
-    const onDateClick = (date) => {
+    const fetchSchedulesForDate = (date) => {
         const dateString = moment(date).format('YYYY-MM-DD');
-        fetchSchedulesForDate(dateString); // 서버에서 선택된 날짜의 일정 조회
+        const dateSchedules = schedules[dateString] || []; // 해당 날짜의 일정 가져오기
+        setSelectedDate({
+            date,
+            details: dateSchedules,
+        });
+        setIsSidePanelOpen(true);
     };
 
-    /* 달력의 타일 콘텐츠 표시 함수 */
-    const scheduleTileContent = ({ date, view }) => {
-        if (view === 'month') {
-            const dateString = moment(date).format('YYYY-MM-DD');
-            const scheduleData = schedules[dateString]; // 해당 날짜의 일정 데이터
+    // 범위가 변경될 때 사이드 패널을 닫음
+    useEffect(() => {
+        setIsSidePanelOpen(false);
+    }, [scheduleScope]);
 
-            if (scheduleData && Array.isArray(scheduleData)) {
-                let topOffset =35;
-                return (
-                    <div className="schedule-label-container">
-                           {scheduleData.map((data, index) => {
-                        const labelStyle = {
+    const onDateClick = (date) => {
+        fetchSchedulesForDate(date); // 클릭된 날짜의 일정 처리
+    };
+
+const scheduleTileContent = ({ date, view }) => {
+    if (view === 'month') {
+        const dateString = moment(date).format('YYYY-MM-DD');
+        const scheduleData = schedules[dateString];
+
+        if (scheduleData && Array.isArray(scheduleData)) {
+            let topOffset = 35;
+            return (
+                <div className="schedule-label-container">
+                    {scheduleData.map((data, index) => {
+                        const startDate = moment(data.startDate);
+                        const endDate = moment(data.endDate);
+                        let labelStyle = {
                             backgroundColor: getLabelColor(data.label),
-                            zIndex: 2 + index, // 각 라벨의 z-index를 다르게 설정
+                            zIndex: 2 + index,
                             top: `${topOffset}px`,
                         };
-                        topOffset += 17; // 다음 일정의 top 값을 아래로 밀어줌 (라벨 높이에 맞춰 조정)
+
+                        // 라벨을 시작일부터 종료일까지 연결
+                        if (startDate.isBefore(date) && endDate.isAfter(date)) {
+                            labelStyle.position = 'absolute';
+                            labelStyle.left = '0px';
+                            labelStyle.right = '0px';
+                        }
+
+                        topOffset += 17;
+
                         return (
                             <div key={index} className="schedule-label" style={labelStyle}>
                                 <span className="schedule-title">{data.title}</span>
                             </div>
                         );
                     })}
-                    </div>
-                );
-            } else if (scheduleData) {
-                return (
-                    <div className="schedule-label" style={{ backgroundColor: getLabelColor(scheduleData.label) }}>
-                        <span className="schedule-title">{scheduleData.title}</span>
-                    </div>
-                );
-            }
+                </div>
+            );
         }
-        return null;
-    };
+    }
+    return null;
+};
 
-    // 라벨 색상을 설정하는 함수
     const getLabelColor = (label) => {
         switch (label) {
             case '빨강':
@@ -119,7 +142,6 @@ const CalendarComponent = (props) => {
         }
     };
 
-    /* 달력의 타일 스타일 지정 함수 */
     const tileClassName = ({ date, view }) => {
         if (view === "month") {
             const isNeighboringMonth =
@@ -136,36 +158,45 @@ const CalendarComponent = (props) => {
         return null;
     };
 
-    useEffect(() => {
-        fetchAllSchedules(); // 컴포넌트가 마운트될 때 전체 일정을 가져옵니다.
-    }, []);
-
     return (
         <>
-        <div className={styles.calendarWrapper}>
-            <div className={styles.calendarContainer}>
-                <Calendar
-                    onChange={onChange}
-                    value={value}
-                    formatDay={(local, date) => moment(date).format("D")}
-                    locale="en"
-                    calendarType="hebrew"
-                    showNeighboringMonth={true}
-                    next2Label={null}
-                    prev2Label={null}
-                    onClickDay={onDateClick}
-                    tileContent={scheduleTileContent}
-                    tileClassName={tileClassName}
-                    // selectRange={true}
-                />
+            <div className={styles.calendarWrapper}>
+                {/* 일정 범위 선택 콤보박스 */}
+                <div className={styles.scopeSelector}>
+                    <label htmlFor="scope">일정 범위:</label>
+                    <select
+                        id="scope"
+                        value={scheduleScope}
+                        onChange={(e) => setScheduleScope(e.target.value)}
+                    >
+                        <option value="개인">개인</option>
+                        <option value="공유">공유</option>
+                        <option value="전체">전체</option>
+                    </select>
+                </div>
+
+                <div className={styles.calendarContainer}>
+                    <Calendar
+                        onChange={onChange}
+                        value={value}
+                        formatDay={(local, date) => moment(date).format("D")}
+                        locale="en"
+                        calendarType="hebrew"
+                        showNeighboringMonth={true}
+                        next2Label={null}
+                        prev2Label={null}
+                        onClickDay={onDateClick}
+                        tileContent={scheduleTileContent}
+                        tileClassName={tileClassName}
+                    />
+                </div>
+                {isSidePanelOpen && (
+                    <CalendarDetail
+                        selectedDate={selectedDate}
+                        onClose={() => setIsSidePanelOpen(false)}
+                    />
+                )}
             </div>
-            {isSidePanelOpen && (
-                <CalendarDetail
-                    selectedDate={selectedDate}
-                    onClose={() => setIsSidePanelOpen(false)} // 닫기 버튼을 위한 콜백
-                />
-            )}
-        </div>
         </>
     );
 };
