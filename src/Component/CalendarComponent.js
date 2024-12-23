@@ -9,7 +9,7 @@ const CalendarComponent = (props) => {
     console.log(props);
 
     const userId = sessionStorage.getItem("userId"); // 사용자 ID
-    const coupleId = sessionStorage.getItem("coupleId"); // 커플 ID
+    const coupleId = sessionStorage.getItem("coupleId") || null; // 커플 ID
 
     const [value, onChange] = useState(new Date()); // 달력의 현재 날짜 상태
     const [schedules, setSchedules] = useState({}); // 전체 일정을 저장하는 객체
@@ -22,18 +22,21 @@ const CalendarComponent = (props) => {
             try {
                 const params = {
                     userId,
-                    coupleId,
                     scope: scheduleScope,
                 };
-        
+    
+                if (coupleId != 'undefined') {
+                    params.coupleId = coupleId;
+                }
+                console.log("coupleId",coupleId);
                 const response = await api.get('/calendar/all', { params });
                 console.log("전체 일정 데이터:", response.data);
-        
+    
                 const scheduleData = response.data.reduce((acc, curr) => {
                     const startDate = moment(curr.startDate);
                     const endDate = moment(curr.endDate);
                     let currentDate = startDate.clone();
-        
+    
                     // startDate부터 endDate까지 반복하면서 일정 추가
                     while (currentDate.isBefore(endDate) || currentDate.isSame(endDate, 'day')) {
                         const dateString = currentDate.format('YYYY-MM-DD');
@@ -51,18 +54,18 @@ const CalendarComponent = (props) => {
                             scope: curr.scope,
                             createdAt: curr.createdAt,
                         });
-                        currentDate.add(1, 'days'); // 다음 날로 이동
+                        currentDate.add(1, 'days'); 
                     }
-        
+    
                     return acc;
                 }, {});
-
+    
                 setSchedules(scheduleData);
             } catch (error) {
                 console.error("전체 일정 가져오기 실패:", error);
             }
         };
-
+    
         fetchAllSchedules();
     }, [userId, coupleId, scheduleScope]); // `scheduleScope`가 변경될 때마다 재요청
 
@@ -173,7 +176,8 @@ const scheduleTileContent = ({ date, view }) => {
                     >
                         <option value="개인">개인</option>
                         <option value="공유">공유</option>
-                        <option value="전체">전체</option>
+                        {/* {coupleId && <option value="공유">공유</option>} */}
+                        {coupleId && <option value="전체">전체</option>}
                     </select>
                 </div>
                     <Calendar

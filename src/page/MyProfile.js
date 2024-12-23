@@ -53,6 +53,7 @@ const handleUnlinkCouple = async () => {
             ...prev,
             coupleId: null,
         }));
+        sessionStorage.removeItem("coupleId");
     } catch (err) {
         console.error('커플 해지 실패:', err);
         alert('커플 해지에 실패했습니다.');
