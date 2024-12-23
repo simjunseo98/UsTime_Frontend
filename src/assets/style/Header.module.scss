@@ -154,3 +154,99 @@ transition-duration:0.5s;
   background-color: #373232;
   color: white;
 }
+
+//일정 모달 부분
+.modalContent h3{
+ text-align: center;
+ padding: 10px;
+ font-size: 30px;
+}
+
+.modalDate{
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
+  padding: 10px;
+}
+.modalIcon{
+  font-size: 30px;
+  animation: slideRight 2s ease-in-out infinite;
+  white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 설정 */
+}
+@keyframes slideRight {
+  0% {
+    transform: translateX(-30px); /* 시작 위치 */
+    opacity: 1; /* 완전히 보임 */
+  }
+  50% {
+    transform: translateX(20px); /* 오른쪽으로 이동 */
+    opacity: 0.5; /* 반투명 */
+  }
+  100% {
+    transform: translateX(40px); /* 더 멀리 이동 */
+    opacity: 0; /* 사라짐 */
+  }
+}
+.modalDate strong{
+  display: flex;
+}
+.modalScheduleSectionTitle strong{
+  font-size: 25px;
+  align-items: center;
+  margin: 10px;
+  margin-bottom: 10px;
+ text-decoration: none;
+}
+.modalScheduleSectionTitle{
+ margin-bottom: 10px;
+ border-bottom: 2px solid rgba(0, 0, 0, 0.458);
+}
+.modalScheduleSectionDescription strong{
+   font-size: 25px;
+   margin: 10px;
+}
+.modalScheduleSectionDescription{
+  width: 400px;
+  height:200px;
+  overflow-y: scroll;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.458);
+  margin-bottom: 10px;
+}
+
+//커플 요청 모달부분
+.CoupleRequestUser{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 50px;
+}
+.CoupleRequestUser img{
+  display: flex;
+  width: 100px;
+  background: none;
+  border: 1px solid black;
+  border-radius: 50%;
+}
+.CoupleRequestUser strong{
+  margin-top: 15px;
+}
+.coupleActions{
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  gap: 10px;
+  margin: 10px;
+}
+.coupleActions button{
+  padding: 10px 20px;
+  border-radius: 10px;
+  gap: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+  background-color: #eceaea;
+  &:hover{
+    transform: scale(1.1);
+    transition-duration: 0.5s;
+    background-color: #c4d8e4;
+  }
+}
