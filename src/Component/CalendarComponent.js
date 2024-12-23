@@ -25,7 +25,7 @@ const CalendarComponent = (props) => {
                     scope: scheduleScope,
                 };
     
-                if (coupleId != 'undefined') {
+                if (!coupleId) {
                     params.coupleId = coupleId;
                 }
                 console.log("coupleId",coupleId);

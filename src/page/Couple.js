@@ -97,7 +97,7 @@ const Couple = () => {
     if (coupleId) {
       fetchAnniversary(); // D-Day 및 기념일 정보 불러오기
     }
-  }, [coupleId]);
+  }, [coupleId,fetchAnniversary]);
 
   // 일정 계산기 입력값 핸들러
   const handleDaysInput = (e) => setInputDays(e.target.value);
