@@ -11,13 +11,25 @@
   }
    
 .modalSection {
-    background: white;
+  background-color: rgb(249, 249, 173);
     border-radius: 8px;
     box-shadow: inset;
     padding: 20px;
     position: relative;
     width: 400px;
     min-height: 400px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    &::before{
+      clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%); /* 구겨진 테이프 느낌 */
+      transform: rotate(1deg);
+      content: "";
+      position: absolute;
+      width: 50px;
+      height: 20px;
+      background-color: #000;
+      top: -10px;
+      left: calc(50% - 25px);
+    }
   }
    
 .modalClose {
@@ -27,6 +39,11 @@
     right: 5px;
     top: 5px;
     font-size: 25px;
-    background-color: white;
+    background: none;
     cursor: pointer;
+  }
+  
+  @media (max-width:480px){
+    .modalContainer{z-index: 1000;}
+    
   }

@@ -162,8 +162,10 @@ const scheduleTileContent = ({ date, view }) => {
         <>
             <div className={styles.calendarWrapper}>
                 {/* 일정 범위 선택 콤보박스 */}
+
+                <div className={styles.calendarContainer}>
                 <div className={styles.scopeSelector}>
-                    <label htmlFor="scope">일정 범위:</label>
+                    <label htmlFor="scope">일정 표시:</label>
                     <select
                         id="scope"
                         value={scheduleScope}
@@ -174,8 +176,6 @@ const scheduleTileContent = ({ date, view }) => {
                         <option value="전체">전체</option>
                     </select>
                 </div>
-
-                <div className={styles.calendarContainer}>
                     <Calendar
                         onChange={onChange}
                         value={value}

@@ -5,6 +5,7 @@ import styles from "../assets/style/Header.module.scss";
 import { VscBell, VscMenu } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import api from "../service/api";
+import userImage from "../assets/img/이미지 없음.jpg";
 
 // dayjs 라이브러리 설정
 import dayjs from "dayjs";
@@ -193,29 +194,34 @@ const Header = () => {
             {selectedNotification ? (
               <>
                 {selectedNotification.type === "일정" && (
-                  <>
+                  <div className={styles.modalSchedule}>
                     <h3>일정 정보</h3>
-                    <p><strong>제목:</strong> {selectedNotification.data.title}</p>
-                    <p><strong>내용:</strong> {selectedNotification.data.description}</p>
-                    <p><strong>위치:</strong> {selectedNotification.data.location}</p>
+                    <div className={styles.modalDate}>
                     <p>
                       <strong>시작날짜:</strong>{" "}
-                      {dayjs(selectedNotification.data.startDate).format("YYYY-MM-DD")}
+                      {dayjs(selectedNotification.data.startDate).format("YYYY-MM-DD(dddd)")}
                     </p>
+                    <p className={styles.modalIcon}>》</p>
                     <p>
                       <strong>종료날짜:</strong>{" "}
-                      {dayjs(selectedNotification.data.endDate).format("YYYY-MM-DD")}
+                      {dayjs(selectedNotification.data.endDate).format("YYYY-MM-DD(dddd)")}
                     </p>
-                  </>
+                    </div>
+                    <div className={styles.modalScheduleSection}>
+                    <p className={styles.modalScheduleSectionTitle}><strong>제목:</strong> {selectedNotification.data.title}</p>
+                    <p className={styles.modalScheduleSectionDescription}><strong>내용:</strong> {selectedNotification.data.description}</p>
+                    <p><strong>위치:</strong> {selectedNotification.data.location}</p></div>
+                  </div>
                 )}
                 {selectedNotification.type === "커플" && (
-                  <>
+                  <div className={styles.CoupleRequest}>
                     <h3>커플 관련 정보</h3>
-                    <p><strong>요청 ID:</strong> {selectedNotification.data.requestId}</p>
-                    <p><strong>보낸사람:</strong> {selectedNotification.data.fromUserName}</p>
-                    <p><strong>받는 사람:</strong> {selectedNotification.data.toUserName}</p>
                     <p><strong>상태:</strong> {selectedNotification.data.status}</p>
-                    <p><strong>요청 시간:</strong> {selectedNotification.data.requestedAt}</p>
+                    <div className={styles.CoupleRequestUser}>                     
+                    <p> <img src={userImage} alt=""></img><strong>보낸사람:</strong> {selectedNotification.data.fromUserName}</p> 
+                    <p className={styles.modalIcon}>》</p>               
+                    <p> <img src={userImage} alt=""></img><strong>받는 사람:</strong> {selectedNotification.data.toUserName}</p>
+                    </div>
                     {selectedNotification.data.status === "대기" && (
                       <div className={styles.coupleActions}>
                         <button
@@ -232,7 +238,7 @@ const Header = () => {
                         </button>
                       </div>
                     )}
-                  </>
+                  </div>
                 )}
 
               </>

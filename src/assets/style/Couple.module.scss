@@ -186,3 +186,72 @@
     border: 3px solid blue;
     width: 65%;
 }
+@media (max-width: 480px) {
+    .CoupleContainer {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 30px;
+    }
+
+    .CoupleBanner {
+        width: 100%;
+        height: 45vh;
+        font-size: 1.2rem;
+    }
+
+    .CoupleBanner p {
+        font-size: 20px;
+        padding: 50px;
+        margin-top: 50px;
+    }
+    .fileLabel{
+        position: relative;
+        top: 0px;
+        left: -170px;
+    }
+
+    .CoupleContent {
+        flex-direction: column;
+        width: 100%;
+     
+    }
+
+    .CoupleContentContainer {
+        width: 100%;
+    }
+
+    .ScheduleCalculate {
+        height: auto;
+        margin: 0;
+    }
+
+    .ScheduleCalculate input {
+        width: 80px;
+        font-size: 0.9rem;
+    }
+
+    .ScheduleCalculate button {
+        padding: 5px 8px;
+        cursor: pointer;
+        &:hover{
+            transform: scale(1.1);
+            transition-duration: 0.5s;
+        }
+    }
+
+    .CoupleDdayResult h2 {
+        font-size: 18px;
+    }
+
+    .CoupleDdayCalculate {
+        height: 250px;
+    }
+
+    .CoupleDdayCalculate li {
+        font-size: 0.9rem;
+    }
+
+    .CoupleContentContainer2 {
+        width: 100%;
+    }
+}
