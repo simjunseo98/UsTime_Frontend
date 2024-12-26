@@ -61,12 +61,19 @@ const Couple = () => {
           futureDate.setDate(anniversaryDate.getDate() + i * 100);
 
           const weekday = futureDate.toLocaleDateString('ko-KR', { weekday: 'long' });
+          const differenceInDays = Math.floor((futureDate - new Date()) / (1000 * 60 * 60 * 24));
+
+            // D- 또는 D+ 포맷 결정
+           const daysLeft =
+           differenceInDays >= 0
+            ? `D-${differenceInDays}`
+            : `D+${Math.abs(differenceInDays)}`; // 과거 날짜는 D+로 표시
 
           futureAnniversaries.push({
             milestone: `${i * 100}일 기념일`,
             milestoneDate: futureDate.toISOString().split('T')[0],
             weekdays: weekday,
-            daysLeft: Math.floor((futureDate - new Date()) / (1000 * 60 * 60 * 24)),
+            daysLeft: daysLeft,
           });
         }
 
@@ -190,16 +197,16 @@ const Couple = () => {
             {Array.isArray(specialDays) && specialDays.length > 0 ? (  // 배열 확인
               <ul>
                 {specialDays.map((day, index) => {
-                  const isWeekend = day.weekdays === "토" || day.weekdays === "일";
+                  const isWeekend = day.weekdays === "토요일" || day.weekdays === "일요일";
                   const today = new Date();
                   const milestoneDate = new Date(day.milestoneDate);
                   const isPast = milestoneDate < today;
 
-                  const listItemClass = `${isWeekend ? styles.weekend : styles.weekday} ${isPast ? styles.past : styles.upcoming}`;
+                  const listItemClass = ` ${isPast ? styles.past : styles.upcoming}`;
 
                   return (
-                    <li key={index} className={listItemClass}>
-                      {day.milestone}: {day.milestoneDate} ({day.weekdays}) (D-{day.daysLeft})
+                    <li key={index} className={listItemClass} style={isWeekend ? {color: "red"}:{}}>
+                      {day.milestone}: {day.milestoneDate} ({day.weekdays}) ({day.daysLeft}일)
                     </li>
                   );
                 })}
