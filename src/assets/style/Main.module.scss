@@ -71,8 +71,12 @@
   border: none;
   border-radius: 10px;
   color: white;
-  background-color: plum;
-  padding: 5px;
+  width: 210px;
+  text-align: center;
+  justify-content: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .scheduleTitles:hover{
   transform: scale(1.03);
@@ -118,6 +122,9 @@ background-color: #F8F8F8;
 .scheduleForm label{
   display: flex;
   align-items: center;
+}
+.buttonContainer{
+  margin-top: 10px;
 }
 .detailButton{
   justify-content: space-between;
@@ -174,11 +181,13 @@ background-color: #F8F8F8;
 }
 .detailHeader p{
   font-size: 18px;
+  max-width: 135px;
   align-content: center;
   text-decoration: none;
   white-space: nowrap;
-  text-overflow: ellipsis; 
+  overflow-x: scroll;
 }
+
 .detailScheduleButton{
   border: none;
   cursor: pointer;
@@ -194,7 +203,7 @@ background-color: #F8F8F8;
 .detailDescription{
   border-bottom: 1px solid #f1e7e7;
   width: 100%;
-  min-height:340px;
+  min-height:290px;
   padding: 5px;
   overflow-y: auto;
   word-wrap: break-word;
@@ -206,12 +215,20 @@ background-color: #F8F8F8;
   align-items: center;
   margin: 5px;
 }
+.detailDate{
+ display: flex;
+ justify-content: space-evenly;
+ align-items: center;
+ margin: 5px;
+}
+
 .location{
   display: flex;
   justify-content: flex-start;
   align-items: center;
   font-size: 25px;
   margin-left: 10px;
+  margin-top: 5px;
   cursor: pointer;
   white-space: nowrap;
   text-overflow: ellipsis; 
@@ -222,30 +239,33 @@ background-color: #F8F8F8;
 }
 .location p{
   font-size: 17px;
-  color: #999999;
 }
 .detailScope{
   display: flex;
+  justify-content: space-evenly;
+  align-items: center;
   margin-top: 10px;
-  justify-content: space-around;
-  color: #999999;
 }
+
 .detailEditingInputField{
   width: 70%;
+  max-width: 130px;
   margin-top: 5px;
   font-size: 0.6em;
   font-family:'RixXladywatermelonR';
 }
 .textArea {
   width: 294px;
-  height: 300px;
+  max-width: 294px;
+  height: 250px;
+  max-height: 250px;
   font-size: 0.8em;
   resize: none;
   text-decoration: none;
+  overflow: hidden;
   font-family:'RixXladywatermelonR';
 }
 //사이드패널 일정
-
 .scheduleContainer{
   justify-content: space-between;
   border-top: 1px solid rgba(0, 0, 0, 0.145);
@@ -254,8 +274,17 @@ background-color: #F8F8F8;
 .comentContainer{
   margin-top: 10px;
 }
+.coment{
+  display: flex;
+  justify-content: space-between;
+  justify-items: center;
+}
 .coment p{
   font-size: 15px;
+  margin-bottom: 10px;
+  padding: 5px;
+ white-space: nowrap;
+ text-overflow: ellipsis; 
 }
 .customHeader{
   align-items: center;

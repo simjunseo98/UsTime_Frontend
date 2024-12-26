@@ -232,6 +232,25 @@
     background-color: #e6e6e6;
     
   }
+  .schedule-label {
+    color: white;
+    padding: 4px 20px;  /* 패딩을 적절히 조정 */
+    border-radius: 5px;
+    font-size: 10px;
+    text-align: center;
+    word-spacing: 2px;
+    white-space: nowrap;  /* 텍스트가 한 줄로 표시되도록 */
+    text-overflow: ellipsis; /* 텍스트가 잘릴 때 '...'으로 표시 */
+    overflow: hidden;
+    height: auto; 
+    width: 100px;
+    max-height: 18px; /* 최대 높이를 설정하여 박스 크기 조정 */
+    line-height: 0.7em; /* 줄 간격을 조정하여 텍스트가 잘리지 않도록 */
+    position: absolute;
+    left: 12%;
+    margin: 0;
+    
+  }
   
   @media (max-width: 480px) {
     /* 컨테이너 */
@@ -292,23 +311,7 @@
       color: #d10000;
     }
   }
-.schedule-label {
-  color: white;
-  padding: 4px 20px;  /* 패딩을 적절히 조정 */
-  border-radius: 5px;
-  font-size: 10px;
-  text-align: center;
-  word-spacing: 2px;
-  white-space: nowrap;  /* 텍스트가 한 줄로 표시되도록 */
-  text-overflow: ellipsis; /* 텍스트가 잘릴 때 '...'으로 표시 */
-  height: auto; 
-  width: 100px;
-  max-height: 18px; /* 최대 높이를 설정하여 박스 크기 조정 */
-  line-height: 0.7em; /* 줄 간격을 조정하여 텍스트가 잘리지 않도록 */
-  position: absolute;
-  left: 12%;
-  margin: 0;
-}
+
 
 
 

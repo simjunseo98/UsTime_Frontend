@@ -110,15 +110,26 @@ const CalendarDetail = ({ selectedDate, onClose }) => {
   // 수정한 일정 저장
   const handleSaveEdit = async () => {
     const userId = sessionStorage.getItem('userId');
+    const coupleId = sessionStorage.getItem('coupleId');
+    //수정한 일정 데이터 유효성 검사
+    if (!editedSchedule.title || !editedSchedule.description || !editedSchedule.location|| !editedSchedule.scope ||
+        !editedSchedule.startDate || !editedSchedule.endDate) {
+      alert('모든 필드를 채워주세요.');
+      return;
+    }  
     try {
-      await api.put(`/calendar/update`, {
+      const updatedSchedule= await api.put(`/calendar/update`, {
         userId,
+        coupleId,
         ...editedSchedule,
       });
       alert('일정이 성공적으로 수정되었습니다.');
       setIsEditing(false);
-      setSchedule(null);
-      window.location.reload();
+      setSchedule((prev) => 
+        prev.map((schedule) => 
+          schedule.id === updatedSchedule.data.id ? updatedSchedule.data : schedule
+        )
+      );
     } catch (error) {
       console.error('일정 수정 실패:', error);
       alert('일정 수정에 실패했습니다.');
@@ -335,6 +346,43 @@ const CalendarDetail = ({ selectedDate, onClose }) => {
             )}
           </div>
 
+        
+
+          <div className={styles.detailFooter}>
+          <div className={styles.location}>
+            <VscLocation />
+          {isEditing ?(
+                <input
+                    type='text'
+                    name='location'
+                    value={editedSchedule.location || ''}
+                    onChange={handleInputEditing}>
+                </input>
+          ):(
+        <p>{selectedDate.details[selectedDetailIndex]?.location || '위치 없음'}</p>
+          )}
+            </div>
+            <div className={styles.detailScope}>
+            <label>공유 범위:</label>
+              {isEditing ? (                
+                  <select
+                    name='scope'
+                    value={editedSchedule.scope || ''}
+                    onChange={handleInputEditing}              
+                  >                   
+                   <option value="공유">공유</option>
+                   <option value="개인">개인</option> 
+                   </select>
+                   
+              ):(
+                <p>{selectedDate.details[selectedDetailIndex]?.scope || ''}</p>
+              )}      
+              <label>작성일: </label>      
+              <p>{selectedDate.details[selectedDetailIndex]?.createdAt || ''}</p>
+            </div>
+
+          
+          </div>
           <div className={styles.detailDate}>
             <label>시작일:</label>
             {isEditing ? (
@@ -347,8 +395,8 @@ const CalendarDetail = ({ selectedDate, onClose }) => {
             ) : (
               <p>{selectedDate.details[selectedDetailIndex]?.startDate}</p>
             )}
-          </div>
-          <div className={styles.detailDate}>
+         
+        
             <label>종료일:</label>
             {isEditing ? (
               <input
@@ -361,17 +409,6 @@ const CalendarDetail = ({ selectedDate, onClose }) => {
               <p>{selectedDate.details[selectedDetailIndex]?.endDate}</p>
             )}
           </div>
-
-          <div className={styles.detailFooter}>
-            <div className={styles.location}><VscLocation />
-              <p>{selectedDate.details[selectedDetailIndex]?.location || '위치 없음'}</p>
-            </div>
-            <div className={styles.detailScope}>
-              <p>공유 범위: {selectedDate.details[selectedDetailIndex]?.scope || ''}</p>
-              <p>작성일: {selectedDate.details[selectedDetailIndex]?.createdAt || ''}</p>
-            </div>
-          </div>
-
           {/* 수정 버튼 */}
           {isEditing && (
             <div className={styles.buttonContainer}>
@@ -393,7 +430,6 @@ const CalendarDetail = ({ selectedDate, onClose }) => {
                 selectedDate.details.map((item, idx) => (
                   <div key={idx}>
                     <div className={styles.coment}>
-                      <p>색깔자리</p>
                       <p
                         className={styles.scheduleTitles}
                         onClick={() => handleTitleClick(idx)}
@@ -401,6 +437,13 @@ const CalendarDetail = ({ selectedDate, onClose }) => {
                       >
                         {item.title}
                       </p>
+
+              <button
+                onClick={() => deleteSchedule(selectedDate.details[idx]?.scheduleId)}
+                className={styles.detailScheduleButton}
+              >
+                <VscTrash />
+              </button>
                     </div>
                   </div>
                 ))
