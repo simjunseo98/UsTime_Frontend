@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react"; // useCallback 추가
 import styles from "../assets/style/Couple.module.scss";
 import api from "../service/api.js";
+import CheckListCategory from "../Component/CheckListCategory.js";
+import CheckListModal from "../Component/CheckListModal.js";
 
 const Couple = () => {
   const [couplePhoto, setCouplePhoto] = useState(null);
@@ -12,7 +14,33 @@ const Couple = () => {
 
   const maxtoday = new Date().toISOString().split("T")[0];
   const coupleId = sessionStorage.getItem("coupleId");
+ 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  //체크리스트 데이터 관리
+  const [data, setData] = useState({
+    placesToVisit: [],
+    foodList: [],
+    moviesToWatch: [],
+    dateIdeas: []
+  });
+  //체크리스트 모달
+  const openModal = (category) => {
+    setSelectedCategory(category);
+    setIsModalOpen(true);
+  };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedCategory(null);
+  };
+   //체크리스트
+   const handleAddItem = (category, newItem) => {
+    setData(prev => ({
+      ...prev,
+      [category]: [...prev[category], newItem]
+    }));
+  };
   // 커플 사진 업로드 핸들러
   const handlePhotoUpload = (e) => {
     const file = e.target.files[0];
@@ -121,6 +149,7 @@ const Couple = () => {
     }
   };
 
+ 
   return (
     <div className={styles.CoupleContainer}>
       <div
@@ -216,9 +245,52 @@ const Couple = () => {
             )}
           </div>
         </div>
-        <div className={styles.CoupleContentContainer2}>나야 컨텐츠 2</div>
+        <div className={styles.CoupleContentContainer2}>         
+      <div className={styles.CoupleCheckList}>
+        <h3>@@ 체크리스트 @@</h3>
+        <div className={styles.BukitList}>
+          <CheckListCategory
+            title="가보고 싶은 곳"
+            items={data.placesToVisit}
+            onAddItem={() => openModal("placesToVisit")}
+            
+          />
+          <CheckListCategory
+            title="먹킷 리스트"
+            items={data.foodList}
+            onAddItem={() => openModal("foodList")}
+          />
+          <CheckListCategory
+            title="무킷 리스트"
+            items={data.moviesToWatch}
+            onAddItem={() => openModal("moviesToWatch")}
+          />
+          <CheckListCategory
+            title="데이트 리스트"
+            items={data.dateIdeas}
+            onAddItem={() => openModal("dateIdeas")}
+          />
+        </div>
       </div>
+      {/* 모달 표시 */}
+      <CheckListModal isOpen={isModalOpen} onClose={closeModal}>
+        <CheckListCategory
+          title={selectedCategory}
+          items={data[selectedCategory]}
+          onAddItem={() => {
+            const newItem = prompt("추가할 항목을 입력하세요:");
+            if (newItem && newItem.trim() !== "") {
+              handleAddItem(selectedCategory, newItem);
+            }
+          }}
+        />
+      </CheckListModal>
+          <div className={styles.Couple3}>
+            오늘의 운세
+          </div>
     </div>
+    </div>
+      </div>
   );
 };
 

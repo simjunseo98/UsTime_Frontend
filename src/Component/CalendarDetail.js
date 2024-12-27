@@ -79,6 +79,7 @@ const CalendarDetail = ({ selectedDate, onClose }) => {
       console.log("보낸 데이터: ", scheduleData);
       alert('일정이 추가 되었습니다.');
       setIsAdd(false);
+      setIsEditing(false);
       window.location.reload(); // 페이지 새로 고침
     } catch (error) {
       console.error("일정 생성 실패:", error);
@@ -156,6 +157,7 @@ const CalendarDetail = ({ selectedDate, onClose }) => {
   // 목록으로 돌아가기
   const handleBackToList = () => {
     setSelectedDetailIndex(null);
+    setIsEditing(false);
   };
 
   const getLabelColor = (label) => {
