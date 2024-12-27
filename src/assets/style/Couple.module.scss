@@ -3,13 +3,13 @@
     height: 90vh;
     margin-top: 70px;
     display: flex;
-    gap: 20px;
+    gap: 30px;
 
 }
 .CoupleBanner{
-    width: 30%;
+    width: 25%;
     position: relative;
-    height: 87vh;
+    height: 87.5vh;
     color: white;
     display: flex;
     flex-direction: column;
@@ -29,8 +29,8 @@
 .fileLabel {
     display: inline-block;
     position: relative;
-    top: 215px;
-    left: -140px;
+    top: 220px;
+    left: -120px;
     background-color: rgba(255, 255, 255, 0.2);
     color: #ffffff;
     border: 2px solid #ffffff;
@@ -52,7 +52,7 @@
     color: #ffffff; /* 글씨 색상 */
     border: 2px solid #ffffff; /* 흰색 테두리 */
     border-radius: 10px; /* 테두리 둥글게 */
-    padding: 8px 16px;
+    padding: 8px 10px;
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -65,7 +65,7 @@
     border-radius: 10px; /* 테두리 둥글게 */
     background-color: rgba(255, 255, 255, 0.2); /* 투명한 배경 */
     color: #ffffff; /* 글씨 색상 */
-    padding: 8px 12px;
+    padding: 8px 10px;
     font-size: 1rem;
     outline: none;
     cursor: pointer;
@@ -90,8 +90,8 @@
     border-radius: 10px;
     background-color: rgba(255, 255, 255, 0.2); /* 투명한 흰색 배경 */
     color: #ffffff; /* 글씨 색상 */
-    padding: 10px 20px;
-    font-size: 1rem;
+    padding: 10px 10px;
+    font-size: 0.8rem;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
     width: auto; /* 너비 자동 설정 */
@@ -120,12 +120,12 @@
 .CoupleContent{
     display: flex;
     width: 88%;
-    gap: 15px;
+    gap: 30px;
 }
 
 //컨텐츠 1
 .CoupleContentContainer{
-    width: 35%;
+    width: 30%;
     display: grid
 }
 .CoupleContentContainer div{
@@ -207,10 +207,62 @@
 .upcoming {
     opacity: 1; /* 기본 투명도 */
 }
+
+//커플 컨텐츠2
 .CoupleContentContainer2{
-    border: 3px solid blue;
     width: 65%;
 }
+// .CoupleContentContainer2 div{
+//     border-radius: 10px;
+//     border: 2px solid #a29f9f;
+//     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.251);
+//     gap: 10px;
+// }
+.CoupleCheckList{
+    border-radius: 10px;
+    border: 2px solid #a29f9f;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.251);
+    gap: 10px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    height: 280px;
+    text-align: center;
+}
+.CoupleCheckList h3{
+    font-size: 30px;
+    padding: 3px;
+    margin-bottom: 20px;
+}
+.BukitList{
+    border: none;
+    display: flex;
+    width: 100%;
+    
+}
+.BukitList div{
+    width: 30%;
+    height: 200px;
+    margin: 5px;
+    border-radius: 10px;
+    border: 2px solid #a29f9f;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.251);
+    gap: 10px;
+    cursor: pointer;
+    z-index: 1;
+    &:hover{
+        transform: scale(1.05);
+        transition-duration: 0.5s;
+    }
+}
+.Couple3{
+    height: 315px;
+    border-radius: 10px;
+    border: 2px solid #a29f9f;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.251);
+    gap: 10px;
+}
+
+//모바일
 @media (max-width: 480px) {
     .CoupleContainer {
         flex-direction: column;

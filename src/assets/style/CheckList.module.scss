@@ -1,0 +1,85 @@
+.CheckListContainer{
+    align-items: center;
+    background-color: snow;
+    overflow: hidden;
+}
+.CheckListContainer h4{
+    padding: 3px;
+    border-bottom: 1px solid #666259;
+    background-color: #9b9fa2;
+}
+.CheckListButton {
+    margin: 10px;
+    padding: 5px 10px;
+    background-color: #9b9fa2;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    &:hover {
+    background-color: #666259;
+  }
+}
+  .CheckList {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .CheckListItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    padding: 3px 0;
+    border-bottom: 1px solid #5d5858;
+    white-space: nowrap;
+    text-overflow: ellipsis; 
+  }
+  
+  .CheckedItem {
+    text-decoration: line-through;
+    color: gray;
+    margin-left: 5px;
+  }
+  
+  .UncheckedItem {
+    text-decoration: none;
+    margin-left: 5px;
+  }
+  /* 모달 스타일 */
+.ModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .ModalContent {
+    background-color: #d8d2d2;
+    padding: 20px;
+    border-radius: 8px;
+    width: 600px;
+    max-width: 80%;
+    height: 600px;
+    max-height: 80%;
+    overflow-y: auto;
+    position: relative;
+  }
+  .ModalContent ul{
+    background-color: snow;
+  }
+  .ModalContent h4{
+      font-size: 30px;
+      text-align: center;
+      border: 1px solid black;
+  }
+.ModalContent li{
+  font-size: 1.5rem;
+  padding:13px;
+  white-space: nowrap;
+  text-overflow: ellipsis; 
+}
