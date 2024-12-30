@@ -24,7 +24,7 @@ const Header = () => {
   const [selectedNotification, setSelectedNotification] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
-  
+
 
   const userId = sessionStorage.getItem("userId");
   const jwtToken = sessionStorage.getItem("token");
@@ -54,35 +54,38 @@ const Header = () => {
   }, [navigate, userId]);
 
   useEffect(() => {
+    console.log("웹소켓 연결 시도중", jwtToken);
     const socket = new SockJS("https://www.ustime.store/ws");
     const stompClient = Stomp.over(socket);
+    stompClient.debug = (msg) => console.log(msg);  // 디버그 로그 출력
+
 
     // JWT 토큰을 Authorization 헤더에 포함하여 WebSocket 연결
     stompClient.connect(
-        { Authorization: `Bearer ${jwtToken}` }, // JWT 토큰 추가
-        () => {
-            console.log("WebSocket connected!");
-            stompClient.subscribe(`/ustime/notifications/${userId}`, (message) => {
-                const newNotification = JSON.parse(message.body);
-                setAlarm((prev) => [newNotification, ...prev]);
-                showPopup(newNotification);
-            });
-        },
-        (error) => {
-            console.error("WebSocket 연결 실패:", error);
-        }
+      { Authorization: `Bearer ${jwtToken}` }, // JWT 토큰 추가
+      () => {
+        console.log("WebSocket connected!");
+        stompClient.subscribe(`/ustime/notifications/${userId}`, (message) => {
+          const newNotification = JSON.parse(message.body);
+          setAlarm((prev) => [newNotification, ...prev]);
+          showPopup(newNotification);
+        });
+      },
+      (error) => {
+        console.error("WebSocket 연결 실패:", error);
+      }
     );
 
     return () => {
-        if (stompClient) stompClient.disconnect(); // WebSocket 종료
+      if (stompClient) stompClient.disconnect(); // WebSocket 종료
     };
-}, [userId, jwtToken]);  // jwtToken 변경 시 재연결
+  }, [userId, jwtToken]);  // jwtToken 변경 시 재연결
 
 
-const showPopup = (notification) => {
+  const showPopup = (notification) => {
     // 알림 팝업을 화면에 띄우는 로직
     alert(`새 알림: ${notification.message}`);
-};
+  };
 
 
 
@@ -234,30 +237,30 @@ const showPopup = (notification) => {
                   <div className={styles.modalSchedule}>
                     <h3>일정 정보</h3>
                     <div className={styles.modalDate}>
-                    <p>
-                      <strong>시작날짜:</strong>{" "}
-                      {dayjs(selectedNotification.data.startDate).format("YYYY-MM-DD(dddd)")}
-                    </p>
-                    <p className={styles.modalIcon}>》</p>
-                    <p>
-                      <strong>종료날짜:</strong>{" "}
-                      {dayjs(selectedNotification.data.endDate).format("YYYY-MM-DD(dddd)")}
-                    </p>
+                      <p>
+                        <strong>시작날짜:</strong>{" "}
+                        {dayjs(selectedNotification.data.startDate).format("YYYY-MM-DD(dddd)")}
+                      </p>
+                      <p className={styles.modalIcon}>》</p>
+                      <p>
+                        <strong>종료날짜:</strong>{" "}
+                        {dayjs(selectedNotification.data.endDate).format("YYYY-MM-DD(dddd)")}
+                      </p>
                     </div>
                     <div className={styles.modalScheduleSection}>
-                    <p className={styles.modalScheduleSectionTitle}><strong>제목:</strong> {selectedNotification.data.title}</p>
-                    <p className={styles.modalScheduleSectionDescription}><strong>내용:</strong> {selectedNotification.data.description}</p>
-                    <p><strong>위치:</strong> {selectedNotification.data.location}</p></div>
+                      <p className={styles.modalScheduleSectionTitle}><strong>제목:</strong> {selectedNotification.data.title}</p>
+                      <p className={styles.modalScheduleSectionDescription}><strong>내용:</strong> {selectedNotification.data.description}</p>
+                      <p><strong>위치:</strong> {selectedNotification.data.location}</p></div>
                   </div>
                 )}
                 {selectedNotification.type === "커플" && (
                   <div className={styles.CoupleRequest}>
                     <h3>커플 관련 정보</h3>
                     <p><strong>상태:</strong> {selectedNotification.data.status}</p>
-                    <div className={styles.CoupleRequestUser}>                     
-                    <p> <img src={userImage} alt=""></img><strong>보낸사람:</strong> {selectedNotification.data.fromUserName}</p> 
-                    <p className={styles.modalIcon}>》</p>               
-                    <p> <img src={userImage} alt=""></img><strong>받는 사람:</strong> {selectedNotification.data.toUserName}</p>
+                    <div className={styles.CoupleRequestUser}>
+                      <p> <img src={userImage} alt=""></img><strong>보낸사람:</strong> {selectedNotification.data.fromUserName}</p>
+                      <p className={styles.modalIcon}>》</p>
+                      <p> <img src={userImage} alt=""></img><strong>받는 사람:</strong> {selectedNotification.data.toUserName}</p>
                     </div>
                     {selectedNotification.data.status === "대기" && (
                       <div className={styles.coupleActions}>
