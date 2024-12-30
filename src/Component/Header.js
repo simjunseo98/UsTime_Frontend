@@ -27,7 +27,7 @@ const Header = () => {
 
 
   const userId = sessionStorage.getItem("userId");
-  const jwtToken = sessionStorage.getItem("token");
+  
   // 알림창 열기/닫기 토글
   const toggleAlarm = () => {
     setAlarmOpen(!alarmOpen);
@@ -54,30 +54,13 @@ const Header = () => {
   }, [navigate, userId]);
 
   useEffect(() => {
-    console.log("웹소켓 연결 시도중", jwtToken);
     const socket = new SockJS("https://www.ustime.store/ws");
-
-    socket.onopen = () => {
-      console.log("SockJS 연결 성공");
-  };
-  
-  socket.onerror = (error) => {
-      console.error("SockJS 연결 오류:", error);
-  };
-  
-  socket.onclose = () => {
-      console.log("SockJS 연결 종료");
-  };
-
     const stompClient = Stomp.over(socket);
-    stompClient.debug = (msg) => console.log(msg);  // 디버그 로그 출력
-
-
-    // JWT 토큰을 Authorization 헤더에 포함하여 WebSocket 연결
+  
     stompClient.connect(
-      { Authorization: `Bearer ${jwtToken}` }, // JWT 토큰 추가
+      {},
       () => {
-        console.log("WebSocket connected!");
+        console.log("웹소켓이 연결 되었습니다.");
         stompClient.subscribe(`/ustime/notifications/${userId}`, (message) => {
           const newNotification = JSON.parse(message.body);
           setAlarm((prev) => [newNotification, ...prev]);
@@ -88,19 +71,17 @@ const Header = () => {
         console.error("WebSocket 연결 실패:", error);
       }
     );
-
+  
     return () => {
-      if (stompClient) stompClient.disconnect(); // WebSocket 종료
+      if (stompClient) stompClient.disconnect();
     };
-  }, [userId, jwtToken]);  // jwtToken 변경 시 재연결
+  }, [userId]);  // jwtToken 의존성 제거
+   
 
 
   const showPopup = (notification) => {
-    // 알림 팝업을 화면에 띄우는 로직
     alert(`새 알림: ${notification.message}`);
   };
-
-
 
 
   // 알림 클릭 처리: 상세 정보 요청 및 모달 열기
