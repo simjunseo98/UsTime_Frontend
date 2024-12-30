@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useCallback } from "react"; // useCallback 추가
+import React, { useState, useEffect, useCallback, useRef } from "react"; // useCallback 추가
 import styles from "../assets/style/Couple.module.scss";
 import api from "../service/api.js";
 import CheckListCategory from "../Component/CheckListCategory.js";
 import CheckListModal from "../Component/CheckListModal.js";
 
 const Couple = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [couplePhoto, setCouplePhoto] = useState(null);
   const [dDay, setDDay] = useState("");
   const [daysPassed, setDaysPassed] = useState(null);
@@ -13,10 +14,20 @@ const Couple = () => {
   const [calculatedDates, setCalculatedDates] = useState([]);
 
   const maxtoday = new Date().toISOString().split("T")[0];
-  const coupleId = sessionStorage.getItem("coupleId");
- 
+  //초기화시 한 번만 호출되게 가독성 개선
+  const userId = useRef(sessionStorage.getItem('userId'));
+  const coupleId = useRef(sessionStorage.getItem("coupleId"));
+  const checklistId = useRef(sessionStorage.getItem("checklistId"));
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const categories = [
+    { title: "가보고 싶은 곳", key: "placesToVisit" },
+    { title: "먹킷 리스트", key: "foodList" },
+    { title: "무킷 리스트", key: "moviesToWatch" },
+    { title: "데이트 리스트", key: "dateIdeas" },
+  ];
   //체크리스트 데이터 관리
   const [data, setData] = useState({
     placesToVisit: [],
@@ -24,6 +35,7 @@ const Couple = () => {
     moviesToWatch: [],
     dateIdeas: []
   });
+
   //체크리스트 모달
   const openModal = (category) => {
     setSelectedCategory(category);
@@ -34,13 +46,112 @@ const Couple = () => {
     setIsModalOpen(false);
     setSelectedCategory(null);
   };
-   //체크리스트
-   const handleAddItem = (category, newItem) => {
-    setData(prev => ({
-      ...prev,
-      [category]: [...prev[category], newItem]
-    }));
+
+   //체크리스트 추가 핸들러
+   const handleAddItem = async (category, newItem) => {
+      // 유효성 검사: newItem이 비었는지 확인
+  if (!newItem || !newItem.trim()) {
+    alert("항목 이름을 입력하세요.");
+    return;
+  }
+
+    // 유효성 검사: 유효한 카테고리인지 확인
+    const validCategories = ["placesToVisit", "foodList", "moviesToWatch", "dateIdeas"];
+    if (!validCategories.includes(category)) {
+      alert("유효하지 않은 카테고리입니다.");
+      return;
+    }
+    // 중복 항목 방지
+  const isDuplicate = data[category]?.some(
+    (item) => item.title.trim().toLowerCase() === newItem.trim().toLowerCase());
+  if (isDuplicate) {
+    alert("이미 존재하는 항목입니다.");
+    return;
+  }
+
+    if (!userId || !coupleId) {
+      alert("로그인 정보가 없습니다. 다시 로그인 해주세요.");
+      return;
+    }
+    try {
+
+      // 서버에 새 항목 저장
+      const response = await api.post("/add", {
+        userId,
+        coupleId,
+        category,
+        title: newItem,
+      });
+  
+      if (response.status >=200 && response.status < 300 ) {
+        const addedItem= response.data;
+        // 로컬 상태 업데이트
+        setData((prev) => ({
+          ...prev,
+          [category]: [...prev[category], addedItem],
+        }));
+        alert("항목이 성공적으로 저장되었습니다!");
+      }
+    } catch (error) {
+      console.error("항목 추가 실패:", error.response|| error
+      );
+      alert("항목 추가 중 오류가 발생했습니다.");
+    }
   };
+
+  //체크 리스트 불러오기
+  useEffect(() => {
+    const fetchChecklist = async () => {
+      try {
+        setIsLoading(true);
+        const response = await api.get(`/coupleId/${coupleId}`);
+        const checklistData = response.data;
+  
+        setData({
+          placesToVisit: checklistData.placesToVisit || [],
+          foodList: checklistData.foodList || [],
+          moviesToWatch: checklistData.moviesToWatch || [],
+          dateIdeas: checklistData.dateIdeas || [],
+        });
+      } catch (error) {
+        console.error("체크리스트 데이터를 가져오는 데 실패했습니다:", error);
+      }finally{
+        setIsLoading(false); // 로딩 상태 종료
+      }
+    };
+  
+    if (coupleId && !isLoading) {
+      fetchChecklist();
+    }
+  }, [coupleId,isLoading]);
+
+  const handleDeleteItem = async (category, itemName) => {
+    try {
+      // 서버에서 항목 삭제
+      const response = await api.delete(`/delete?checklistId=${checklistId}`, {
+        data: {
+          userId,
+          coupleId,
+          category,
+          title: itemName,
+        },
+      });
+  
+      if (response.status === 200) {
+        // 로컬 상태에서 항목 삭제
+        setData((prev) => ({
+          ...prev,
+          [category]: prev[category].filter((item) => item.title !== itemName),
+        }));
+        alert("항목이 삭제되었습니다!");
+      }
+    } catch (error) {
+      console.error("항목 삭제 실패:", error);
+      alert("항목 삭제 중 오류가 발생했습니다.");
+      
+    }
+  };
+
   // 커플 사진 업로드 핸들러
   const handlePhotoUpload = (e) => {
     const file = e.target.files[0];
@@ -249,42 +360,33 @@ const Couple = () => {
       <div className={styles.CoupleCheckList}>
         <h3>@@ 체크리스트 @@</h3>
         <div className={styles.BukitList}>
-          <CheckListCategory
-            title="가보고 싶은 곳"
-            items={data.placesToVisit}
-            onAddItem={() => openModal("placesToVisit")}
-            
-          />
-          <CheckListCategory
-            title="먹킷 리스트"
-            items={data.foodList}
-            onAddItem={() => openModal("foodList")}
-          />
-          <CheckListCategory
-            title="무킷 리스트"
-            items={data.moviesToWatch}
-            onAddItem={() => openModal("moviesToWatch")}
-          />
-          <CheckListCategory
-            title="데이트 리스트"
-            items={data.dateIdeas}
-            onAddItem={() => openModal("dateIdeas")}
-          />
-        </div>
+  {categories.map(({ title, key }) => (
+    <CheckListCategory
+      key={key}
+      title={title}
+      items={data[key] || []}
+      onAddItem={() => openModal(key)}
+      onDeleteItem={handleDeleteItem}
+    />
+  ))}
+</div>
       </div>
       {/* 모달 표시 */}
       <CheckListModal isOpen={isModalOpen} onClose={closeModal}>
-        <CheckListCategory
-          title={selectedCategory}
-          items={data[selectedCategory]}
-          onAddItem={() => {
-            const newItem = prompt("추가할 항목을 입력하세요:");
-            if (newItem && newItem.trim() !== "") {
-              handleAddItem(selectedCategory, newItem);
-            }
-          }}
-        />
-      </CheckListModal>
+  {selectedCategory && (
+    <CheckListCategory
+      title={selectedCategory}
+      items={data[selectedCategory] || []}
+      onAddItem={() => {
+        const newItem = prompt("추가할 항목을 입력하세요:");
+        if (newItem && newItem.trim() !== "") {
+          handleAddItem(selectedCategory, newItem);
+        }
+      }}
+    />
+  )}
+</CheckListModal>
+
           <div className={styles.Couple3}>
             오늘의 운세
           </div>
