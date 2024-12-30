@@ -30,9 +30,7 @@ const CalendarComponent = (props) => {
                 if (!coupleId) {
                     params.coupleId = coupleId;
                 }
-                console.log("보내지는 데이터",params);
                 const response = await api.get('/calendar/all', { params });
-                console.log("전체 일정 데이터:", response.data);
     
                 const scheduleData = response.data.reduce((acc, curr) => {
                     const startDate = moment(curr.startDate);
