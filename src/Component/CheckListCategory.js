@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "../assets/style/CheckList.module.scss";
-
-const CheckListCategory = ({ title, items, onAddItem }) => {
+import { VscTrash } from "react-icons/vsc";
+const CheckListCategory = ({ title, items, onAddItem ,onDeleteItem}) => {
   const [itemList, setItemList] = useState([]);
 
   // 부모 컴포넌트의 items와 동기화
@@ -18,7 +18,9 @@ const CheckListCategory = ({ title, items, onAddItem }) => {
       return updatedList.sort((a, b) => a.checked - b.checked);
     });
   };
-
+ const handleDelete =(itemname)=>{
+  onDeleteItem(title,itemname);
+ }
   return (
     <div className={styles.CheckListContainer}>
       <h4 className={styles.CheckListTitle}>{title}</h4>
@@ -37,11 +39,13 @@ const CheckListCategory = ({ title, items, onAddItem }) => {
             >
               {item.name}
             </span>
+            <button onClick={()=>handleDelete(item.name)} className={styles.CheckListDelete}><VscTrash/></button>
           </li>
         ))}
       </ul>
       
       <button onClick={onAddItem} className={styles.CheckListButton}>+ 추가하기</button>
+      
     </div>
   );
 };
