@@ -55,7 +55,7 @@ const Header = () => {
 
   useEffect(() => {
     console.log("웹소켓 연결 시도중", jwtToken);
-    const socket = new SockJS("wws://www.ustime.store/ws");
+    const socket = new SockJS("https://www.ustime.store/ws");
 
     socket.onopen = () => {
       console.log("SockJS 연결 성공");
