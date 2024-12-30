@@ -6,6 +6,8 @@ import { VscBell, VscMenu } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import api from "../service/api";
 import userImage from "../assets/img/이미지 없음.jpg";
+import { Stomp } from "@stomp/stompjs"; // Stomp.js 라이브러리
+import SockJS from "sockjs-client"; // SockJS 클라이언트
 
 // dayjs 라이브러리 설정
 import dayjs from "dayjs";
@@ -22,7 +24,9 @@ const Header = () => {
   const [selectedNotification, setSelectedNotification] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
+  
 
+  const userId = sessionStorage.getItem("userId");
   // 알림창 열기/닫기 토글
   const toggleAlarm = () => {
     setAlarmOpen(!alarmOpen);
@@ -32,7 +36,6 @@ const Header = () => {
   useEffect(() => {
     const fetchAlarm = async () => {
       try {
-        const userId = sessionStorage.getItem("userId");
         if (!userId) {
           alert("로그인 상태가 아닙니다. 로그인 페이지로 이동합니다.");
           navigate("/");
@@ -47,7 +50,35 @@ const Header = () => {
     };
 
     fetchAlarm();
-  }, [navigate]);
+  }, [navigate, userId]);
+
+  useEffect(() => {
+    const socket = new SockJS("https://www.ustime.store/ws");
+    const stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, () => {
+        console.log("WebSocket connected!");
+
+        // 사용자별 알림 구독
+        stompClient.subscribe(`/ustime/notifications/${userId}`, (message) => {
+            const newNotification = JSON.parse(message.body);
+            setAlarm((prev) => [newNotification, ...prev]); // 새 알림 추가
+            showPopup(newNotification); // 팝업 띄우기
+        });
+    });
+
+    return () => {
+        if (stompClient) stompClient.disconnect(); // WebSocket 종료
+    };
+}, [userId]);
+
+const showPopup = (notification) => {
+    // 알림 팝업을 화면에 띄우는 로직
+    alert(`새 알림: ${notification.message}`);
+};
+
+
+
 
   // 알림 클릭 처리: 상세 정보 요청 및 모달 열기
   const handleNotificationClick = async (notif) => {
@@ -65,9 +96,8 @@ const Header = () => {
       }
 
       // 상세 정보 요청
-      const typePrefix = notif.type.substring(0, 2); // type의 앞 두 글자 추출
+      const typePrefix = notif.type.substring(0, 2);
       const { typeId } = notif;
-
       const response = await api.get(`/notifications/getDetail`, {
         params: { type: typePrefix, typeId },
       });
