@@ -8,8 +8,10 @@ import CalendarDetail from "./CalendarDetail";
 const CalendarComponent = (props) => {
     console.log(props);
 
-    const userId = sessionStorage.getItem("userId"); // 사용자 ID
-    const coupleId = sessionStorage.getItem("coupleId") || null; // 커플 ID
+    const userId = sessionStorage.getItem("userId"); 
+    const isCoupleId = sessionStorage.getItem("coupleId");
+    const coupleId = isCoupleId === null || isCoupleId === undefined ? null : isCoupleId;
+
 
     const [value, onChange] = useState(new Date()); // 달력의 현재 날짜 상태
     const [schedules, setSchedules] = useState({}); // 전체 일정을 저장하는 객체
@@ -25,10 +27,10 @@ const CalendarComponent = (props) => {
                     scope: scheduleScope,
                 };
     
-                if (coupleId) {
+                if (!coupleId) {
                     params.coupleId = coupleId;
                 }
-                console.log("coupleId",coupleId);
+                console.log("보내지는 데이터",params);
                 const response = await api.get('/calendar/all', { params });
                 console.log("전체 일정 데이터:", response.data);
     
