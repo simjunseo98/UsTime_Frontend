@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "../assets/style/CheckList.module.scss";
 import { VscTrash } from "react-icons/vsc";
 
-const CheckListCategory = ({ title, items, onAddItem, onDeleteItem}) => {
+const CheckListCategory = ({ title, items, onAddItem}) => {
   const [itemList, setItemList] = useState([]);
 
   // 부모 컴포넌트의 items와 동기화
@@ -24,8 +24,8 @@ const CheckListCategory = ({ title, items, onAddItem, onDeleteItem}) => {
   };
 
   // 항목 삭제
-  const handleDelete = (checklistId,itemName) => {
-    onDeleteItem(itemName,checklistId); // 부모 컴포넌트의 삭제 함수 호출
+  const handleDelete = () => {
+   alert('수정중');
   };
   return (
     <div className={styles.CheckListContainer}>
@@ -43,7 +43,7 @@ const CheckListCategory = ({ title, items, onAddItem, onDeleteItem}) => {
                 {item.name}
               </span>
               <button
-                onClick={() => handleDelete(item.checklistId)}
+                onClick={()=> handleDelete()}
                 className={styles.CheckListDelete}
               >
                 <VscTrash />

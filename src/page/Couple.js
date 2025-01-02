@@ -134,27 +134,27 @@ const Couple = () => {
   }, [coupleId]);
   
 
-  const handleDeleteItem = async (checklistId,category) => {
-    console.log("삭제할 checklistId:", checklistId); // checklistId 값 확인
-    try {
-      // 서버에서 항목 삭제
-      const response = await api.delete(`/check/delete?checklistId=${checklistId}`);
+  // const handleDeleteItem = async (checklistId,category) => {
+  //   console.log("삭제할 checklistId:", checklistId); // checklistId 값 확인
+  //   try {
+  //     // 서버에서 항목 삭제
+  //     const response = await api.delete(`/check/delete?checklistId=${checklistId}`);
       
-      if (response.status === 200) {
-        // 로컬 상태에서 항목 삭제
-        setData((prev) => ({
-          ...prev,
-          [category]: prev[category].filter((item) => item.checklistId !== checklistId),
-        }));
-        alert("항목이 삭제되었습니다!");
-      }
-    } catch (error) {
-      console.error("항목 삭제 실패:", error.response || error);
+  //     if (response.status === 200) {
+  //       // 로컬 상태에서 항목 삭제
+  //       setData((prev) => ({
+  //         ...prev,
+  //         [category]: prev[category].filter((item) => item.checklistId !== checklistId),
+  //       }));
+  //       alert("항목이 삭제되었습니다!");
+  //     }
+  //   } catch (error) {
+  //     console.error("항목 삭제 실패:", error.response || error);
 
-      alert("항목 삭제 중 오류가 발생했습니다.");
+  //     alert("항목 삭제 중 오류가 발생했습니다.");
       
-    }
-  };
+  //   }
+  // };
 //----------------------------------------------------------------------------------------------
 // 커플 베너
   // 커플 사진 업로드 핸들러
@@ -370,7 +370,6 @@ const Couple = () => {
           title={title}
           items={data[key] || []}
           onAddItem={() => openModal(key)}
-          onDeleteItem={handleDeleteItem()}
         />
       );
 })}
@@ -383,7 +382,6 @@ const Couple = () => {
         selectedCategory={selectedCategory}
         data={data}
         handleAddItem={handleAddItem}
-        handleDeleteItem={handleDeleteItem}
       />
 
           <div className={styles.Couple3}>
