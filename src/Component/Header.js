@@ -54,7 +54,7 @@ const Header = () => {
   }, [navigate, userId]);
 
   useEffect(() => {
-    const socket = new SockJS("https://www.ustime.store/ws");
+    const socket = new SockJS("https://www.ustime-backend.store/ws");
     const stompClient = Stomp.over(socket);
   
     stompClient.connect(
