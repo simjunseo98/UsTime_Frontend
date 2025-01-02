@@ -1,12 +1,14 @@
 .CheckListContainer{
     align-items: center;
     background-color: snow;
-    overflow: hidden;
+    overflow: scroll;
+    
 }
 .CheckListContainer h4{
     padding: 3px;
     border-bottom: 1px solid #666259;
     background-color: #9b9fa2;
+
 }
 .CheckListButton {
     margin: 10px;
@@ -26,12 +28,18 @@
   
   .CheckListItem {
     display: flex;
+    justify-content:space-between;
     align-items: center;
+    text-align:left ;
     margin-bottom: 5px;
     padding: 3px 0;
     border-bottom: 1px solid #5d5858;
     white-space: nowrap;
     text-overflow: ellipsis; 
+  }
+  .CheckListItem span {
+    flex-grow: 1; /* 텍스트를 가능한 한 왼쪽으로 밀어줌 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
   }
   
   .CheckedItem {
@@ -45,8 +53,32 @@
     margin-left: 5px;
   }
   .CheckListDelete{
-
+   margin-top: 3px;
+   background: none;
+   border: none;
+   width: 50px;
+   font-size: 25px;
+   &:hover{
+    cursor: pointer;
+    transform: scale(1.07);
+    transition-duration: 0.5s;
+   }
   }
+  /* 스크롤바 스타일링 */
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  border-radius: 30px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 30px;
+}
+
   /* 모달 스타일 */
 .ModalOverlay {
     position: fixed;
@@ -70,7 +102,6 @@
     height: 600px;
     max-height: 80%;
     overflow-y: auto;
-    position: relative;
   }
   .ModalContent ul{
     background-color: snow;
