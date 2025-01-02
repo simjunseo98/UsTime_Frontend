@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef } from "react"; // useCallback 추가
+import React, { useState, useEffect, useCallback} from "react"; // useCallback 추가
 import styles from "../assets/style/Couple.module.scss";
 import api from "../service/api.js";
 import CheckListCategory from "../Component/CheckListCategory.js";
 import CheckListModal from "../Component/CheckListModal.js";
 
 const Couple = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const [couplePhoto, setCouplePhoto] = useState(null);
   const [dDay, setDDay] = useState("");
   const [daysPassed, setDaysPassed] = useState(null);
@@ -14,27 +13,28 @@ const Couple = () => {
   const [calculatedDates, setCalculatedDates] = useState([]);
 
   const maxtoday = new Date().toISOString().split("T")[0];
+
   //초기화시 한 번만 호출되게 가독성 개선
-  const userId = useRef(sessionStorage.getItem('userId'));
-  const coupleId = useRef(sessionStorage.getItem("coupleId"));
-  const checklistId = useRef(sessionStorage.getItem("checklistId"));
+  const [userId] = useState(() => sessionStorage.getItem("userId"));
+  const [coupleId] = useState(() => sessionStorage.getItem("coupleId"));
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const categories = [
-    { title: "가보고 싶은 곳", key: "placesToVisit" },
-    { title: "먹킷 리스트", key: "foodList" },
-    { title: "무킷 리스트", key: "moviesToWatch" },
-    { title: "데이트 리스트", key: "dateIdeas" },
-  ];
   //체크리스트 데이터 관리
   const [data, setData] = useState({
-    placesToVisit: [],
-    foodList: [],
-    moviesToWatch: [],
-    dateIdeas: []
+    장소: [],
+    음식: [],
+    영화: [],
+    데이트:[],
   });
+
+  const categories = [
+    { title: "장소", key: "장소" },
+    { title: "음식", key: "음식" },
+    { title: "영화", key: "영화" },
+    { title: "데이트", key: "데이트" },
+  ];
 
   //체크리스트 모달
   const openModal = (category) => {
@@ -47,6 +47,7 @@ const Couple = () => {
     setSelectedCategory(null);
   };
 
+
    //체크리스트 추가 핸들러
    const handleAddItem = async (category, newItem) => {
       // 유효성 검사: newItem이 비었는지 확인
@@ -56,7 +57,7 @@ const Couple = () => {
   }
 
     // 유효성 검사: 유효한 카테고리인지 확인
-    const validCategories = ["placesToVisit", "foodList", "moviesToWatch", "dateIdeas"];
+    const validCategories = ["장소", "음식", "영화", "데이트"];
     if (!validCategories.includes(category)) {
       alert("유효하지 않은 카테고리입니다.");
       return;
@@ -74,21 +75,22 @@ const Couple = () => {
       return;
     }
     try {
-
       // 서버에 새 항목 저장
-      const response = await api.post("/add", {
-        userId,
-        coupleId,
-        category,
-        title: newItem,
-      });
-  
+      const response = await api.post("/check/add", null, {
+        params: {
+          userId,
+          coupleId,
+          category,
+          title: newItem,
+        },
+     });
+     
+
       if (response.status >=200 && response.status < 300 ) {
-        const addedItem= response.data;
         // 로컬 상태 업데이트
         setData((prev) => ({
           ...prev,
-          [category]: [...prev[category], addedItem],
+          [category]: [...prev[category], response.data[0].title],
         }));
         alert("항목이 성공적으로 저장되었습니다!");
       }
@@ -101,57 +103,60 @@ const Couple = () => {
 
   //체크 리스트 불러오기
   useEffect(() => {
+    if (!coupleId) {
+      console.error("유효하지 않은 coupleId:", coupleId);
+      return;
+    }
+  
     const fetchChecklist = async () => {
       try {
-        setIsLoading(true);
-        const response = await api.get(`/coupleId/${coupleId}`);
+        const response = await api.get(`/check/${coupleId}`);
         const checklistData = response.data;
   
-        setData({
-          placesToVisit: checklistData.placesToVisit || [],
-          foodList: checklistData.foodList || [],
-          moviesToWatch: checklistData.moviesToWatch || [],
-          dateIdeas: checklistData.dateIdeas || [],
-        });
+        if (checklistData) {
+          // 받은 데이터가 유효한 경우
+          setData({
+            장소: checklistData.filter(item => item.category === "장소").map(item => item.title),
+            음식: checklistData.filter(item => item.category === "음식").map(item => item.title),
+            영화: checklistData.filter(item => item.category === "영화").map(item => item.title),
+            데이트: checklistData.filter(item => item.category === "데이트").map(item => item.title),
+          });
+          console.log("ddd",checklistData);
+        } else {
+          console.log("서버에 데이터 없음");
+        }
       } catch (error) {
         console.error("체크리스트 데이터를 가져오는 데 실패했습니다:", error);
-      }finally{
-        setIsLoading(false); // 로딩 상태 종료
       }
     };
   
-    if (coupleId && !isLoading) {
-      fetchChecklist();
-    }
-  }, [coupleId,isLoading]);
+    fetchChecklist();
+  }, [coupleId]);
+  
 
-  const handleDeleteItem = async (category, itemName) => {
+  const handleDeleteItem = async (checklistId,category) => {
+    console.log("삭제할 checklistId:", checklistId); // checklistId 값 확인
     try {
       // 서버에서 항목 삭제
-      const response = await api.delete(`/delete?checklistId=${checklistId}`, {
-        data: {
-          userId,
-          coupleId,
-          category,
-          title: itemName,
-        },
-      });
-  
+      const response = await api.delete(`/check/delete?checklistId=${checklistId}`);
+      
       if (response.status === 200) {
         // 로컬 상태에서 항목 삭제
         setData((prev) => ({
           ...prev,
-          [category]: prev[category].filter((item) => item.title !== itemName),
+          [category]: prev[category].filter((item) => item.checklistId !== checklistId),
         }));
         alert("항목이 삭제되었습니다!");
       }
     } catch (error) {
-      console.error("항목 삭제 실패:", error);
+      console.error("항목 삭제 실패:", error.response || error);
+
       alert("항목 삭제 중 오류가 발생했습니다.");
       
     }
   };
-
+//----------------------------------------------------------------------------------------------
+// 커플 베너
   // 커플 사진 업로드 핸들러
   const handlePhotoUpload = (e) => {
     const file = e.target.files[0];
@@ -173,8 +178,8 @@ const Couple = () => {
       setDaysPassed(difference);
 
       const response = await api.post(`/couple/update?coupleId=${coupleId}&date=${dDay}`);
+      console.log("응답",response);
       alert("기념일 수정이 완료되었습니다.");
-      console.log("기념일 업데이트 성공:", response.data);
 
       // D-Day 설정 후 기념일 목록을 갱신하는 API 호출
       fetchAnniversary(); // 기념일 목록 갱신
@@ -258,9 +263,7 @@ const Couple = () => {
         alert("기념일 계산 중 오류가 발생했습니다. 다시 시도해주세요.");
       }
     }
-  };
-
- 
+  }; 
   return (
     <div className={styles.CoupleContainer}>
       <div
@@ -359,33 +362,29 @@ const Couple = () => {
         <div className={styles.CoupleContentContainer2}>         
       <div className={styles.CoupleCheckList}>
         <h3>@@ 체크리스트 @@</h3>
-        <div className={styles.BukitList}>
-  {categories.map(({ title, key }) => (
-    <CheckListCategory
-      key={key}
-      title={title}
-      items={data[key] || []}
-      onAddItem={() => openModal(key)}
-      onDeleteItem={handleDeleteItem}
-    />
-  ))}
+  <div className={styles.BukitList}> 
+  {categories.map(({ title, key }) => {
+     return(
+        <CheckListCategory
+          key={key}
+          title={title}
+          items={data[key] || []}
+          onAddItem={() => openModal(key)}
+          onDeleteItem={handleDeleteItem()}
+        />
+      );
+})}
 </div>
       </div>
       {/* 모달 표시 */}
-      <CheckListModal isOpen={isModalOpen} onClose={closeModal}>
-  {selectedCategory && (
-    <CheckListCategory
-      title={selectedCategory}
-      items={data[selectedCategory] || []}
-      onAddItem={() => {
-        const newItem = prompt("추가할 항목을 입력하세요:");
-        if (newItem && newItem.trim() !== "") {
-          handleAddItem(selectedCategory, newItem);
-        }
-      }}
-    />
-  )}
-</CheckListModal>
+      <CheckListModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        selectedCategory={selectedCategory}
+        data={data}
+        handleAddItem={handleAddItem}
+        handleDeleteItem={handleDeleteItem}
+      />
 
           <div className={styles.Couple3}>
             오늘의 운세
