@@ -27,7 +27,7 @@ const Header = () => {
 
 
   const userId = sessionStorage.getItem("userId");
-  
+
   // 알림창 열기/닫기 토글
   const toggleAlarm = () => {
     setAlarmOpen(!alarmOpen);
@@ -56,13 +56,18 @@ const Header = () => {
   useEffect(() => {
     const socket = new SockJS("https://www.ustime-backend.store/ws");
     const stompClient = Stomp.over(socket);
-  
+
     stompClient.connect(
       {},
       () => {
         console.log("웹소켓이 연결 되었습니다.");
         stompClient.subscribe(`/ustime/notifications/${userId}`, (message) => {
           const newNotification = JSON.parse(message.body);
+          // coupleId 확인 및 세션 저장
+          if (newNotification.coupleId) {
+            sessionStorage.setItem("coupleId", newNotification.coupleId);
+            console.log("coupleId가 세션에 저장되었습니다:", newNotification.coupleId);
+          }
           setAlarm((prev) => [newNotification, ...prev]);
           showPopup(newNotification);
         });
@@ -71,12 +76,12 @@ const Header = () => {
         console.error("WebSocket 연결 실패:", error);
       }
     );
-  
+
     return () => {
       if (stompClient) stompClient.disconnect();
     };
-  }, [userId]);  // jwtToken 의존성 제거
-   
+  }, [userId]); 
+
 
 
   const showPopup = (notification) => {
