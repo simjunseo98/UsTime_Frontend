@@ -15,7 +15,6 @@ api.interceptors.request.use(
         const token = sessionStorage.getItem('token');
         if (token) {
             config.headers['Authorization'] = `Bearer ${token}`;
-            console.log('헤더에 추가된 토큰 :', token);
         }
         return config;
     },

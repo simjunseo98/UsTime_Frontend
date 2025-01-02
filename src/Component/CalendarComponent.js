@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Calendar from 'react-calendar';
 import moment from 'moment';
 import styles from '../assets/style/Main.module.scss';
@@ -6,12 +6,9 @@ import api from "../service/api";
 import CalendarDetail from "./CalendarDetail";
 
 const CalendarComponent = (props) => {
-    console.log(props);
-
-    const userId = sessionStorage.getItem("userId"); 
+    const userId = sessionStorage.getItem("userId");
     const isCoupleId = sessionStorage.getItem("coupleId");
     const coupleId = isCoupleId === null || isCoupleId === undefined ? null : isCoupleId;
-
 
     const [value, onChange] = useState(new Date()); // 달력의 현재 날짜 상태
     const [schedules, setSchedules] = useState({}); // 전체 일정을 저장하는 객체
@@ -19,55 +16,57 @@ const CalendarComponent = (props) => {
     const [isSidePanelOpen, setIsSidePanelOpen] = useState(false); // 사이드 패널 열림 상태
     const [scheduleScope, setScheduleScope] = useState("전체"); // 일정 범위 (개인, 공유, 전체)
 
-    useEffect(() => {
-        const fetchAllSchedules = async () => {
-            try {
-                const params = {
-                    userId,
-                    scope: scheduleScope,
-                };
+    // 전체 캘린더 일정 가져오는 함수
+    const fetchCalendar = useCallback(async () => {
+        try {
+            const params = {
+                userId,
+                scope: scheduleScope,
+            };
     
-                if (!coupleId) {
-                    params.coupleId = coupleId;
-                }
-                const response = await api.get('/calendar/all', { params });
-    
-                const scheduleData = response.data.reduce((acc, curr) => {
-                    const startDate = moment(curr.startDate);
-                    const endDate = moment(curr.endDate);
-                    let currentDate = startDate.clone();
-    
-                    // startDate부터 endDate까지 반복하면서 일정 추가
-                    while (currentDate.isBefore(endDate) || currentDate.isSame(endDate, 'day')) {
-                        const dateString = currentDate.format('YYYY-MM-DD');
-                        if (!acc[dateString]) {
-                            acc[dateString] = [];
-                        }
-                        acc[dateString].push({
-                            scheduleId: curr.scheduleId,
-                            title: curr.title,
-                            description: curr.description,
-                            startDate: curr.startDate,
-                            endDate: curr.endDate,
-                            label: curr.label,
-                            location: curr.location,
-                            scope: curr.scope,
-                            createdAt: curr.createdAt,
-                        });
-                        currentDate.add(1, 'days'); 
-                    }
-    
-                    return acc;
-                }, {});
-    
-                setSchedules(scheduleData);
-            } catch (error) {
-                console.error("전체 일정 가져오기 실패:", error);
+            if (coupleId) {
+                params.coupleId = coupleId;
             }
-        };
+            const response = await api.get('/calendar/all', { params });
     
-        fetchAllSchedules();
-    }, [userId, coupleId, scheduleScope]); // `scheduleScope`가 변경될 때마다 재요청
+            const scheduleData = response.data.reduce((acc, curr) => {
+                const startDate = moment(curr.startDate);
+                const endDate = moment(curr.endDate);
+                let currentDate = startDate.clone();
+    
+                // startDate부터 endDate까지 반복하면서 일정 추가
+                while (currentDate.isBefore(endDate) || currentDate.isSame(endDate, 'day')) {
+                    const dateString = currentDate.format('YYYY-MM-DD');
+                    if (!acc[dateString]) {
+                        acc[dateString] = [];
+                    }
+                    acc[dateString].push({
+                        scheduleId: curr.scheduleId,
+                        title: curr.title,
+                        description: curr.description,
+                        startDate: curr.startDate,
+                        endDate: curr.endDate,
+                        label: curr.label,
+                        location: curr.location,
+                        scope: curr.scope,
+                        createdAt: curr.createdAt,
+                    });
+                    currentDate.add(1, 'days'); 
+                }
+    
+                return acc;
+            }, {});
+    
+            setSchedules(scheduleData);
+        } catch (error) {
+            console.error("전체 일정 가져오기 실패:", error);
+        }
+    }, [scheduleScope, coupleId, userId]); // 의존성 배열에 추가
+
+    // 캘린더가 변경될 때마다 일정을 갱신
+    useEffect(() => {
+        fetchCalendar();
+    }, [fetchCalendar]); // 의존성 배열에 fetchCalendar 추가
 
     const fetchSchedulesForDate = (date) => {
         const dateString = moment(date).format('YYYY-MM-DD');
@@ -88,45 +87,45 @@ const CalendarComponent = (props) => {
         fetchSchedulesForDate(date); // 클릭된 날짜의 일정 처리
     };
 
-const scheduleTileContent = ({ date, view }) => {
-    if (view === 'month') {
-        const dateString = moment(date).format('YYYY-MM-DD');
-        const scheduleData = schedules[dateString];
+    const scheduleTileContent = ({ date, view }) => {
+        if (view === 'month') {
+            const dateString = moment(date).format('YYYY-MM-DD');
+            const scheduleData = schedules[dateString];
 
-        if (scheduleData && Array.isArray(scheduleData)) {
-            let topOffset = 35;
-            return (
-                <div className="schedule-label-container">
-                    {scheduleData.map((data, index) => {
-                        const startDate = moment(data.startDate);
-                        const endDate = moment(data.endDate);
-                        let labelStyle = {
-                            backgroundColor: getLabelColor(data.label),
-                            zIndex: 2 + index,
-                            top: `${topOffset}px`,
-                        };
+            if (scheduleData && Array.isArray(scheduleData)) {
+                let topOffset = 35;
+                return (
+                    <div className="schedule-label-container">
+                        {scheduleData.map((data, index) => {
+                            const startDate = moment(data.startDate);
+                            const endDate = moment(data.endDate);
+                            let labelStyle = {
+                                backgroundColor: getLabelColor(data.label),
+                                zIndex: 2 + index,
+                                top: `${topOffset}px`,
+                            };
 
-                        // 라벨을 시작일부터 종료일까지 연결
-                        if (startDate.isBefore(date) && endDate.isAfter(date)) {
-                            labelStyle.position = 'absolute';
-                            labelStyle.left = '0px';
-                            labelStyle.right = '0px';
-                        }
+                            // 라벨을 시작일부터 종료일까지 연결
+                            if (startDate.isBefore(date) && endDate.isAfter(date)) {
+                                labelStyle.position = 'absolute';
+                                labelStyle.left = '0px';
+                                labelStyle.right = '0px';
+                            }
 
-                        topOffset += 17;
+                            topOffset += 17;
 
-                        return (
-                            <div key={index} className="schedule-label" style={labelStyle}>
-                                <span className="schedule-title">{data.title}</span>
-                            </div>
-                        );
-                    })}
-                </div>
-            );
+                            return (
+                                <div key={index} className="schedule-label" style={labelStyle}>
+                                    <span className="schedule-title">{data.title}</span>
+                                </div>
+                            );
+                        })}
+                    </div>
+                );
+            }
         }
-    }
-    return null;
-};
+        return null;
+    };
 
     const getLabelColor = (label) => {
         switch (label) {
@@ -165,7 +164,6 @@ const scheduleTileContent = ({ date, view }) => {
         <>
             <div className={styles.calendarWrapper}>
                 {/* 일정 범위 선택 콤보박스 */}
-
                 <div className={styles.calendarContainer}>
                 <div className={styles.scopeSelector}>
                     <label htmlFor="scope">일정 표시:</label>
@@ -198,6 +196,7 @@ const scheduleTileContent = ({ date, view }) => {
                     <CalendarDetail
                         selectedDate={selectedDate}
                         onClose={() => setIsSidePanelOpen(false)}
+                        fetchCalendar={fetchCalendar}
                     />
                 )}
             </div>

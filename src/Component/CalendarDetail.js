@@ -3,7 +3,7 @@ import api from "../service/api";
 import styles from '../assets/style/Main.module.scss';
 import { VscArrowLeft, VscEdit, VscLocation, VscTrash } from "react-icons/vsc";
 
-const CalendarDetail = ({ selectedDate, onClose }) => {
+const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
   const [selectedDetailIndex, setSelectedDetailIndex] = useState(null); // 클릭된 일정의 인덱스
   const [isAdd, setIsAdd] = useState(false); // 일정 추가 여부
   const [schedule, setSchedule] = useState(null); // 수정할 일정 인덱스
@@ -14,9 +14,9 @@ const CalendarDetail = ({ selectedDate, onClose }) => {
     description: '',
     startDate: selectedDate ? selectedDate.date : '',
     endDate: selectedDate ? selectedDate.date : '',
-    label: '빨강', // 기본 색상
+    label: '빨강', 
     location: '',
-    scope: '공유', // 기본 범위
+    scope: '공유', 
   });
 
   // 세션에서 coupleId와 createdBy를 가져옵니다.
@@ -32,9 +32,8 @@ const CalendarDetail = ({ selectedDate, onClose }) => {
   // 새로운 일정 데이터 초기화
   useEffect(() => {
     if (selectedDate && selectedDate.date) {
-      // 한국 시간으로 날짜 조정 (UTC에서 9시간 차이)
       const localDate = new Date(selectedDate.date);
-      localDate.setHours(localDate.getHours() + 9); // UTC에서 9시간 더하기
+      localDate.setHours(localDate.getHours() + 9);
 
       const formattedDate = localDate.toISOString().split('T')[0];
       setNewSchedule((prevSchedule) => ({
@@ -42,7 +41,7 @@ const CalendarDetail = ({ selectedDate, onClose }) => {
         startDate: formattedDate,
         endDate: formattedDate,
       }));
-      setIsAdd(false); // 날짜 변경 시 편집 모드 초기화
+      setIsAdd(false);
     }
   }, [selectedDate]);
 
@@ -77,10 +76,11 @@ const CalendarDetail = ({ selectedDate, onClose }) => {
     try {
       await api.post('/calendar/create', scheduleData); // 서버에 일정 생성 요청
       console.log("보낸 데이터: ", scheduleData);
-      alert('일정이 추가 되었습니다.');
+      alert("일정이 추가 되었습니다.");
       setIsAdd(false);
       setIsEditing(false);
-      window.location.reload(); // 페이지 새로 고침
+      fetchCalendar();
+      onClose();
     } catch (error) {
       console.error("일정 생성 실패:", error);
     }
@@ -113,24 +113,22 @@ const CalendarDetail = ({ selectedDate, onClose }) => {
     const userId = sessionStorage.getItem('userId');
     const coupleId = sessionStorage.getItem('coupleId');
     //수정한 일정 데이터 유효성 검사
-    if (!editedSchedule.title || !editedSchedule.description || !editedSchedule.location|| !editedSchedule.scope ||
-        !editedSchedule.startDate || !editedSchedule.endDate) {
+    if (!editedSchedule.title || !editedSchedule.description || !editedSchedule.location || !editedSchedule.scope ||
+      !editedSchedule.startDate || !editedSchedule.endDate) {
       alert('모든 필드를 채워주세요.');
       return;
-    }  
+    }
+    console.log('수정 내용', editedSchedule);
     try {
-      const updatedSchedule= await api.put(`/calendar/update`, {
-        userId,
+      await api.put(`/calendar/update`, {
+        createdBy: userId,
         coupleId,
         ...editedSchedule,
       });
       alert('일정이 성공적으로 수정되었습니다.');
       setIsEditing(false);
-      setSchedule((prev) => 
-        prev.map((schedule) => 
-          schedule.id === updatedSchedule.data.id ? updatedSchedule.data : schedule
-        )
-      );
+      onClose();
+      fetchCalendar();
     } catch (error) {
       console.error('일정 수정 실패:', error);
       alert('일정 수정에 실패했습니다.');
@@ -142,7 +140,8 @@ const CalendarDetail = ({ selectedDate, onClose }) => {
     try {
       await api.delete(`/calendar/delete?scheduleId=${scheduleId}`);
       alert('일정이 삭제되었습니다.');
-      window.location.reload(); // 페이지 새로 고침
+      fetchCalendar();
+      window.location.reload();
     } catch (error) {
       console.error('일정 삭제 실패:', error);
       alert('일정 삭제에 실패했습니다.');
@@ -348,42 +347,42 @@ const CalendarDetail = ({ selectedDate, onClose }) => {
             )}
           </div>
 
-        
+
 
           <div className={styles.detailFooter}>
-          <div className={styles.location}>
-            <VscLocation />
-          {isEditing ?(
+            <div className={styles.location}>
+              <VscLocation />
+              {isEditing ? (
                 <input
-                    type='text'
-                    name='location'
-                    value={editedSchedule.location || ''}
-                    onChange={handleInputEditing}>
+                  type='text'
+                  name='location'
+                  value={editedSchedule.location || ''}
+                  onChange={handleInputEditing}>
                 </input>
-          ):(
-        <p>{selectedDate.details[selectedDetailIndex]?.location || '위치 없음'}</p>
-          )}
+              ) : (
+                <p>{selectedDate.details[selectedDetailIndex]?.location || '위치 없음'}</p>
+              )}
             </div>
             <div className={styles.detailScope}>
-            <label>공유 범위:</label>
-              {isEditing ? (                
-                  <select
-                    name='scope'
-                    value={editedSchedule.scope || ''}
-                    onChange={handleInputEditing}              
-                  >                   
-                   <option value="공유">공유</option>
-                   <option value="개인">개인</option> 
-                   </select>
-                   
-              ):(
+              <label>공유 범위:</label>
+              {isEditing ? (
+                <select
+                  name='scope'
+                  value={editedSchedule.scope || ''}
+                  onChange={handleInputEditing}
+                >
+                  <option value="공유">공유</option>
+                  <option value="개인">개인</option>
+                </select>
+
+              ) : (
                 <p>{selectedDate.details[selectedDetailIndex]?.scope || ''}</p>
-              )}      
-              <label>작성일: </label>      
+              )}
+              <label>작성일: </label>
               <p>{selectedDate.details[selectedDetailIndex]?.createdAt || ''}</p>
             </div>
 
-          
+
           </div>
           <div className={styles.detailDate}>
             <label>시작일:</label>
@@ -397,8 +396,8 @@ const CalendarDetail = ({ selectedDate, onClose }) => {
             ) : (
               <p>{selectedDate.details[selectedDetailIndex]?.startDate}</p>
             )}
-         
-        
+
+
             <label>종료일:</label>
             {isEditing ? (
               <input
@@ -440,12 +439,12 @@ const CalendarDetail = ({ selectedDate, onClose }) => {
                         {item.title}
                       </p>
 
-              <button
-                onClick={() => deleteSchedule(selectedDate.details[idx]?.scheduleId)}
-                className={styles.detailScheduleButton}
-              >
-                <VscTrash />
-              </button>
+                      <button
+                        onClick={() => deleteSchedule(selectedDate.details[idx]?.scheduleId)}
+                        className={styles.detailScheduleButton}
+                      >
+                        <VscTrash />
+                      </button>
                     </div>
                   </div>
                 ))

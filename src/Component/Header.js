@@ -8,6 +8,7 @@ import api from "../service/api";
 import userImage from "../assets/img/이미지 없음.jpg";
 import { Stomp } from "@stomp/stompjs"; // Stomp.js 라이브러리
 import SockJS from "sockjs-client"; // SockJS 클라이언트
+import { ToastContainer, toast } from "react-toastify";
 
 // dayjs 라이브러리 설정
 import dayjs from "dayjs";
@@ -34,59 +35,65 @@ const Header = () => {
   };
 
   // API 요청으로 알림 데이터 가져오기
-  useEffect(() => {
-    const fetchAlarm = async () => {
-      try {
-        if (!userId) {
-          alert("로그인 상태가 아닙니다. 로그인 페이지로 이동합니다.");
-          navigate("/");
-          return;
+useEffect(() => {
+  const fetchAlarm = async () => {
+    try {
+      if (!userId) {
+        alert("로그인 상태가 아닙니다. 로그인 페이지로 이동합니다.");
+        navigate("/");
+        return;
+      }
+
+      const response = await api.get(`/notifications/getNotify?userId=${userId}`);
+      setAlarm(response.data); // 알림 목록을 처음에만 가져옴
+    } catch (error) {
+      console.error("Error fetching Alarm:", error);
+    }
+  };
+
+  // 처음에 API로 알림을 가져옵니다.
+  fetchAlarm();
+
+  // WebSocket 연결 및 알림 수신
+  const socket = new SockJS("https://www.ustime-backend.store/ws");
+  const stompClient = Stomp.over(socket);
+
+  stompClient.connect(
+    {},
+    () => {
+      console.log("웹소켓이 연결 되었습니다.");
+      stompClient.subscribe(`/ustime/notifications/${userId}`, (message) => {
+        const newNotification = JSON.parse(message.body);
+
+        // coupleId 확인 및 세션 저장
+        if (newNotification.coupleId) {
+          sessionStorage.setItem("coupleId", newNotification.coupleId);
+          console.log("coupleId가 세션에 저장되었습니다:", newNotification.coupleId);
         }
 
-        const response = await api.get(`/notifications/getNotify?userId=${userId}`);
-        setAlarm(response.data);
-      } catch (error) {
-        console.error("Error fetching Alarm:", error);
-      }
-    };
-
-    fetchAlarm();
-  }, [navigate, userId]);
-
-  useEffect(() => {
-    const socket = new SockJS("https://www.ustime-backend.store/ws");
-    const stompClient = Stomp.over(socket);
-
-    stompClient.connect(
-      {},
-      () => {
-        console.log("웹소켓이 연결 되었습니다.");
-        stompClient.subscribe(`/ustime/notifications/${userId}`, (message) => {
-          const newNotification = JSON.parse(message.body);
-          // coupleId 확인 및 세션 저장
-          if (newNotification.coupleId) {
-            sessionStorage.setItem("coupleId", newNotification.coupleId);
-            console.log("coupleId가 세션에 저장되었습니다:", newNotification.coupleId);
-          }
-          setAlarm((prev) => [newNotification, ...prev]);
-          showPopup(newNotification);
+        // 새 알림만 상태에 추가
+        setAlarm((prev) => [newNotification, ...prev]);
+        toast.info(`새 알림: ${newNotification.message}`, {
+          position: "bottom-center",
+          autoClose: 3000,  // 자동으로 3초 후 사라짐
+          hideProgressBar: true,
+          closeButton: true,
         });
-      },
-      (error) => {
-        console.error("WebSocket 연결 실패:", error);
-      }
-    );
 
-    return () => {
-      if (stompClient) stompClient.disconnect();
-    };
-  }, [userId]); 
+        // 새 알림이 왔을 때만 fetchAlarm 호출
+        fetchAlarm();
+      });
+    },
+    (error) => {
+      console.error("WebSocket 연결 실패:", error);
+    }
+  );
 
-
-
-  const showPopup = (notification) => {
-    alert(`새 알림: ${notification.message}`);
+  // WebSocket 연결 해제 시 연결 종료
+  return () => {
+    if (stompClient) stompClient.disconnect();
   };
+}, [userId, navigate]);
 
 
   // 알림 클릭 처리: 상세 정보 요청 및 모달 열기
@@ -287,6 +294,7 @@ const Header = () => {
           </div>
         </Modal>
       )}
+      <ToastContainer />
     </header>
   );
 };
