@@ -2,7 +2,7 @@ import React from "react";
 import styles from "../assets/style/CheckList.module.scss";
 import CheckListCategory from "./CheckListCategory";
 // 추가할 모달 컴포넌트
-const CheckListModal = ({ isOpen, onClose, selectedCategory, data, handleAddItem}) => {
+const CheckListModal = ({ isOpen, onClose, selectedCategory, data, handleAddItem,handleDeleteItem}) => {
   if (!isOpen) return null;
 
 
@@ -22,7 +22,7 @@ const CheckListModal = ({ isOpen, onClose, selectedCategory, data, handleAddItem
               handleAddItem(selectedCategory, newItem);
             }
           }}
-          
+          onDeleteItem={handleDeleteItem} // 항목 삭제 함수 전달
         />
       ) : (
         <p>선택된 카테고리에 항목이 없습니다.</p>

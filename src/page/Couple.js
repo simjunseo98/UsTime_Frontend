@@ -20,20 +20,19 @@ const Couple = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
-
+  
   //체크리스트 데이터 관리
-  const [data, setData] = useState({
-    장소: [],
-    음식: [],
-    영화: [],
-    데이트:[],
-  });
+  const [장소, set장소] = useState([]);
+  const [음식, set음식] = useState([]);
+  const [영화, set영화] = useState([]);
+  const [데이트, set데이트] = useState([]);
 
+// 카테고리 정보
   const categories = [
-    { title: "장소", key: "장소" },
-    { title: "음식", key: "음식" },
-    { title: "영화", key: "영화" },
-    { title: "데이트", key: "데이트" },
+    { title: "가보고 싶은 곳", key: "장소" },
+    { title: "먹킷 리스트", key: "음식" },
+    { title: "인생 영화", key: "영화" },
+    { title: "데이트 체크", key: "데이트" },
   ];
 
   //체크리스트 모달
@@ -50,31 +49,38 @@ const Couple = () => {
 
    //체크리스트 추가 핸들러
    const handleAddItem = async (category, newItem) => {
-      // 유효성 검사: newItem이 비었는지 확인
-  if (!newItem || !newItem.trim()) {
-    alert("항목 이름을 입력하세요.");
-    return;
-  }
-
-    // 유효성 검사: 유효한 카테고리인지 확인
-    const validCategories = ["장소", "음식", "영화", "데이트"];
+     // 유효성 검사: newItem이 비었는지 확인
+     if (!newItem || !newItem.trim()) {
+       alert("항목 이름을 입력하세요.");
+       return;
+      }
+      
+      // 유효성 검사: 유효한 카테고리인지 확인
+      const validCategories = ["장소", "음식", "영화", "데이트"];
     if (!validCategories.includes(category)) {
       alert("유효하지 않은 카테고리입니다.");
       return;
     }
     // 중복 항목 방지
-  const isDuplicate = data[category]?.some(
-    (item) => item.title.trim().toLowerCase() === newItem.trim().toLowerCase());
-  if (isDuplicate) {
-    alert("이미 존재하는 항목입니다.");
-    return;
-  }
-
+    const isDuplicate = category === "장소"
+    ? 장소.some(item => item.trim().toLowerCase() === newItem.trim().toLowerCase())
+    : category === "음식"
+    ? 음식.some(item => item.trim().toLowerCase() === newItem.trim().toLowerCase())
+    : category === "영화"
+    ? 영화.some(item => item.trim().toLowerCase() === newItem.trim().toLowerCase())
+    : 데이트.some(item => item.trim().toLowerCase() === newItem.trim().toLowerCase());
+  
+    if (isDuplicate) {
+      alert("이미 존재하는 항목입니다.");
+      return;
+    }
+    
     if (!userId || !coupleId) {
       alert("로그인 정보가 없습니다. 다시 로그인 해주세요.");
       return;
     }
     try {
+      console.log("서버로 요청 전: ", { userId, coupleId, category, title: newItem });  // 디버깅: 서버 요청 데이터 확인
       // 서버에 새 항목 저장
       const response = await api.post("/check/add", null, {
         params: {
@@ -88,10 +94,22 @@ const Couple = () => {
 
       if (response.status >=200 && response.status < 300 ) {
         // 로컬 상태 업데이트
-        setData((prev) => ({
-          ...prev,
-          [category]: [...prev[category], response.data[0].title],
-        }));
+        switch (category) {
+          case "장소":
+            set장소((prev) => [...prev, response.data[0].title]);
+            break;
+          case "음식":
+            set음식((prev) => [...prev, response.data[0].title]);
+            break;
+          case "영화":
+            set영화((prev) => [...prev, response.data[0].title]);
+            break;
+          case "데이트":
+            set데이트((prev) => [...prev, response.data[0].title]);
+            break;
+          default:
+            break;
+        }
         alert("항목이 성공적으로 저장되었습니다!");
       }
     } catch (error) {
@@ -111,17 +129,29 @@ const Couple = () => {
     const fetchChecklist = async () => {
       try {
         const response = await api.get(`/check/${coupleId}`);
+        console.log("서버 응답: ", response);  // 디버깅: 서버 응답 데이터 확인
         const checklistData = response.data;
+        console.log("받은 데이터 체크아이디 추출",checklistData[1].checklistId); //체크리스트 id 추출 성공
   
         if (checklistData) {
           // 받은 데이터가 유효한 경우
-          setData({
-            장소: checklistData.filter(item => item.category === "장소").map(item => item.title),
-            음식: checklistData.filter(item => item.category === "음식").map(item => item.title),
-            영화: checklistData.filter(item => item.category === "영화").map(item => item.title),
-            데이트: checklistData.filter(item => item.category === "데이트").map(item => item.title),
-          });
-          console.log("ddd",checklistData);
+          console.log("받은 체크리스트 데이터: ", checklistData);  
+          set장소(checklistData.filter(item => item.category === "장소").map(item =>({ 
+            checklistId:item.checklistId,
+            checked:item.checked,
+            title:item.title})));
+          set음식(checklistData.filter(item => item.category === "음식").map(item =>({ 
+            checklistId:item.checklistId,
+            checked:item.checked,
+            title:item.title})));
+          set영화(checklistData.filter(item => item.category === "영화").map(item =>({ 
+            checklistId:item.checklistId,
+            checked:item.checked,
+            title:item.title})));
+          set데이트(checklistData.filter(item => item.category === "데이트").map(item =>({ 
+            checklistId:item.checklistId,
+            checked:item.checked,
+            title:item.title})));
         } else {
           console.log("서버에 데이터 없음");
         }
@@ -132,29 +162,45 @@ const Couple = () => {
   
     fetchChecklist();
   }, [coupleId]);
-  
+  useEffect(() => {
+    console.log("장소 상태: ", 장소);
+    console.log("음식 상태: ", 음식);
+    console.log("영화 상태: ", 영화);
+    console.log("데이트 상태: ", 데이트);
+  }, [장소, 음식, 영화, 데이트]);  // 상태가 바뀔 때마다 출력
+// 체크리스트 항목 삭제 핸들러
+const handleDeleteItem = async (checklistId, category) => {
+   console.log("삭제할 checklistId:", checklistId, "카테고리: ", category);
+  try {
+    // 서버에서 항목 삭제
+    const response = await api.delete(`/check/delete?checklistId=${checklistId}`);
 
-  // const handleDeleteItem = async (checklistId,category) => {
-  //   console.log("삭제할 checklistId:", checklistId); // checklistId 값 확인
-  //   try {
-  //     // 서버에서 항목 삭제
-  //     const response = await api.delete(`/check/delete?checklistId=${checklistId}`);
-      
-  //     if (response.status === 200) {
-  //       // 로컬 상태에서 항목 삭제
-  //       setData((prev) => ({
-  //         ...prev,
-  //         [category]: prev[category].filter((item) => item.checklistId !== checklistId),
-  //       }));
-  //       alert("항목이 삭제되었습니다!");
-  //     }
-  //   } catch (error) {
-  //     console.error("항목 삭제 실패:", error.response || error);
+    if (response.status === 200) {
+      // 로컬 상태에서 해당 항목 삭제
+      switch (category) {
+        case "장소":
+          set장소((prev) => prev.filter((item) => item.checklistId !== checklistId));
+          break;
+        case "음식":
+          set음식((prev) => prev.filter((item) => item.checklistId !== checklistId));
+          break;
+        case "영화":
+          set영화((prev) => prev.filter((item) => item.checklistId !== checklistId));
+          break;
+        case "데이트":
+          set데이트((prev) => prev.filter((item) => item.checklistId !== checklistId));
+          break;
+        default:
+          break;
+      }
+      alert("항목이 삭제되었습니다!");
+    }
+  } catch (error) {
+    console.error("항목 삭제 실패:", error.response || error);
+    alert("항목 삭제 중 오류가 발생했습니다.");
+  }
+};
 
-  //     alert("항목 삭제 중 오류가 발생했습니다.");
-      
-  //   }
-  // };
 //----------------------------------------------------------------------------------------------
 // 커플 베너
   // 커플 사진 업로드 핸들러
@@ -368,8 +414,9 @@ const Couple = () => {
         <CheckListCategory
           key={key}
           title={title}
-          items={data[key] || []}
+          items={key === "장소" ? 장소 : key === "음식" ? 음식 : key === "영화" ? 영화 : 데이트}
           onAddItem={() => openModal(key)}
+          onDeleteItem={(checklistId)=> handleDeleteItem(key,checklistId)}
         />
       );
 })}
@@ -380,8 +427,9 @@ const Couple = () => {
         isOpen={isModalOpen}
         onClose={closeModal}
         selectedCategory={selectedCategory}
-        data={data}
+        data={{장소,음식,영화,데이트}}
         handleAddItem={handleAddItem}
+        // handleDeleteItem={handleDeleteItem}
       />
 
           <div className={styles.Couple3}>
