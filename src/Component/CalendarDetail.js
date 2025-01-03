@@ -56,13 +56,9 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
 
   // 일정 생성 함수
   const createSchedule = async () => {
-    if (!coupleId || !createdBy) {
-      console.error("Couple ID 또는 CreatedBy가 없습니다.");
-      return;
-    }
 
     const scheduleData = {
-      coupleId,
+      coupleId : coupleId || null,
       title: newSchedule.title,
       description: newSchedule.description,
       startDate: newSchedule.startDate,
@@ -371,7 +367,7 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
                   value={editedSchedule.scope || ''}
                   onChange={handleInputEditing}
                 >
-                  <option value="공유">공유</option>
+                  {!coupleId && <option value="공유">공유</option>}
                   <option value="개인">개인</option>
                 </select>
 
