@@ -71,15 +71,10 @@ const Header = () => {
             console.log("coupleId가 세션에 저장되었습니다:", newNotification.coupleId);
           }
 
-          // 알림 메시지 결정 (coupleId 여부에 따라 다르게 처리)
-          const notificationMessage = newNotification.coupleId
-            ? newNotification.notification.message
-            : newNotification.message;
-
           // 새 알림만 상태에 추가
           setAlarm((prev) => [newNotification, ...prev]);
 
-          toast.info(`새 알림: ${notificationMessage}`, {
+          toast.info(`새 알림: ${newNotification.message}`, {
             position: "bottom-center",
             autoClose: 3000,  // 자동으로 3초 후 사라짐
             hideProgressBar: true,
