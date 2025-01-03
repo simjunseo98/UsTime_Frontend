@@ -4,6 +4,8 @@ import moment from 'moment';
 import styles from '../assets/style/Main.module.scss';
 import api from "../service/api";
 import CalendarDetail from "./CalendarDetail";
+import { Stomp } from "@stomp/stompjs"; // Stomp.js 라이브러리
+import SockJS from "sockjs-client"; // SockJS 클라이언트
 
 const CalendarComponent = (props) => {
     const userId = sessionStorage.getItem("userId");
@@ -23,18 +25,17 @@ const CalendarComponent = (props) => {
                 userId,
                 scope: scheduleScope,
             };
-            console.log('커플아이디',coupleId);
+
             if (coupleId) {
                 params.coupleId = coupleId;
             }
-            console.log("params",params);
             const response = await api.get('/calendar/all', { params });
-    
+
             const scheduleData = response.data.reduce((acc, curr) => {
                 const startDate = moment(curr.startDate);
                 const endDate = moment(curr.endDate);
                 let currentDate = startDate.clone();
-    
+
                 // startDate부터 endDate까지 반복하면서 일정 추가
                 while (currentDate.isBefore(endDate) || currentDate.isSame(endDate, 'day')) {
                     const dateString = currentDate.format('YYYY-MM-DD');
@@ -52,12 +53,12 @@ const CalendarComponent = (props) => {
                         scope: curr.scope,
                         createdAt: curr.createdAt,
                     });
-                    currentDate.add(1, 'days'); 
+                    currentDate.add(1, 'days');
                 }
-    
+
                 return acc;
             }, {});
-    
+
             setSchedules(scheduleData);
         } catch (error) {
             console.error("전체 일정 가져오기 실패:", error);
@@ -68,6 +69,31 @@ const CalendarComponent = (props) => {
     useEffect(() => {
         fetchCalendar();
     }, [fetchCalendar]); // 의존성 배열에 fetchCalendar 추가
+
+    // WebSocket 연결
+    useEffect(() => {
+        const socket = new SockJS("https://www.ustime-backend.store/ws");
+        const stompClient = Stomp.over(socket);
+
+        stompClient.connect(
+            {},
+            () => {
+                console.log("웹소켓이 연결되었습니다.(캘린더)");
+                stompClient.subscribe(`/ustime/notifications/${userId}`, () => {
+                    // 새 알림이 왔을 때만 캘린더를 새로 고침
+                    fetchCalendar();
+                });
+            },
+            (error) => {
+                console.error("WebSocket 연결 실패:", error);
+            }
+        );
+
+        // WebSocket 연결 해제 시 연결 종료
+        return () => {
+            if (stompClient) stompClient.disconnect();
+        };
+    }, [userId, fetchCalendar]);
 
     const fetchSchedulesForDate = (date) => {
         const dateString = moment(date).format('YYYY-MM-DD');
@@ -166,18 +192,18 @@ const CalendarComponent = (props) => {
             <div className={styles.calendarWrapper}>
                 {/* 일정 범위 선택 콤보박스 */}
                 <div className={styles.calendarContainer}>
-                <div className={styles.scopeSelector}>
-                    <label htmlFor="scope">일정 표시:</label>
-                    <select
-                        id="scope"
-                        value={scheduleScope}
-                        onChange={(e) => setScheduleScope(e.target.value)}
-                    >
-                        <option value="개인">개인</option>
-                        {coupleId && <option value="공유">공유</option>}
-                        {coupleId && <option value="전체">전체</option>}
-                    </select>
-                </div>
+                    <div className={styles.scopeSelector}>
+                        <label htmlFor="scope">일정 표시:</label>
+                        <select
+                            id="scope"
+                            value={scheduleScope}
+                            onChange={(e) => setScheduleScope(e.target.value)}
+                        >
+                            <option value="개인">개인</option>
+                            {coupleId && <option value="공유">공유</option>}
+                            {coupleId && <option value="전체">전체</option>}
+                        </select>
+                    </div>
                     <Calendar
                         onChange={onChange}
                         value={value}
