@@ -4,6 +4,11 @@ import styles from '../assets/style/Main.module.scss';
 import { VscArrowLeft, VscEdit, VscLocation, VscTrash } from "react-icons/vsc";
 
 const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
+  // 세션에서 coupleId와 createdBy를 가져옵니다.
+  const isCoupleId = sessionStorage.getItem('coupleId');
+  const coupleId = isCoupleId === null || isCoupleId === 'undefined' ? null : isCoupleId;
+  const createdBy = sessionStorage.getItem('userId');
+
   const [selectedDetailIndex, setSelectedDetailIndex] = useState(null); // 클릭된 일정의 인덱스
   const [isAdd, setIsAdd] = useState(false); // 일정 추가 여부
   const [schedule, setSchedule] = useState(null); // 수정할 일정 인덱스
@@ -16,12 +21,9 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
     endDate: selectedDate ? selectedDate.date : '',
     label: '빨강', 
     location: '',
-    scope: '공유', 
+    scope: coupleId ? '공유' : '개인',  //coupleId가 없으면 초기값 개인으로 세팅
   });
 
-  // 세션에서 coupleId와 createdBy를 가져옵니다.
-  const coupleId = Number(sessionStorage.getItem('coupleId'));
-  const createdBy = Number(sessionStorage.getItem('userId'));
 
   // 날짜 변경 시 상세보기 목록 초기화
   useEffect(() => {
@@ -257,7 +259,7 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
               onChange={handleInputChange}
               className={styles.select}
             >
-              <option value="공유">공유</option>
+              {coupleId && <option value="공유">공유</option>}
               <option value="개인">개인</option>
             </select>
           </div>
@@ -367,7 +369,7 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
                   value={editedSchedule.scope || ''}
                   onChange={handleInputEditing}
                 >
-                  {!coupleId && <option value="공유">공유</option>}
+                  {coupleId && <option value="공유">공유</option>}
                   <option value="개인">개인</option>
                 </select>
 

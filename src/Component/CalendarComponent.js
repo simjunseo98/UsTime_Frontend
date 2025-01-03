@@ -8,7 +8,7 @@ import CalendarDetail from "./CalendarDetail";
 const CalendarComponent = (props) => {
     const userId = sessionStorage.getItem("userId");
     const isCoupleId = sessionStorage.getItem("coupleId");
-    const coupleId = isCoupleId === null || isCoupleId === undefined ? null : isCoupleId;
+    const coupleId = isCoupleId === null || isCoupleId === 'undefined' ? null : isCoupleId;
 
     const [value, onChange] = useState(new Date()); // 달력의 현재 날짜 상태
     const [schedules, setSchedules] = useState({}); // 전체 일정을 저장하는 객체
@@ -23,10 +23,11 @@ const CalendarComponent = (props) => {
                 userId,
                 scope: scheduleScope,
             };
-    
+            console.log('커플아이디',coupleId);
             if (coupleId) {
                 params.coupleId = coupleId;
             }
+            console.log("params",params);
             const response = await api.get('/calendar/all', { params });
     
             const scheduleData = response.data.reduce((acc, curr) => {
@@ -173,8 +174,7 @@ const CalendarComponent = (props) => {
                         onChange={(e) => setScheduleScope(e.target.value)}
                     >
                         <option value="개인">개인</option>
-                        <option value="공유">공유</option>
-                        {/* {coupleId && <option value="공유">공유</option>} */}
+                        {coupleId && <option value="공유">공유</option>}
                         {coupleId && <option value="전체">전체</option>}
                     </select>
                 </div>
