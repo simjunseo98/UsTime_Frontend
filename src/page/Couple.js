@@ -49,7 +49,7 @@ const Couple = () => {
 const updateCategoryState = (category, newItem) => {
   const newStateItem = { 
     checklistId: newItem.checklistId, 
-    checked: newItem.isChecked ?? false, 
+    checked: newItem.isChecked, 
     title: newItem.title };
 
   switch (category) {
@@ -127,14 +127,14 @@ useEffect(() => {
     try {
       const response = await api.get(`/check/${coupleId}`);
       const checklistData = response.data;
-
+      console.log("데이터",checklistData);
       if (checklistData) {
         const initializeChecklist = (category) =>
           checklistData
             .filter((item) => item.category === category)
             .map((item) => ({
               checklistId: item.checklistId,
-              isChecked: item.isChecked ?? false, // isChecked 기본값 설정
+              isChecked: item.isChecked,
               title: item.title,
             }));
 
