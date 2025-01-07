@@ -9,8 +9,6 @@ const Couple = () => {
   const [dDay, setDDay] = useState("");
   const [daysPassed, setDaysPassed] = useState(null);
   const [specialDays, setSpecialDays] = useState([]);
-  const [inputDays, setInputDays] = useState("");
-  const [calculatedDates, setCalculatedDates] = useState([]);
 
   const maxtoday = new Date().toISOString().split("T")[0];
 
@@ -47,133 +45,119 @@ const Couple = () => {
   };
 
 
-   //체크리스트 추가 핸들러
-   const handleAddItem = async (category, newItem) => {
-     // 유효성 검사: newItem이 비었는지 확인
-     if (!newItem || !newItem.trim()) {
-       alert("항목 이름을 입력하세요.");
-       return;
-      }
-      
-      // 유효성 검사: 유효한 카테고리인지 확인
-      const validCategories = ["장소", "음식", "영화", "데이트"];
-    if (!validCategories.includes(category)) {
-      alert("유효하지 않은 카테고리입니다.");
-      return;
-    }
-    // 중복 항목 방지
-    const isDuplicate = category === "장소"
-    ? 장소.some(item => item.trim().toLowerCase() === newItem.trim().toLowerCase())
-    : category === "음식"
-    ? 음식.some(item => item.trim().toLowerCase() === newItem.trim().toLowerCase())
-    : category === "영화"
-    ? 영화.some(item => item.trim().toLowerCase() === newItem.trim().toLowerCase())
-    : 데이트.some(item => item.trim().toLowerCase() === newItem.trim().toLowerCase());
-  
-    if (isDuplicate) {
-      alert("이미 존재하는 항목입니다.");
-      return;
-    }
-    
-    if (!userId || !coupleId) {
-      alert("로그인 정보가 없습니다. 다시 로그인 해주세요.");
-      return;
-    }
-    try {
-      console.log("서버로 요청 전: ", { userId, coupleId, category, title: newItem });  // 디버깅: 서버 요청 데이터 확인
-      // 서버에 새 항목 저장
-      const response = await api.post("/check/add", null, {
-        params: {
-          userId,
-          coupleId,
-          category,
-          title: newItem,
-        },
-     });
-     
+  // 공통 상태 업데이트 함수
+const updateCategoryState = (category, newItem) => {
+  const newStateItem = { 
+    checklistId: newItem.checklistId, 
+    checked: newItem.isChecked ?? false, 
+    title: newItem.title };
 
-      if (response.status >=200 && response.status < 300 ) {
-        // 로컬 상태 업데이트
-        switch (category) {
-          case "장소":
-            set장소((prev) => [...prev, response.data[0].title]);
-            break;
-          case "음식":
-            set음식((prev) => [...prev, response.data[0].title]);
-            break;
-          case "영화":
-            set영화((prev) => [...prev, response.data[0].title]);
-            break;
-          case "데이트":
-            set데이트((prev) => [...prev, response.data[0].title]);
-            break;
-          default:
-            break;
-        }
-        alert("항목이 성공적으로 저장되었습니다!");
+  switch (category) {
+    case "장소":
+      set장소((prev) => [...prev, newStateItem]);
+      break;
+    case "음식":
+      set음식((prev) => [...prev, newStateItem]);
+      break;
+    case "영화":
+      set영화((prev) => [...prev, newStateItem]);
+      break;
+    case "데이트":
+      set데이트((prev) => [...prev, newStateItem]);
+      break;
+    default:
+      console.warn("알 수 없는 카테고리:", category);
+      break;
+  }
+};
+
+// 체크리스트 추가 핸들러
+const handleAddItem = async (category, newItem) => {
+  if (!newItem || !newItem.trim()) {
+    alert("항목 이름을 입력하세요.");
+    return;
+  }
+
+  if (!userId || !coupleId) {
+    alert("로그인 정보가 없습니다. 다시 로그인 해주세요.");
+    return;
+  }
+
+  try {
+    const response = await api.post("/check/add", null, {
+      params: { userId, coupleId, category, title: newItem },
+    });
+
+    if (response.status >= 200 && response.status < 300) {
+      const addedItem = response.data[0];
+       // isChecked 값이 없을 경우 false로 기본값 설정
+       updateCategoryState(category, { ...addedItem, isChecked: addedItem.isChecked ?? false });
+     // 각 카테고리별로 추가된 항목 상태 업데이트
+     switch (category) {
+      case "장소":
+        set장소((prev) => [...prev, response.data[0].title]);
+        break;
+      case "음식":
+        set음식((prev) => [...prev, response.data[0].title]);
+        break;
+      case "영화":
+        set영화((prev) => [...prev, response.data[0].title]);
+        break;
+      case "데이트":
+        set데이트((prev) => [...prev, response.data[0].title]);
+        break;
+      default:
+        break;
+    }
+  }
+  } catch (error) {
+    console.error("항목 추가 실패:", error.response || error);
+    alert("항목 추가 중 오류가 발생했습니다.");
+  }
+};
+
+// 체크리스트 불러오기
+useEffect(() => {
+  if (!coupleId) {
+    console.error("유효하지 않은 coupleId:", coupleId);
+    return;
+  }
+
+  const fetchChecklist = async () => {
+    try {
+      const response = await api.get(`/check/${coupleId}`);
+      const checklistData = response.data;
+
+      if (checklistData) {
+        const initializeChecklist = (category) =>
+          checklistData
+            .filter((item) => item.category === category)
+            .map((item) => ({
+              checklistId: item.checklistId,
+              isChecked: item.isChecked ?? false, // isChecked 기본값 설정
+              title: item.title,
+            }));
+
+        set장소(initializeChecklist("장소"));
+        set음식(initializeChecklist("음식"));
+        set영화(initializeChecklist("영화"));
+        set데이트(initializeChecklist("데이트"));
+      } else {
+        console.log("서버에 데이터 없음");
       }
     } catch (error) {
-      console.error("항목 추가 실패:", error.response|| error
-      );
-      alert("항목 추가 중 오류가 발생했습니다.");
+      console.error("체크리스트 데이터를 가져오는 데 실패했습니다:", error);
     }
   };
 
-  //체크 리스트 불러오기
-  useEffect(() => {
-    if (!coupleId) {
-      console.error("유효하지 않은 coupleId:", coupleId);
-      return;
-    }
-  
-    const fetchChecklist = async () => {
-      try {
-        const response = await api.get(`/check/${coupleId}`);
-        console.log("서버 응답: ", response);  // 디버깅: 서버 응답 데이터 확인
-        const checklistData = response.data;
-        console.log("받은 데이터 체크아이디 추출",checklistData[1].checklistId); //체크리스트 id 추출 성공
-  
-        if (checklistData) {
-          // 받은 데이터가 유효한 경우
-          console.log("받은 체크리스트 데이터: ", checklistData);  
-          set장소(checklistData.filter(item => item.category === "장소").map(item =>({ 
-            checklistId:item.checklistId,
-            checked:item.checked,
-            title:item.title})));
-          set음식(checklistData.filter(item => item.category === "음식").map(item =>({ 
-            checklistId:item.checklistId,
-            checked:item.checked,
-            title:item.title})));
-          set영화(checklistData.filter(item => item.category === "영화").map(item =>({ 
-            checklistId:item.checklistId,
-            checked:item.checked,
-            title:item.title})));
-          set데이트(checklistData.filter(item => item.category === "데이트").map(item =>({ 
-            checklistId:item.checklistId,
-            checked:item.checked,
-            title:item.title})));
-        } else {
-          console.log("서버에 데이터 없음");
-        }
-      } catch (error) {
-        console.error("체크리스트 데이터를 가져오는 데 실패했습니다:", error);
-      }
-    };
-  
-    fetchChecklist();
-  }, [coupleId]);
-  useEffect(() => {
-    console.log("장소 상태: ", 장소);
-    console.log("음식 상태: ", 음식);
-    console.log("영화 상태: ", 영화);
-    console.log("데이트 상태: ", 데이트);
-  }, [장소, 음식, 영화, 데이트]);  // 상태가 바뀔 때마다 출력
+  fetchChecklist();
+}, [coupleId]);
+
 // 체크리스트 항목 삭제 핸들러
 const handleDeleteItem = async (checklistId, category) => {
-   console.log("삭제할 checklistId:", checklistId, "카테고리: ", category);
   try {
     // 서버에서 항목 삭제
-    const response = await api.delete(`/check/delete?checklistId=${checklistId}`);
+    const response = await api.delete(`/check/delete/${checklistId}`);
 
     if (response.status === 200) {
       // 로컬 상태에서 해당 항목 삭제
@@ -193,7 +177,6 @@ const handleDeleteItem = async (checklistId, category) => {
         default:
           break;
       }
-      alert("항목이 삭제되었습니다!");
     }
   } catch (error) {
     console.error("항목 삭제 실패:", error.response || error);
@@ -295,21 +278,8 @@ const handleDeleteItem = async (checklistId, category) => {
     }
   }, [coupleId, fetchAnniversary]); // fetchAnniversary가 변경될 때마다 호출
 
-  const handleDaysInput = (e) => setInputDays(e.target.value);
 
-  const calculateDates = async (e) => {
-    e.preventDefault();
-    const days = parseInt(inputDays);
-    if (days && dDay) {
-      try {
-        const response = await api.post("/couple/calculateSpecialDays", { coupleId, days, dDay });
-        setCalculatedDates(response.data);
-      } catch (error) {
-        console.error("기념일 계산 실패:", error);
-        alert("기념일 계산 중 오류가 발생했습니다. 다시 시도해주세요.");
-      }
-    }
-  }; 
+
   return (
     <div className={styles.CoupleContainer}>
       <div
@@ -350,35 +320,14 @@ const handleDeleteItem = async (checklistId, category) => {
 
       <div className={styles.CoupleContent}>
         <div className={styles.CoupleContentContainer}>
-          <div className={styles.ScheduleCalculate}>
-            <form onSubmit={calculateDates}>
-              <h2>@ 일정 계산기 (날짜) @</h2>
-              <input
-                type="number"
-                min="1"
-                max="10000"
-                value={inputDays}
-                onChange={handleDaysInput} // 일정 계산기 입력값 처리
-                required
-              />
-              일
-              <button type="submit">계산 하기</button>
-            </form>
+          <div className={styles.CoupleNavigate}>
+               바로 가기 키
+               <div></div>
+               <div></div>
+               <div></div>
           </div>
-
-          <div className={styles.CoupleDdayResult}>
-            <h2>@ 계산된 기념일 @</h2>
-            {calculatedDates.length > 0 ? (
-              <ul>
-                {calculatedDates.slice(0, 3).map((item, index) => (
-                  <li key={index}>
-                    {item.date} ({item.weekday}) - {item.priority === 1 ? "1순위: 평일 일정 없음" : "2순위: 주말 일정 없음"}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>계산된 일정이 없습니다. 날짜를 입력해주세요.</p>
-            )}
+          <div className={styles.CoupleScheduleResult}>
+            <h2>다가오는 일정</h2>  
           </div>
 
           <div className={styles.CoupleDdayCalculate}>
@@ -416,7 +365,7 @@ const handleDeleteItem = async (checklistId, category) => {
           title={title}
           items={key === "장소" ? 장소 : key === "음식" ? 음식 : key === "영화" ? 영화 : 데이트}
           onAddItem={() => openModal(key)}
-          onDeleteItem={(checklistId)=> handleDeleteItem(key,checklistId)}
+          onDeleteItem={(checklistId)=> handleDeleteItem(checklistId)}
         />
       );
 })}
@@ -429,7 +378,7 @@ const handleDeleteItem = async (checklistId, category) => {
         selectedCategory={selectedCategory}
         data={{장소,음식,영화,데이트}}
         handleAddItem={handleAddItem}
-        // handleDeleteItem={handleDeleteItem}
+        handleDeleteItem={handleDeleteItem}
       />
 
           <div className={styles.Couple3}>
