@@ -49,7 +49,7 @@ const Couple = () => {
 const updateCategoryState = (category, newItem) => {
   const newStateItem = { 
     checklistId: newItem.checklistId, 
-    checked: newItem.isChecked, 
+    ishecked: newItem.isChecked, 
     title: newItem.title };
 
   switch (category) {

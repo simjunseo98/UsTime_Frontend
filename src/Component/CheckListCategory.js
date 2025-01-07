@@ -63,7 +63,7 @@ const CheckListCategory = ({title,items, onAddItem,onDeleteItem}) => {
             <li key={item.checklistId} className={styles.CheckListItem}>
               <input
                 type="checkbox"
-                checked={item.isChecked || false}
+                checked={item.isChecked}
                 onChange={() =>{ 
                   console.log("체크 확인",item.isChecked);
                   handleCheck(index)}}
