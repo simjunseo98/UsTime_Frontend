@@ -4,14 +4,15 @@ import { VscTrash } from "react-icons/vsc";
 import api from "../service/api.js";
 
 const CheckListCategory = ({title,items, onAddItem,onDeleteItem}) => {
-  const [itemList, setItemList] = useState([]);
+  const [itemList, setItemList] = useState(items ||[]);
+
 
   // 부모 컴포넌트의 items와 동기화
   useEffect(() => {
     setItemList(items); // 상태 업데이트
   }, [items]); // items가 변경될 때마다 이 useEffect가 호출됨
   
-  // 체크 상태 변경 및 checklistId 추출
+  // 체크 상태 변경
   const handleCheck = async (index) => {
     try {
         // 유효성 검사
@@ -20,16 +21,10 @@ const CheckListCategory = ({title,items, onAddItem,onDeleteItem}) => {
       console.error("잘못된 index 또는 itemList가 비어 있습니다.");
       return;
     }
-      console.log("요청 데이터:", {
-        checklistId: currentItem.checklistId,
-        isChecked: !currentItem.isChecked,
-      });
-      
+      const isChecked = !currentItem.isChecked;
+      const url = `/check/update/${currentItem.checklistId}?isChecked=${isChecked}`;
       // 서버 요청
-      await api.put(`/check/update/${currentItem.checklistId}`, {    
-        checklistId: currentItem.checklistId,
-        isChecked: !currentItem.checked,
-      });
+      await api.put(url);
   
       // 상태 업데이트
       setItemList((prevList) =>
@@ -70,10 +65,7 @@ const CheckListCategory = ({title,items, onAddItem,onDeleteItem}) => {
                 type="checkbox"
                 checked={item.isChecked || false}
                 onChange={() =>{ 
-                  console.log("체크 확인:", item?.isChecked); // 안전하게 접근
-                  console.log("아이템 확인: ",item.checklistId);
-                  console.log("인덱스 확인:", index);
-                  console.log("항목 확인:", itemList);  // index에 맞는 항목 로그
+                  console.log("체크 확인",item.isChecked);
                   handleCheck(index)}}
               />
               <span className={item.isChecked ? styles.CheckedItem : styles.UncheckedItem}>
