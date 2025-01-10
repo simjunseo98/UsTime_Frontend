@@ -4,19 +4,19 @@ import moment from 'moment';
 import styles from '../../assets/style/Calendar/Main.module.scss';
 import api from "../../service/api.js";
 import CalendarDetail from "../Calendar/CalendarDetail";
-import { Stomp } from "@stomp/stompjs"; // Stomp.js 라이브러리
-import SockJS from "sockjs-client"; // SockJS 클라이언트
+import { connectWebSocket, disconnectWebSocket } from "../../service/WebSocket"; // 서비스에서 WebSocket 연결
+import { getLabelColor } from "../../utils/getLabelColor";
 
 const CalendarComponent = () => {
     const userId = sessionStorage.getItem("userId");
     const isCoupleId = sessionStorage.getItem("coupleId");
     const coupleId = isCoupleId === null || isCoupleId === 'undefined' ? null : isCoupleId;
 
-    const [value, onChange] = useState(new Date()); // 달력의 현재 날짜 상태
-    const [schedules, setSchedules] = useState({}); // 전체 일정을 저장하는 객체
-    const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜의 일정
-    const [isSidePanelOpen, setIsSidePanelOpen] = useState(false); // 사이드 패널 열림 상태
-    const [scheduleScope, setScheduleScope] = useState("전체"); // 일정 범위 (개인, 공유, 전체)
+    const [value, onChange] = useState(new Date());
+    const [schedules, setSchedules] = useState({});
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
+    const [scheduleScope, setScheduleScope] = useState("전체");
 
     // 전체 캘린더 일정 가져오는 함수
     const fetchCalendar = useCallback(async () => {
@@ -29,6 +29,7 @@ const CalendarComponent = () => {
             if (coupleId) {
                 params.coupleId = coupleId;
             }
+
             const response = await api.get('/calendar/all', { params });
 
             const scheduleData = response.data.reduce((acc, curr) => {
@@ -63,41 +64,25 @@ const CalendarComponent = () => {
         } catch (error) {
             console.error("전체 일정 가져오기 실패:", error);
         }
-    }, [scheduleScope, coupleId, userId]); // 의존성 배열에 추가
+    }, [scheduleScope, coupleId, userId]);
 
-    // 캘린더가 변경될 때마다 일정을 갱신
     useEffect(() => {
         fetchCalendar();
-    }, [fetchCalendar]); // 의존성 배열에 fetchCalendar 추가
+    }, [fetchCalendar]);
 
     // WebSocket 연결
     useEffect(() => {
-        const socket = new SockJS("https://www.ustime-backend.store/ws");
-        const stompClient = Stomp.over(socket);
-
-        stompClient.connect(
-            {},
-            () => {
-                console.log("웹소켓이 연결되었습니다.(캘린더)");
-                stompClient.subscribe(`/ustime/notifications/${userId}`, () => {
-                    // 새 알림이 왔을 때만 캘린더를 새로 고침
-                    fetchCalendar();
-                });
-            },
-            (error) => {
-                console.error("WebSocket 연결 실패:", error);
-            }
-        );
+        const stompClient = connectWebSocket(userId, fetchCalendar);
 
         // WebSocket 연결 해제 시 연결 종료
         return () => {
-            if (stompClient) stompClient.disconnect();
+            disconnectWebSocket(stompClient);
         };
     }, [userId, fetchCalendar]);
 
     const fetchSchedulesForDate = (date) => {
         const dateString = moment(date).format('YYYY-MM-DD');
-        const dateSchedules = schedules[dateString] || []; // 해당 날짜의 일정 가져오기
+        const dateSchedules = schedules[dateString] || [];
         setSelectedDate({
             date,
             details: dateSchedules,
@@ -111,7 +96,7 @@ const CalendarComponent = () => {
     }, [scheduleScope]);
 
     const onDateClick = (date) => {
-        fetchSchedulesForDate(date); // 클릭된 날짜의 일정 처리
+        fetchSchedulesForDate(date);
     };
 
     const scheduleTileContent = ({ date, view }) => {
@@ -154,23 +139,6 @@ const CalendarComponent = () => {
         return null;
     };
 
-    const getLabelColor = (label) => {
-        switch (label) {
-            case '빨강':
-                return '#ff6347';
-            case '초록':
-                return '#32cd32';
-            case '파랑':
-                return '#1e90ff';
-            case '핑크':
-                return '#f89cf0';
-            case '보라':
-                return '#7a3689';
-            default:
-                return '#d3d3d3';
-        }
-    };
-
     const tileClassName = ({ date, view }) => {
         if (view === "month") {
             const isNeighboringMonth =
@@ -188,45 +156,43 @@ const CalendarComponent = () => {
     };
 
     return (
-        <>
-            <div className={styles.calendarWrapper}>
-                {/* 일정 범위 선택 콤보박스 */}
-                <div className={styles.calendarContainer}>
-                    <div className={styles.scopeSelector}>
-                        <label htmlFor="scope">일정 표시:</label>
-                        <select
-                            id="scope"
-                            value={scheduleScope}
-                            onChange={(e) => setScheduleScope(e.target.value)}
-                        >
-                            <option value="개인">개인</option>
-                            {coupleId && <option value="공유">공유</option>}
-                            {coupleId && <option value="전체">전체</option>}
-                        </select>
-                    </div>
-                    <Calendar
-                        onChange={onChange}
-                        value={value}
-                        formatDay={(local, date) => moment(date).format("D")}
-                        locale="en"
-                        calendarType="hebrew"
-                        showNeighboringMonth={true}
-                        next2Label={null}
-                        prev2Label={null}
-                        onClickDay={onDateClick}
-                        tileContent={scheduleTileContent}
-                        tileClassName={tileClassName}
-                    />
+        <div className={styles.calendarWrapper}>
+            {/* 일정 범위 선택 콤보박스 */}
+            <div className={styles.calendarContainer}>
+                <div className={styles.scopeSelector}>
+                    <label htmlFor="scope">일정 표시:</label>
+                    <select
+                        id="scope"
+                        value={scheduleScope}
+                        onChange={(e) => setScheduleScope(e.target.value)}
+                    >
+                        <option value="개인">개인</option>
+                        {coupleId && <option value="공유">공유</option>}
+                        {coupleId && <option value="전체">전체</option>}
+                    </select>
                 </div>
-                {isSidePanelOpen && (
-                    <CalendarDetail
-                        selectedDate={selectedDate}
-                        onClose={() => setIsSidePanelOpen(false)}
-                        fetchCalendar={fetchCalendar}
-                    />
-                )}
+                <Calendar
+                    onChange={onChange}
+                    value={value}
+                    formatDay={(local, date) => moment(date).format("D")}
+                    locale="en"
+                    calendarType="hebrew"
+                    showNeighboringMonth={true}
+                    next2Label={null}
+                    prev2Label={null}
+                    onClickDay={onDateClick}
+                    tileContent={scheduleTileContent}
+                    tileClassName={tileClassName}
+                />
             </div>
-        </>
+            {isSidePanelOpen && (
+                <CalendarDetail
+                    selectedDate={selectedDate}
+                    onClose={() => setIsSidePanelOpen(false)}
+                    fetchCalendar={fetchCalendar}
+                />
+            )}
+        </div>
     );
 };
 

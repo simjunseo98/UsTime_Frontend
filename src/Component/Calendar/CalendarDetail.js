@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import api from "../../service/api.js";
+import api from "../../service/api";
 import styles from '../../assets/style/Calendar/Main.module.scss';
+import { getLabelColor } from '../../utils/getLabelColor';
 import { VscArrowLeft, VscEdit, VscLocation, VscTrash } from "react-icons/vsc";
 
 const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
@@ -116,7 +117,6 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
       alert('모든 필드를 채워주세요.');
       return;
     }
-    console.log('수정 내용', editedSchedule);
     try {
       await api.put(`/calendar/update`, {
         createdBy: userId,
@@ -157,22 +157,6 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
     setIsEditing(false);
   };
 
-  const getLabelColor = (label) => {
-    switch (label) {
-      case '빨강':
-        return '#ff6347';
-      case '초록':
-        return '#32cd32';
-      case '파랑':
-        return '#1e90ff';
-      case '핑크':
-        return '#f89cf0';
-      case '보라':
-        return '#7a3689';
-      default:
-        return '#d3d3d3';
-    }
-  };
 
   return (
     <div className={styles.sidepanel}>
@@ -432,7 +416,7 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
                       <p
                         className={styles.scheduleTitles}
                         onClick={() => handleTitleClick(idx)}
-                        style={{ backgroundColor: getLabelColor(item.label) }} // 색상
+                        style={{ backgroundColor: getLabelColor(item.label) }}
                       >
                         {item.title}
                       </p>

@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../../service/api";
+import { connectWebSocket, disconnectWebSocket } from "../../service/WebSocket"; // WebSocket 관련 함수 import
 import Sidebar from "./Sidebar";
 import Modal from "./Modal";
 import styles from "../../assets/style/Common/Header.module.scss";
 import { VscBell, VscMenu } from "react-icons/vsc";
-import { useNavigate } from "react-router-dom";
-import api from "../../service/api";
 import userImage from "../../assets/img/이미지 없음.jpg";
-import { Stomp } from "@stomp/stompjs"; // Stomp.js 라이브러리
-import SockJS from "sockjs-client"; // SockJS 클라이언트
 import { ToastContainer, toast } from "react-toastify";
 
 // dayjs 라이브러리 설정
@@ -34,67 +33,48 @@ const Header = () => {
     setAlarmOpen(!alarmOpen);
   };
 
-  // API 요청으로 알림 데이터 가져오기
-  useEffect(() => {
-    const fetchAlarm = async () => {
-      try {
-        if (!userId) {
-          alert("로그인 상태가 아닙니다. 로그인 페이지로 이동합니다.");
-          navigate("/");
-          return;
-        }
+// API 요청으로 알림 데이터 가져오기
+const fetchAlarm = async () => {
+  try {
+    const response = await api.get(`/notifications/getNotify?userId=${userId}`);
+    setAlarm(response.data); // 알림 목록을 처음에만 가져옴
+  } catch (error) {
+    console.error("알람 불러오기 실패:", error);
+  }
+};
 
-        const response = await api.get(`/notifications/getNotify?userId=${userId}`);
-        setAlarm(response.data); // 알림 목록을 처음에만 가져옴
-      } catch (error) {
-        console.error("Error fetching Alarm:", error);
-      }
-    };
+// WebSocket에서 메시지를 받았을 때 처리하는 함수
+const handleNewNotification = (newNotification) => {
+  //커플ID 가 오면 세션에 저장
+  if (newNotification.coupleId) {
+    sessionStorage.setItem("coupleId", newNotification.coupleId);
+  }
 
-    // 처음에 API로 알림을 가져옵니다.
-    fetchAlarm();
+  // 새 알림만 상태에 추가
+  setAlarm((prev) => [newNotification, ...prev]);
 
-    // WebSocket 연결 및 알림 수신
-    const socket = new SockJS("https://www.ustime-backend.store/ws");
-    const stompClient = Stomp.over(socket);
+  toast.info(`새 알림: ${newNotification.message}`, {
+    position: "bottom-center",
+    autoClose: 3000,  // 자동으로 3초 후 사라짐
+    hideProgressBar: true,
+    closeButton: true,
+  });
 
-    stompClient.connect(
-      {},
-      () => {
-        console.log("웹소켓이 연결 되었습니다.");
-        stompClient.subscribe(`/ustime/notifications/${userId}`, (message) => {
-          const newNotification = JSON.parse(message.body);
+  // 새 알림이 왔을 때만 fetchAlarm 호출
+  fetchAlarm();
+};
 
-          // coupleId 확인 및 세션 저장
-          if (newNotification.coupleId) {
-            sessionStorage.setItem("coupleId", newNotification.coupleId);
-            console.log("coupleId가 세션에 저장되었습니다:", newNotification.coupleId);
-          }
+useEffect(() => {
+  fetchAlarm();
 
-          // 새 알림만 상태에 추가
-          setAlarm((prev) => [newNotification, ...prev]);
+  // WebSocket 연결 및 알림 수신
+  const stompClient = connectWebSocket(userId, handleNewNotification);
 
-          toast.info(`새 알림: ${newNotification.message}`, {
-            position: "bottom-center",
-            autoClose: 3000,  // 자동으로 3초 후 사라짐
-            hideProgressBar: true,
-            closeButton: true,
-          });
-
-          // 새 알림이 왔을 때만 fetchAlarm 호출
-          fetchAlarm();
-        });
-      },
-      (error) => {
-        console.error("WebSocket 연결 실패:", error);
-      }
-    );
-
-    // WebSocket 연결 해제 시 연결 종료
-    return () => {
-      if (stompClient) stompClient.disconnect();
-    };
-  }, [userId, navigate]);
+  // 컴포넌트 언마운트 시 WebSocket 연결 종료
+  return () => {
+    disconnectWebSocket(stompClient);
+  };
+}, [userId]);
 
 
   // 알림 클릭 처리: 상세 정보 요청 및 모달 열기
@@ -133,7 +113,7 @@ const Header = () => {
       setAlarm((prev) => prev.filter((notif) => notif.notificationId !== notificationId));
       alert("알림이 삭제되었습니다.");
     } catch (error) {
-      console.error("Error deleting notification:", error);
+      alert("삭제에 실패했습니다:",error);
     }
   };
 
@@ -224,7 +204,7 @@ const Header = () => {
                     <p className={styles.timestamp}>
                       {dayjs(notif.createdAt).fromNow()}
                     </p>
-                    <p>{notif.readText || ""}</p>
+                    <p>{notif.status || ""}</p>
                   </div>
                 </div>
               </div>

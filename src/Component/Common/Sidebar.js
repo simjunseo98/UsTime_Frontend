@@ -6,18 +6,13 @@ const Sidebar = ({ isOpen, onClose, }) => {
   //로그아웃
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = sessionStorage.getItem('token');
-    console.log('토큰 여부' + token);
-
-  }, []); // 빈 배열로 useEffect가 컴포넌트 마운트 시에만 실행되도록 설정
-
   //로그아웃 로직
   const handleLogout = () => {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('name');
-    sessionStorage.removeItem('email');
-    sessionStorage.removeItem('userId');
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("userId");
+    sessionStorage.removeItem("coupleId");
+    sessionStorage.removeItem("name");
+    sessionStorage.removeItem("email");
     alert('로그아웃 되었습니다.')
     navigate('/');
   }
