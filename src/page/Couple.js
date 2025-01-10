@@ -78,11 +78,6 @@ const handleAddItem = async (category, newItem) => {
     return;
   }
 
-  if (!userId || !coupleId) {
-    alert("로그인 정보가 없습니다. 다시 로그인 해주세요.");
-    return;
-  }
-
   try {
     const response = await api.post("/check/add", null, {
       params: { userId, coupleId, category, title: newItem },

@@ -21,12 +21,6 @@ const ChangePasswordPage = () => {
 
     try {
       const userId = sessionStorage.getItem('userId');
-      if (!userId) {
-        alert('로그인 상태가 아닙니다.');
-        navigate('/');
-        return;
-      }
-
       const payload = {
         userId,
         currentPassword,
