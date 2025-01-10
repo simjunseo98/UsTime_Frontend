@@ -1,8 +1,13 @@
-import React, { useState, useEffect, useCallback} from "react"; // useCallback 추가
+import React, { useState, useEffect, useCallback} from "react";
 import styles from "../assets/style/Couple/Couple.module.scss";
 import api from "../service/api.js";
+
+//컴포넌트
 import CheckListCategory from "../Component/Couple/CheckListCategory.js";
 import CheckListModal from "../Component/Couple/CheckListModal.js";
+import CoupleBanner from "../Component/Couple/CoupleBannner.js";
+import CoupleDdayList from "../Component/Couple/CoupleDdayList.js";
+import { Link } from "react-router-dom";
 
 const Couple = () => {
   const [couplePhoto, setCouplePhoto] = useState(null);
@@ -277,77 +282,33 @@ const handleDeleteItem = async (checklistId, category) => {
 
   return (
     <div className={styles.CoupleContainer}>
-      <div
-        className={styles.CoupleBanner}
-        style={{
-          backgroundImage: couplePhoto ? `url(${couplePhoto})` : "none", // 커플 사진 배경 설정
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-<div className={styles.DDayInputWrapper}>
-  <label className={styles.DDayInputLabel}>
-    D-Day 설정하기 :
-    <input
-      type="date"
-      max={maxtoday}
-      value={dDay}
-      onChange={(e) => setDDay(e.target.value)} // D-Day 날짜 변경시 상태 업데이트
-      className={styles.DDayInput}
-    />
-  </label>
-  <button onClick={handleDDaySet} className={styles.DDayButton}>설정</button>
-</div>
-<p className={`${styles.DDayText}`}>
-  {daysPassed !== null ? `D+${daysPassed}일` : "D-Day를 설정하세요!"}
-</p>
-
-
-        <label htmlFor="fileInput" className={styles.fileLabel}>배경 선택📷</label>
-        <input
-          type="file"
-          id="fileInput"
-          className={styles.fileInput}
-          accept="image/*"
-          onChange={handlePhotoUpload} // 사진 업로드 시 미리보기 설정
-        />
-      </div>
-
+       <CoupleBanner
+        couplePhoto={couplePhoto}
+        dDay={dDay}
+        daysPassed={daysPassed}
+        handlePhotoUpload={handlePhotoUpload}
+        handleDDaySet={handleDDaySet}
+        maxtoday={maxtoday}
+        setDDay={setDDay}
+      />
       <div className={styles.CoupleContent}>
         <div className={styles.CoupleContentContainer}>
-          <div className={styles.CoupleNavigate}>
-               바로 가기 키
-               <div></div>
-               <div></div>
-               <div></div>
-          </div>
+        <div className={styles.CoupleNavigate}>
+         바로가기:
+      <Link to="/main" className={styles.navigateItem}>
+        달력
+      </Link>
+      <Link to="/myprofile" className={styles.navigateItem}>
+        프로필
+      </Link>
+      <Link to="/main" className={styles.navigateItem}>
+        보러가기
+      </Link>
+    </div>
           <div className={styles.CoupleScheduleResult}>
             <h2>다가오는 일정</h2>  
           </div>
-
-          <div className={styles.CoupleDdayCalculate}>
-            <h3>@ 다가오는 기념일 @</h3>
-            {Array.isArray(specialDays) && specialDays.length > 0 ? (  // 배열 확인
-              <ul>
-                {specialDays.map((day, index) => {
-                  const isWeekend = day.weekdays === "토요일" || day.weekdays === "일요일";
-                  const today = new Date();
-                  const milestoneDate = new Date(day.milestoneDate);
-                  const isPast = milestoneDate < today;
-
-                  const listItemClass = ` ${isPast ? styles.past : styles.upcoming}`;
-
-                  return (
-                    <li key={index} className={listItemClass} style={isWeekend ? {color: "red"}:{}}>
-                      {day.milestone}: {day.milestoneDate} ({day.weekdays}) ({day.daysLeft}일)
-                    </li>
-                  );
-                })}
-              </ul>
-            ) : (
-              <p>D-Day를 설정하면 기념일이 표시됩니다!</p>
-            )}
-          </div>
+          <CoupleDdayList specialDays={specialDays} />
         </div>
         <div className={styles.CoupleContentContainer2}>         
       <div className={styles.CoupleCheckList}>

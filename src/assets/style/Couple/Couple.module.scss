@@ -133,18 +133,28 @@
     border: 2px solid #a29f9f;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.251);
 }
-.CoupleNavigate{
+.CoupleNavigate {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
     height: 50px;
     margin-top: 30px;
-}
-.CoupleNavigate div{
-    width: 50%;
-    border:none;
-    border-left: 1px solid #eee;
-    box-shadow: none;
-}
+    background-color: #8c8888;
+    border: 2px solid black !important;
+  }
+  .navigateItem {
+    align-items: center;
+    cursor: pointer;
+    color: white;
+    text-decoration: none;
+    padding: 14px;
+    border-radius: 4px;
+    margin-right: 30px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .navigateItem:hover {
+    background-color: #55584e;
+  }
 //일정 결과 값
 .CoupleScheduleResult{
     height: 250px;
