@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from "../../service/api";
-import styles from '../../assets/style/Main.module.scss';
+import styles from '../../assets/style/Calendar/Main.module.scss';
 import { getLabelColor } from '../../utils/getLabelColor';
 import { VscArrowLeft, VscEdit, VscLocation, VscTrash } from "react-icons/vsc";
 

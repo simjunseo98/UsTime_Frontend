@@ -4,7 +4,7 @@ import api from "../../service/api";
 import { connectWebSocket, disconnectWebSocket } from "../../service/WebSocket"; // WebSocket 관련 함수 import
 import Sidebar from "./Sidebar";
 import Modal from "./Modal";
-import styles from "../../assets/style/Header.module.scss";
+import styles from "../../assets/style/Common/Header.module.scss";
 import { VscBell, VscMenu } from "react-icons/vsc";
 import userImage from "../../assets/img/이미지 없음.jpg";
 import { ToastContainer, toast } from "react-toastify";

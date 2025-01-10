@@ -3,7 +3,7 @@ import Loading from '../Component/Common/Loading';
 import api from '../service/api';
 import { useNavigate } from 'react-router-dom';
 import profileImage from '../assets/img/이미지 없음.jpg';
-import styles from '../assets/style/MyProfile.module.scss';
+import styles from '../assets/style/Profile/MyProfile.module.scss';
 import Modal from '../Component/Common/Modal';
 import UserSearch from '../Component/UserSearch';
 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Calendar from 'react-calendar';
 import moment from 'moment';
-import styles from '../../assets/style/Main.module.scss';
-import api from "../../service/api";
+import styles from '../../assets/style/Calendar/Main.module.scss';
+import api from "../../service/api.js";
 import CalendarDetail from "../Calendar/CalendarDetail";
 import { connectWebSocket, disconnectWebSocket } from "../../service/WebSocket"; // 서비스에서 WebSocket 연결
 import { getLabelColor } from "../../utils/getLabelColor";
