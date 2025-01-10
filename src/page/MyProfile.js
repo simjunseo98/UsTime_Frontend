@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import Loading from '../Component/Loading';
-import styles from '../assets/style/MyProfile.module.scss';
+import Loading from '../Component/Common/Loading';
 import api from '../service/api';
 import { useNavigate } from 'react-router-dom';
 import profileImage from '../assets/img/이미지 없음.jpg';
-import Modal from '../Component/Modal';
+import styles from '../assets/style/MyProfile.module.scss';
+import Modal from '../Component/Common/Modal';
 import UserSearch from '../Component/UserSearch';
 
 const MyProfile = () => {
     const [myProfile, setMyProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [isEditing , setIsEditing] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
     const [openModal, setOpenModal] = useState(false);
     const navigate = useNavigate();
 
@@ -37,28 +37,28 @@ const MyProfile = () => {
         getUserInfo();
     }, [navigate]);
 
-// 커플 해지
-const handleUnlinkCouple = async () => {
-    const coupleId = myProfile.coupleId;
-    const isConfirmed = window.confirm('정말로 커플 관계를 해지하시겠습니까?');
+    // 커플 해지
+    const handleUnlinkCouple = async () => {
+        const coupleId = myProfile.coupleId;
+        const isConfirmed = window.confirm('정말로 커플 관계를 해지하시겠습니까?');
 
-    if (!isConfirmed) {
-        return; // 사용자가 취소하면 메소드 실행을 중지합니다.
-    }
+        if (!isConfirmed) {
+            return; // 사용자가 취소하면 메소드 실행을 중지합니다.
+        }
 
-    try {
-        await api.delete(`/couple/delete?coupleId=${coupleId}`);
-        alert('커플 관계가 해지되었습니다.');
-        setMyProfile((prev) => ({
-            ...prev,
-            coupleId: null,
-        }));
-        sessionStorage.removeItem("coupleId");
-    } catch (err) {
-        console.error('커플 해지 실패:', err);
-        alert('커플 해지에 실패했습니다.');
-    }
-};
+        try {
+            await api.delete(`/couple/delete?coupleId=${coupleId}`);
+            alert('커플 관계가 해지되었습니다.');
+            setMyProfile((prev) => ({
+                ...prev,
+                coupleId: null,
+            }));
+            sessionStorage.removeItem("coupleId");
+        } catch (err) {
+            console.error('커플 해지 실패:', err);
+            alert('커플 해지에 실패했습니다.');
+        }
+    };
 
 
     const handleInputChange = (e) => {
@@ -79,8 +79,8 @@ const handleUnlinkCouple = async () => {
             });
             alert('정보가 성공적으로 수정되었습니다.');
             setIsEditing(false);
-              // 페이지 새로 고침 또는 데이터 갱신 필요
-          window.location.reload(); 
+            // 페이지 새로 고침 또는 데이터 갱신 필요
+            window.location.reload();
         } catch (err) {
             console.error('정보 수정 실패:', err);
             alert('정보 수정에 실패했습니다.');

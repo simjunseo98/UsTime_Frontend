@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import CalendarComponent from './CalendarComponent';
-import CalendarDetail from './CalendarDetail';
+import CalendarComponent from '../Component/Calendar/CalendarComponent';
+import CalendarDetail from '../Component/Calendar/CalendarDetail';
 import styles from '../assets/style/Main.module.scss';
 import '../assets/style/MyCalendar.css';
 
+// 메인 페이지
 const Main = () => {
     const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜의 상세 일정
     const [isSidePanelOpen, setIsSidePanelOpen] = useState(false); // 사이드 패널 열림 상태

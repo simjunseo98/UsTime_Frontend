@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import api from "../service/api";
-import styles from '../assets/style/Main.module.scss';
+import api from "../../service/api";
+import styles from '../../assets/style/Main.module.scss';
 import { VscArrowLeft, VscEdit, VscLocation, VscTrash } from "react-icons/vsc";
 
 const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
@@ -19,7 +19,7 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
     description: '',
     startDate: selectedDate ? selectedDate.date : '',
     endDate: selectedDate ? selectedDate.date : '',
-    label: '빨강', 
+    label: '빨강',
     location: '',
     scope: coupleId ? '공유' : '개인',  //coupleId가 없으면 초기값 개인으로 세팅
   });
@@ -60,7 +60,7 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
   const createSchedule = async () => {
 
     const scheduleData = {
-      coupleId : coupleId || null,
+      coupleId: coupleId || null,
       title: newSchedule.title,
       description: newSchedule.description,
       startDate: newSchedule.startDate,
