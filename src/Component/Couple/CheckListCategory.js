@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import styles from "../assets/style/CheckList.module.scss";
+import styles from "../../assets/style/Couple/CheckList.module.scss";
 import { VscTrash } from "react-icons/vsc";
-import api from "../service/api.js";
+import api from "../../service/api.js";
 
 const CheckListCategory = ({title,items, onAddItem,onDeleteItem}) => {
   const [itemList, setItemList] = useState(items ||[]);
