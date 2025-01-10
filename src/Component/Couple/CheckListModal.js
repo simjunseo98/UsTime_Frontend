@@ -1,6 +1,7 @@
 import React from "react";
-import styles from "../assets/style/CheckList.module.scss";
+import styles from "../../assets/style/Couple/CheckList.module.scss";
 import CheckListCategory from "./CheckListCategory";
+
 // 추가할 모달 컴포넌트
 const CheckListModal = ({ isOpen, onClose, selectedCategory, data, handleAddItem,handleDeleteItem}) => {
   if (!isOpen) return null;
@@ -14,7 +15,6 @@ const CheckListModal = ({ isOpen, onClose, selectedCategory, data, handleAddItem
       >
         {selectedCategory && data[selectedCategory] ? (
         <CheckListCategory
-          title={selectedCategory}
           items={data[selectedCategory]}
           onAddItem={() => {
             const newItem = prompt("추가할 항목을 입력하세요:");

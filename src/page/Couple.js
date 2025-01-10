@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback} from "react"; // useCallback 추가
-import styles from "../assets/style/Couple.module.scss";
+import styles from "../assets/style/Couple/Couple.module.scss";
 import api from "../service/api.js";
-import CheckListCategory from "../Component/CheckListCategory.js";
-import CheckListModal from "../Component/CheckListModal.js";
+import CheckListCategory from "../Component/Couple/CheckListCategory.js";
+import CheckListModal from "../Component/Couple/CheckListModal.js";
 
 const Couple = () => {
   const [couplePhoto, setCouplePhoto] = useState(null);
