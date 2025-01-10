@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../service/api";
 import { connectWebSocket, disconnectWebSocket } from "../../service/WebSocket"; // WebSocket 관련 함수 import
@@ -25,7 +25,6 @@ const Header = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
-
   const userId = sessionStorage.getItem("userId");
 
   // 알림창 열기/닫기 토글
@@ -33,49 +32,48 @@ const Header = () => {
     setAlarmOpen(!alarmOpen);
   };
 
-// API 요청으로 알림 데이터 가져오기
-const fetchAlarm = async () => {
-  try {
-    const response = await api.get(`/notifications/getNotify?userId=${userId}`);
-    setAlarm(response.data); // 알림 목록을 처음에만 가져옴
-  } catch (error) {
-    console.error("알람 불러오기 실패:", error);
-  }
-};
+  // API 요청으로 알림 데이터 가져오기
+  const fetchAlarm = useCallback(async () => {
+    try {
+      const response = await api.get(`/notifications/getNotify?userId=${userId}`);
+      setAlarm(response.data); // 알림 목록을 처음에만 가져옴
+    } catch (error) {
+      console.error("알람 불러오기 실패:", error);
+    }
+  }, [userId]);
 
-// WebSocket에서 메시지를 받았을 때 처리하는 함수
-const handleNewNotification = (newNotification) => {
-  //커플ID 가 오면 세션에 저장
-  if (newNotification.coupleId) {
-    sessionStorage.setItem("coupleId", newNotification.coupleId);
-  }
+  // WebSocket에서 메시지를 받았을 때 처리하는 함수
+  const handleNewNotification = useCallback((newNotification) => {
+    // 커플ID가 오면 세션에 저장
+    if (newNotification.coupleId) {
+      sessionStorage.setItem("coupleId", newNotification.coupleId);
+    }
 
-  // 새 알림만 상태에 추가
-  setAlarm((prev) => [newNotification, ...prev]);
+    // 새 알림만 상태에 추가
+    setAlarm((prev) => [newNotification, ...prev]);
 
-  toast.info(`새 알림: ${newNotification.message}`, {
-    position: "bottom-center",
-    autoClose: 3000,  // 자동으로 3초 후 사라짐
-    hideProgressBar: true,
-    closeButton: true,
-  });
+    toast.info(`새 알림: ${newNotification.message}`, {
+      position: "bottom-center",
+      autoClose: 3000,  // 자동으로 3초 후 사라짐
+      hideProgressBar: true,
+      closeButton: true,
+    });
 
-  // 새 알림이 왔을 때만 fetchAlarm 호출
-  fetchAlarm();
-};
+    // 새 알림이 왔을 때만 fetchAlarm 호출
+    fetchAlarm();
+  }, [fetchAlarm]);
 
-useEffect(() => {
-  fetchAlarm();
+  useEffect(() => {
+    fetchAlarm();
 
-  // WebSocket 연결 및 알림 수신
-  const stompClient = connectWebSocket(userId, handleNewNotification);
+    // WebSocket 연결 및 알림 수신
+    const stompClient = connectWebSocket(userId, handleNewNotification);
 
-  // 컴포넌트 언마운트 시 WebSocket 연결 종료
-  return () => {
-    disconnectWebSocket(stompClient);
-  };
-}, [userId, fetchAlarm, handleNewNotification]);
-
+    // 컴포넌트 언마운트 시 WebSocket 연결 종료
+    return () => {
+      disconnectWebSocket(stompClient);
+    };
+  }, [userId, fetchAlarm, handleNewNotification]);
 
   // 알림 클릭 처리: 상세 정보 요청 및 모달 열기
   const handleNotificationClick = async (notif) => {
