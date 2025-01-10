@@ -1,8 +1,12 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+//Component
 import Header from './Component/Common/Header';
-import Main from './page/Main';
+
+//Page
 import NotFound from './page/NotFound';
+import Main from './page/Main';
 import Login from './page/Login';
 import SignUp from './page/SignUp';
 import MyProfile from './page/MyProfile';
@@ -10,7 +14,7 @@ import ChangePasswordPage from './page/ChangePassword';
 import Couple from './page/Couple';
 
 //css
-import styles from './assets/style/MainLayout.module.scss';
+import styles from './assets/style/Common/MainLayout.module.scss';
 
 
 

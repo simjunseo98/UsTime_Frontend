@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
-import styles from "../../assets/style/Sidebar.module.scss";
+import styles from "../../assets/style/Common/Sidebar.module.scss";
 
 const Sidebar = ({ isOpen, onClose, }) => {
   //로그아웃
