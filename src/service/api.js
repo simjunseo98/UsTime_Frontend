@@ -1,35 +1,41 @@
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
-const baseURL = 'https://www.ustime-backend.store';
-
+const baseURL = 'https://www.ustime-backend.store'; 
 
 const api = axios.create({
     baseURL: baseURL,
-    timeout: 30000,
-    headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,  // 토큰을 헤더에 추가
-    },
+    timeout: 30000, 
 });
 
-
-// 응답 인터셉터 추가
-api.interceptors.response.use(
-    response => response,  // 성공적인 응답은 그대로 반환
+// 요청 인터셉터 설정: 헤더에 토큰 추가
+api.interceptors.request.use(
+    config => {
+        const token = sessionStorage.getItem('token');
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+    },
     error => {
-        const navigate = useNavigate();
+        return Promise.reject(error);
+    }
+);
 
-        if (error.response && error.response.status === 401) { // 토큰 만료 시
+// 응답 인터셉터 설정: 401 에러 처리
+api.interceptors.response.use(
+    response => response,
+    error => {
+        if (error.response && error.response.status === 401) {  // 토큰 만료 시
             alert("세션이 만료되었습니다. 다시 로그인해주세요.");
             sessionStorage.removeItem("token");
             sessionStorage.removeItem("userId");
             sessionStorage.removeItem("coupleId");
             sessionStorage.removeItem("name");
             sessionStorage.removeItem("email");
-            navigate("/");
+            window.location.reload();
         }
-
         return Promise.reject(error);
     }
 );
+
 export default api;
