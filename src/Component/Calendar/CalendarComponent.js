@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Calendar from 'react-calendar';
 import moment from 'moment';
-import styles from '../assets/style/Main.module.scss';
-import api from "../service/api";
-import CalendarDetail from "./CalendarDetail";
+import styles from '../../assets/style/Main.module.scss';
+import api from "../../service/api";
+import CalendarDetail from "../Calendar/CalendarDetail";
 import { Stomp } from "@stomp/stompjs"; // Stomp.js 라이브러리
 import SockJS from "sockjs-client"; // SockJS 클라이언트
 
-const CalendarComponent = (props) => {
+const CalendarComponent = () => {
     const userId = sessionStorage.getItem("userId");
     const isCoupleId = sessionStorage.getItem("coupleId");
     const coupleId = isCoupleId === null || isCoupleId === 'undefined' ? null : isCoupleId;

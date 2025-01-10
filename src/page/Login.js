@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../assets/style/Login.module.scss';
 import { useNavigate } from 'react-router-dom';
-import Loading from '../Component/Loading.js';
+import Loading from '../Component/Common/Loading';
 import api from '../service/api';
 import { useCookies } from 'react-cookie';
 

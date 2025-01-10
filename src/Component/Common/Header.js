@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import Modal from "./Modal";
-import styles from "../assets/style/Header.module.scss";
+import styles from "../../assets/style/Header.module.scss";
 import { VscBell, VscMenu } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
-import api from "../service/api";
-import userImage from "../assets/img/이미지 없음.jpg";
+import api from "../../service/api";
+import userImage from "../../assets/img/이미지 없음.jpg";
 import { Stomp } from "@stomp/stompjs"; // Stomp.js 라이브러리
 import SockJS from "sockjs-client"; // SockJS 클라이언트
 import { ToastContainer, toast } from "react-toastify";
