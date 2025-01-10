@@ -74,7 +74,7 @@ useEffect(() => {
   return () => {
     disconnectWebSocket(stompClient);
   };
-}, [userId]);
+}, [userId, fetchAlarm, handleNewNotification]);
 
 
   // 알림 클릭 처리: 상세 정보 요청 및 모달 열기
