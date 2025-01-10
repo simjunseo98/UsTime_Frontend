@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from "react";
 import api from "../../service/api";
 import styles from '../../assets/style/Calendar/Main.module.scss';
 import { getLabelColor } from '../../utils/getLabelColor';
