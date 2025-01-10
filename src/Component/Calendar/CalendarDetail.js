@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import api from "../../service/api";
-import styles from '../../assets/style/Main.module.scss';
+import api from "../../service/api.js";
+import styles from '../../assets/style/Calendar/Main.module.scss';
 import { VscArrowLeft, VscEdit, VscLocation, VscTrash } from "react-icons/vsc";
 
 const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {

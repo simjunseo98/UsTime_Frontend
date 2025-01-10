@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import Modal from "./Modal";
-import styles from "../../assets/style/Header.module.scss";
+import styles from "../../assets/style/Common/Header.module.scss";
 import { VscBell, VscMenu } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import api from "../../service/api";

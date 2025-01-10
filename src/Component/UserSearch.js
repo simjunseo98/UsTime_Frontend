@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from "../assets/style/UserSearch.module.scss";
+import styles from "../assets/style/Profile/UserSearch.module.scss";
 import api from "../service/api.js";
 
 const UserSearch = ({ onSelectUser }) => {

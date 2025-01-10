@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import CalendarComponent from '../Component/Calendar/CalendarComponent';
 import CalendarDetail from '../Component/Calendar/CalendarDetail';
-import styles from '../assets/style/Main.module.scss';
-import '../assets/style/MyCalendar.css';
+import styles from '../assets/style/Calendar/Main.module.scss';
+import '../assets/style/Calendar/MyCalendar.css';
 
 // 메인 페이지
 const Main = () => {
