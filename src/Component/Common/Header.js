@@ -8,7 +8,7 @@ import styles from "../../assets/style/Common/Header.module.scss";
 import { VscBell, VscMenu } from "react-icons/vsc";
 import userImage from "../../assets/img/이미지 없음.jpg";
 import { ToastContainer, toast } from "react-toastify";
-import Logo from "../../assets/img/로고1.png";
+
 // dayjs 라이브러리 설정
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -52,7 +52,7 @@ const Header = () => {
     // 새 알림만 상태에 추가
     setAlarm((prev) => [newNotification, ...prev]);
 
-    toast.info(`새 알림: ${newNotification.message}`, {
+    toast.info(`${newNotification.message}`, {
       position: "bottom-center",
       autoClose: 3000,  // 자동으로 3초 후 사라짐
       hideProgressBar: true,
@@ -157,12 +157,10 @@ const Header = () => {
       </button>
 
       <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />
-      <img src={Logo} alt="" className={styles.Logo} ></img>
-      <h3 className={styles.ustime} onClick={home}>
-      <span className={styles.blue}>Us</span>
-      <span className={styles.red}>Time</span>
-      </h3>
 
+      <h3 className={styles.ustime} onClick={home}>
+        UsTime
+      </h3>
 
       <button className={styles.alramIcon} onClick={toggleAlarm}>
         <VscBell />
@@ -189,7 +187,7 @@ const Header = () => {
               >
                 <div className={styles.alarmContent}>
                   <div className={styles.alarmMessage}>
-                    <p><strong>메시지:</strong> {notif.message}</p>
+                    <p><strong>✅</strong> {notif.message}</p>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -200,6 +198,7 @@ const Header = () => {
                       X
                     </button>
                   </div>
+                    <p><strong>요약:</strong> {notif.summary}</p>
                   <div className={styles.readText}>
                     <p className={styles.timestamp}>
                       {dayjs(notif.createdAt).fromNow()}
@@ -213,7 +212,6 @@ const Header = () => {
             <p className={styles.noalarm}>새 알림이 없습니다.</p>
           )}
         </div>
-      
       )}
 
       {isModalOpen && (
@@ -277,7 +275,6 @@ const Header = () => {
         </Modal>
       )}
       <ToastContainer />
-      
     </header>
   );
 };
