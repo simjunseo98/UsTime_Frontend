@@ -15,7 +15,6 @@ const CalendarComponent = () => {
     const [value, onChange] = useState(new Date());
     const [schedules, setSchedules] = useState({});
     const [selectedDate, setSelectedDate] = useState(null);
-    const [isSidePanelOpen, setIsSidePanelOpen] = useState(true);
     const [scheduleScope, setScheduleScope] = useState("전체");
 
     // 전체 캘린더 일정 가져오는 함수
@@ -87,13 +86,9 @@ const CalendarComponent = () => {
             date,
             details: dateSchedules,
         });
-        setIsSidePanelOpen(true);
     };
 
-    // 범위가 변경될 때 사이드 패널을 닫음
-    useEffect(() => {
-        setIsSidePanelOpen(true);
-    }, [scheduleScope]);
+
 
     const onDateClick = (date) => {
         fetchSchedulesForDate(date);
