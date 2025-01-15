@@ -1,44 +1,54 @@
-
 .calendarWrapper {
   display: flex;
-  flex-direction: row; /* 가로로 나란히 배치 */
-  align-items: flex-start; /* 세로 정렬 */
-  justify-content: center; /* 수평 가운데 정렬 */
+  flex-direction: row;
+  /* 가로로 나란히 배치 */
+  align-items: flex-start;
+  /* 세로 정렬 */
+  justify-content: center;
+  /* 수평 가운데 정렬 */
   padding-top: 70px;
-  z-index:1;
+  z-index: 1;
 }
 
 .calendarContainer {
-  flex: 1; /* 동일한 비율로 크기 조정 */
-  height: auto; /* 높이는 내용에 따라 자동 조정 */
+  flex: 1;
+  /* 동일한 비율로 크기 조정 */
+  height: auto;
+  /* 높이는 내용에 따라 자동 조정 */
 }
+
 .sidepanel {
-  flex: 1; /* 동일한 비율로 크기 조정 */
+  flex: 1;
+  /* 동일한 비율로 크기 조정 */
   width: 250px;
   height: 559px;
   padding: 20px;
   background-color: rgb(255, 254, 219);
   transition-duration: 0.1s;
   border: 2px solid #ebebeb;
-  // box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.337);
+  /* box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.337); */
   border-radius: 10px;
 }
-.scheduleHeader{
+
+.scheduleHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
- 
+
 }
-.scheduleHeader .left{
+
+.scheduleHeader .left {
   font-size: 25px;
   font-weight: lighter;
   flex-grow: 1;
 }
-.scheduleHeader .right{
+
+.scheduleHeader .right {
   display: flex;
-  gap:25px;
+  gap: 25px;
 }
-.nowDate{
+
+.nowDate {
   display: flex;
   background-color: plum;
   color: white;
@@ -49,11 +59,13 @@
   padding: 4px 10px;
   border-radius: 10px;
 }
-.sidepanel p{
+
+.sidepanel p {
   font-size: 18px;
 }
-//일정 추가폼
-.addSchedule{
+
+/* 일정 추가폼 */
+.addSchedule {
   display: flex;
   border: none;
   background: none;
@@ -61,11 +73,13 @@
   cursor: pointer;
   color: #4b4848;
 }
-.addSchedule:hover{
+
+.addSchedule:hover {
   transform: scale(1.4);
   transition-duration: 0.5s;
 }
-.scheduleTitles{
+
+.scheduleTitles {
   cursor: pointer;
   border: none;
   border-radius: 10px;
@@ -77,52 +91,60 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.scheduleTitles:hover{
+
+.scheduleTitles:hover {
   transform: scale(1.03);
   transition-duration: 0.3s;
 }
-.scheduleForm{
-  justify-content:space-between;
+
+.scheduleForm {
+  justify-content: space-between;
   width: 100%;
   height: auto;
   align-items: center;
 }
-.scheduleForm input{
-display: flex;
-align-items: center;
-position: relative;
-width: 250px;
-height: 25px;
-box-sizing: border-box;
-margin:11px;
-box-shadow: 3px 3px 3px #eee;
-border-radius: 100px;
-padding: 10px;
-background-color: #F8F8F8;
-&input::placeholder{
-    color: #999999;
-    text-align: left;
-}
-}
-.select{
+
+.scheduleForm input {
+  display: flex;
+  align-items: center;
+  position: relative;
   width: 250px;
   height: 25px;
   box-sizing: border-box;
-  margin:10px;
+  margin: 11px;
+  box-shadow: 3px 3px 3px #eee;
+  border-radius: 100px;
+  padding: 10px;
+  background-color: #F8F8F8;
+
+  &input::placeholder {
+    color: #999999;
+    text-align: left;
+  }
+}
+
+.select {
+  width: 250px;
+  height: 25px;
+  box-sizing: border-box;
+  margin: 10px;
   box-shadow: 3px 3px 3px #eee;
   border-radius: 100px;
   padding: 3px;
   background-color: snow;
-  &input::placeholder{
+
+  &input::placeholder {
     color: #999999;
     text-align: left;
+  }
 }
-}
-.scheduleForm label{
+
+.scheduleForm label {
   display: flex;
   align-items: center;
 }
-.detailButton{
+
+.detailButton {
   justify-content: space-between;
   background-color: rgb(244, 231, 231);
   border: none;
@@ -132,13 +154,14 @@ background-color: #F8F8F8;
   padding: 10px 35px;
   cursor: pointer;
 }
-.detailButton:hover{
+
+.detailButton:hover {
   transform: scale(1.01);
-  transition-duration:0.5s ;
+  transition-duration: 0.5s;
   border: 1px solid black;
 }
 
-.closeButton{
+.closeButton {
   display: flex;
   border: none;
   background: none;
@@ -146,39 +169,47 @@ background-color: #F8F8F8;
   cursor: pointer;
   color: #4b4848;
 }
-.closeButton:hover{
+
+.closeButton:hover {
   transform: scale(1.1);
-  transition-duration:0.5s;
+  transition-duration: 0.5s;
 }
 
-//일정 상세보기
-.detailContainer{
- width: 100%;
- height: auto;
- border: 1px solid #f1e7e7;
- margin-top: 10px;
- background-color: snow;
+/* 일정 상세보기 */
+.detailContainer {
+  width: 100%;
+  height: auto;
+  border: 1px solid #f1e7e7;
+  margin-top: 10px;
+  background-color: snow;
 }
-.detailContainer p{
+
+.detailContainer p {
   align-items: center;
   font-size: 17px;
 }
-.detailHeader{
+
+.detailHeader {
   border-bottom: 1px solid #f1e7e7;
   display: flex;
   justify-content: space-between;
   align-content: center;
-  white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
-  overflow: hidden; /* 넘치는 텍스트 숨김 */
-  text-overflow: ellipsis; /* 잘린 부분에 "..." 추가 */
+  white-space: nowrap;
+  /* 텍스트 줄 바꿈 방지 */
+  overflow: hidden;
+  /* 넘치는 텍스트 숨김 */
+  text-overflow: ellipsis;
+  /* 잘린 부분에 "..." 추가 */
 }
-.detailHeader .left{
+
+.detailHeader .left {
   display: flex;
   align-items: center;
   font-size: 18px;
   padding: 5px;
 }
-.detailHeader p{
+
+.detailHeader p {
   font-size: 12px;
   width: 100%;
   max-width: 200px;
@@ -188,7 +219,7 @@ background-color: #F8F8F8;
   overflow-x: scroll;
 }
 
-.detailScheduleButton{
+.detailScheduleButton {
   border: none;
   cursor: pointer;
   font-size: 20px;
@@ -196,61 +227,71 @@ background-color: #F8F8F8;
   margin-top: 5px;
   margin-right: 10px;
 }
-.detailScheduleButton:hover{
+
+.detailScheduleButton:hover {
   transform: scale(1.1);
   transition-duration: 0.5s;
 }
-.detailDescription{
+
+.detailDescription {
   border-bottom: 1px solid #f1e7e7;
   width: 100%;
-  min-height:300px;
+  min-height: 300px;
   padding: 5px;
   overflow-y: auto;
   word-wrap: break-word;
   box-sizing: border-box;
 }
-.detailDescription p{
+
+.detailDescription p {
   font-size: 13px;
   align-items: center;
   margin: 5px;
 }
-.detailDate{
-display: flex;
- align-items: center;
- margin: 5px;
+
+.detailDate {
+  display: flex;
+  align-items: center;
+  margin: 5px;
 }
 
 .detailDate p {
   font-size: 14px;
 }
-.location{
+
+.location {
   display: flex;
   align-items: center;
   font-size: 20px;
   margin-top: 5px;
   cursor: pointer;
   white-space: nowrap;
-  text-overflow: ellipsis; 
+  text-overflow: ellipsis;
   padding: 3px;
 }
-.location:hover{
+
+.location:hover {
   transform: scale(1.05);
   transition-duration: 0.5s;
 }
-.location p{
+
+.location p {
   font-size: 17px;
   align-items: center;
 }
-.detailScope{
+
+.detailScope {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   margin-top: 3px;
 }
-.detailScope p{
+
+.detailScope p {
   font-size: 15px;
 }
-.detailEditingInputField{
+
+.detailEditingInputField {
   width: 100%;
   height: auto;
   min-width: 100px;
@@ -258,6 +299,7 @@ display: flex;
   font-size: 0.6em;
   font-weight: bold;
 }
+
 .textArea {
   width: 240px;
   max-width: 294px;
@@ -266,40 +308,47 @@ display: flex;
   font-size: 0.8em;
   resize: none;
   text-decoration: none;
-  overflow-y:scroll;
-  font-family:'RixXladywatermelonR';
+  overflow-y: scroll;
+  font-family: 'RixXladywatermelonR';
 }
-//사이드패널 일정
-.scheduleContainer{
+
+/* 사이드패널 일정 */
+.scheduleContainer {
   justify-content: space-between;
   border-top: 1px solid rgba(0, 0, 0, 0.145);
   margin-top: 10px;
 }
-.comentContainer{
+
+.comentContainer {
   margin-top: 10px;
 }
-.coment{
+
+.coment {
   display: flex;
   justify-content: space-between;
   justify-items: center;
-  gap:20px;
+  gap: 20px;
   align-items: center;
 }
-.coment p{
+
+.coment p {
   font-size: 15px;
   margin-bottom: 10px;
   padding: 4px;
- white-space: nowrap;
- text-overflow: ellipsis; 
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
-.customHeader{
+
+.customHeader {
   align-items: center;
   position: relative;
 }
-.scopeSelector label{
+
+.scopeSelector label {
   font-size: 20px;
 }
-.scopeSelector select{
+
+.scopeSelector select {
   appearance: none;
   padding: 5px;
   width: 70px;
@@ -309,9 +358,11 @@ display: flex;
 }
 
 @media (max-width: 480px) {
+
   /* 전체 컨테이너 */
   .calendarWrapper {
-    flex-direction: column; /* 세로 정렬 */
+    flex-direction: column;
+    /* 세로 정렬 */
   }
 
   /* 캘린더 컨테이너 */
@@ -323,35 +374,46 @@ display: flex;
   /* 사이드 패널 */
   .sidepanel {
     width: 100%;
-    height: auto; /* 높이 자동 조정 */
+    height: auto;
+    /* 높이 자동 조정 */
     padding: 15px;
     background-color: rgb(255, 254, 219);
-    box-shadow: none; /* 그림자 제거 */
-    border-left: none; /* 경계선 제거 */
+    box-shadow: none;
+    /* 그림자 제거 */
+    border-left: none;
+    /* 경계선 제거 */
     font-size: 14px;
-    overflow-y: auto; /* 스크롤 가능 */
+    overflow-y: auto;
+    /* 스크롤 가능 */
   }
 
   /* 사이드 패널의 헤더 */
   .scheduleHeader {
-    align-items: flex-start; /* 왼쪽 정렬 */
+    align-items: flex-start;
+    /* 왼쪽 정렬 */
     gap: 10px;
   }
+
   .scheduleHeader .left {
-    font-size: 18px; /* 글자 크기 축소 */
+    font-size: 18px;
+    /* 글자 크기 축소 */
   }
+
   .scheduleHeader .right {
-    gap: 15px; /* 버튼 간격 조정 */
+    gap: 15px;
+    /* 버튼 간격 조정 */
   }
 
   /* 일정 추가 버튼 */
   .addSchedule {
-    font-size: 20px; /* 크기 조정 */
+    font-size: 20px;
+    /* 크기 조정 */
   }
 
   /* 일정 리스트 */
   .scheduleTitles {
-    font-size: 14px; /* 글자 크기 축소 */
+    font-size: 14px;
+    /* 글자 크기 축소 */
     padding: 8px;
   }
 
@@ -359,14 +421,20 @@ display: flex;
   .detailContainer {
     margin-top: 15px;
     padding: 10px;
-    border: none; /* 테두리 제거 */
-    background-color: #fff; /* 흰색 배경 */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 약간의 그림자 */
+    border: none;
+    /* 테두리 제거 */
+    background-color: #fff;
+    /* 흰색 배경 */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    /* 약간의 그림자 */
   }
+
   .detailDescription {
-    min-height: 200px; /* 최소 높이 축소 */
+    min-height: 200px;
+    /* 최소 높이 축소 */
     font-size: 14px;
   }
+
   .detailHeader {
     font-size: 16px;
   }
@@ -374,7 +442,8 @@ display: flex;
   /* 버튼 스타일 */
   .detailButton,
   .closeButton {
-    font-size: 14px; /* 크기 축소 */
+    font-size: 14px;
+    /* 크기 축소 */
     padding: 8px 20px;
     margin: 5px 0;
   }
@@ -382,11 +451,14 @@ display: flex;
   /* 입력 폼 */
   .scheduleForm {
     width: 100%;
-    flex-direction: column; /* 세로 정렬 */
+    flex-direction: column;
+    /* 세로 정렬 */
   }
+
   .scheduleForm input,
   .select {
-    width: 100%; /* 입력 필드가 화면을 채우도록 */
+    width: 100%;
+    /* 입력 필드가 화면을 채우도록 */
     font-size: 14px;
     margin: 5px 0;
     padding: 8px;
@@ -394,7 +466,8 @@ display: flex;
 
   /* 날짜 표시 */
   .nowDate {
-    width: auto; /* 너비 자동 */
+    width: auto;
+    /* 너비 자동 */
     font-size: 14px;
     padding: 6px 10px;
   }
@@ -402,8 +475,10 @@ display: flex;
   /* 위치 정보 */
   .location {
     font-size: 16px;
-    flex-wrap: wrap; /* 텍스트가 넘어가면 줄바꿈 */
+    flex-wrap: wrap;
+    /* 텍스트가 넘어가면 줄바꿈 */
   }
+
   .location p {
     font-size: 12px;
   }
@@ -413,6 +488,7 @@ display: flex;
     margin-top: 10px;
     font-size: 14px;
   }
+
   .coment p {
     font-size: 12px;
   }
