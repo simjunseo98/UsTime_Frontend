@@ -19,7 +19,7 @@
   align-items: center;
 }
 .ustime {
-  flex: 1; /* 가운데 요소를 정렬하기 위해 flex 속성 추가 */
+  flex: 1; 
   font-size: 26px;
   font-style: oblique;
   text-decoration: none;
@@ -27,12 +27,15 @@
   align-items: center;
   margin-top: 7px;
 }
+
 .blue{
   color: rgb(174, 240, 250);
 }
+
 .red{
   color: rgb(248, 188, 234);
 }
+
 .sidebarIcon {
   flex: 0;
   text-align: left;
@@ -153,7 +156,7 @@ transition-duration:0.5s;
   font-weight: bold;
 }
 
-// 삭제버튼 스타일
+/* 삭제버튼 스타일 */
 .deleteButton {
   color: black;
   border: none;

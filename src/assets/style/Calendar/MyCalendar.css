@@ -9,7 +9,6 @@
     background: rgb(255, 254, 219);
     line-height: 3.525em;
     justify-content: center;
-    /* box-shadow: 3px 3px 3px 0 rgba(0, 0, 0, 0.337); */
     border-radius: 10px;
     border: 2px solid #ebebeb;
   }
@@ -63,7 +62,6 @@
     background: none;
   }
   
-   */
   /* 월 년 버튼 타일 */
   .react-calendar__navigation button:enabled:hover,
   .react-calendar__navigation button:enabled:focus {
