@@ -129,6 +129,7 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
       fetchCalendar();
     } catch (error) {
       console.error('일정 수정 실패:', error);
+      console.log("스케줄 아이디 있누",editedSchedule.scheduleId);
       alert('일정 수정에 실패했습니다.');
     }
   };
@@ -216,7 +217,7 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
           </div>
           <div>
             <label>색상</label>
-            <div style={{ display: 'flex', gap: '30px', margin: '7px' }}>
+            <div style={{ display: 'flex', gap: '30px', margin: '5px' }}>
               {['빨강', '파랑', '초록', '핑크', '보라'].map((color) => (
                 <div
                   key={color}
@@ -360,6 +361,7 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
               ) : (
                 <p>{selectedDate.details[selectedDetailIndex]?.scope || ''}</p>
               )}
+          
               <label>작성일: </label>
               <p>{selectedDate.details[selectedDetailIndex]?.createdAt || ''}</p>
             </div>
@@ -375,11 +377,11 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
                 value={editedSchedule.startDate || ''}
                 onChange={handleInputEditing}
               />
+           
             ) : (
               <p>{selectedDate.details[selectedDetailIndex]?.startDate}</p>
             )}
-
-
+ 
             <label>종료일:</label>
             {isEditing ? (
               <input
@@ -434,7 +436,9 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
                 <p>일정이 없습니다.</p>
               )
             ) : (
-              <p>날짜를 선택하거나 새로운 일정을 추가하세요!</p>
+              <p>날짜를 선택하거나 
+              <br/>
+                새로운 일정을 추가하세요!</p>
             )}
           </div>
         </div>

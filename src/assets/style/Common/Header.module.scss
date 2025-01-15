@@ -2,33 +2,44 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 70px;
+  height: 60px;
   padding: 0px 20px;
   margin: 0;
-  background-color: snow;
+  background-color: white;
   position: fixed; /* 헤더 고정 */
   top: 0; /* 화면 상단에 고정 */
   left: 0; /* 화면 왼쪽에 고정 */
   right: 0; /* 화면 오른쪽에 고정 */
   z-index: 1000;
+  border-bottom: 1px solid #eee;
 }
-
+.Logo{
+  margin-left: 10px;
+  width: 50px;
+  align-items: center;
+}
 .ustime {
   flex: 1; /* 가운데 요소를 정렬하기 위해 flex 속성 추가 */
-  text-align: center;
-  font-size: 40px;
-  font-weight: lighter;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 26px;
+  font-style: oblique;
   text-decoration: none;
   cursor: pointer;
+  align-items: center;
+  margin-top: 7px;
 }
-
+.blue{
+  color: rgb(174, 240, 250);
+}
+.red{
+  color: rgb(248, 188, 234);
+}
 .sidebarIcon {
   flex: 0;
   text-align: left;
-  font-size: 45px;
+  font-size: 30px;
   border: 0;
-  background-color: rgba(245, 229, 198, 0);
+  color: #9d9b9b;
+  background-color: rgba(243, 235, 219, 0);
   cursor: pointer;
 }
 .sidebarIcon:hover{
@@ -54,7 +65,7 @@ transition-duration:0.5s;
   right: 20px;
   background-color: red;
   color: white;
-  font-size: 12px;
+  font-size: 10px;
   border-radius: 50%;
   width: 20px;
   height: 20px;
@@ -176,6 +187,11 @@ transition-duration:0.5s;
   font-size: 30px;
   animation: slideRight 2s ease-in-out infinite;
   white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 설정 */
+}
+.HeaderNavigate{
+  display: flex;
+  justify-content:space-around;
+  font-family: 'Pretendard-Regular';
 }
 @keyframes slideRight {
   0% {

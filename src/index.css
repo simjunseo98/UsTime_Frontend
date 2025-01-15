@@ -1,6 +1,7 @@
 body {
   margin: 0;
   font-family:'RixXladywatermelonR';
+  font-family: 'LINESeedKR-Bd';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -10,7 +11,14 @@ body {
   font-weight: normal;
   font-style: normal;
 }
-
+ /*라인*/
+@font-face {
+  font-family: 'LINESeedKR-Bd';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/LINESeedKR-Bd.woff2') format('woff2');
+  font-weight:normal;
+  font-style: normal;
+}
+ 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
