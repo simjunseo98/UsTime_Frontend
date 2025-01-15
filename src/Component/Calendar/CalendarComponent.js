@@ -15,7 +15,7 @@ const CalendarComponent = () => {
     const [value, onChange] = useState(new Date());
     const [schedules, setSchedules] = useState({});
     const [selectedDate, setSelectedDate] = useState(null);
-    const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
+    const [isSidePanelOpen, setIsSidePanelOpen] = useState(true);
     const [scheduleScope, setScheduleScope] = useState("전체");
 
     // 전체 캘린더 일정 가져오는 함수
@@ -92,7 +92,7 @@ const CalendarComponent = () => {
 
     // 범위가 변경될 때 사이드 패널을 닫음
     useEffect(() => {
-        setIsSidePanelOpen(false);
+        setIsSidePanelOpen(true);
     }, [scheduleScope]);
 
     const onDateClick = (date) => {
@@ -159,18 +159,6 @@ const CalendarComponent = () => {
         <div className={styles.calendarWrapper}>
             {/* 일정 범위 선택 콤보박스 */}
             <div className={styles.calendarContainer}>
-                <div className={styles.scopeSelector}>
-                    <label htmlFor="scope">일정 표시:</label>
-                    <select
-                        id="scope"
-                        value={scheduleScope}
-                        onChange={(e) => setScheduleScope(e.target.value)}
-                    >
-                        <option value="개인">개인</option>
-                        {coupleId && <option value="공유">공유</option>}
-                        {coupleId && <option value="전체">전체</option>}
-                    </select>
-                </div>
                 <Calendar
                     onChange={onChange}
                     value={value}
@@ -184,14 +172,24 @@ const CalendarComponent = () => {
                     tileContent={scheduleTileContent}
                     tileClassName={tileClassName}
                 />
-            </div>
-            {isSidePanelOpen && (
+                </div>
                 <CalendarDetail
                     selectedDate={selectedDate}
-                    onClose={() => setIsSidePanelOpen(false)}
                     fetchCalendar={fetchCalendar}
-                />
-            )}
+                    />
+                <div className={styles.scopeSelector}>
+                    <label htmlFor="scope">일정 표시:</label>
+                    <br/>
+                    <select
+                        id="scope"
+                        value={scheduleScope}
+                        onChange={(e) => setScheduleScope(e.target.value)}
+                    >
+                        <option value="개인">개인</option>
+                        {coupleId && <option value="공유">공유</option>}
+                        {coupleId && <option value="전체">전체</option>}
+                    </select>
+                </div>
         </div>
     );
 };

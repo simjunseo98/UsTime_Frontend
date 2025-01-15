@@ -4,7 +4,7 @@ import styles from "../../assets/style/Couple/Couple.module.scss";
 const CoupleDdayList = ({ specialDays }) => {
   return (
     <div className={styles.CoupleDdayCalculate}>
-      <h3>@ 다가오는 기념일 @</h3>
+      <h3>다가오는 기념일</h3>
       {Array.isArray(specialDays) && specialDays.length > 0 ? (
         <ul>
           {specialDays.map((day, index) => {

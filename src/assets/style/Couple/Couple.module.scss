@@ -130,8 +130,10 @@
 }
 .CoupleContentContainer div{
     border-radius: 10px;
-    border: 2px solid #a29f9f;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.251);
+    border: 1px solid #ebebeb;
+    // box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.251);
+    // background-color:rgb(251, 248, 245);
+    background-color: white;
 }
 .CoupleNavigate {
     display: flex;
@@ -144,7 +146,7 @@
   .navigateItem {
     align-items: center;
     cursor: pointer;
-    color: white;
+    color: black;
     text-decoration: none;
     padding: 14px;
     border-radius: 4px;
@@ -155,32 +157,25 @@
   .navigateItem:hover {
     background-color: #55584e;
   }
-//일정 결과 값
-.CoupleScheduleResult{
-    height: 250px;
-}
-.CoupleScheduleResult h2{
-    margin-top: 10px;
-    text-align: center;
-    font-size: 20px;
-}
 
 //기념일 계산기
 .CoupleDdayCalculate{
     box-sizing: border-box;
-    height: 290px;  
+    height: 300px;  
     overflow-y: scroll;
 }
 .CoupleDdayCalculate h3{
     padding: 10px;
     text-align: center;
     border-bottom: 1px solid #8c8888;
+    font-weight: lighter;
 }
 .CoupleDdayCalculate li{
     line-height: 2.0rem;
     padding: 4px;
     background-color: rgb(247, 228, 193);
     border: 1px solid white;
+    font-weight: 100 !important;
 }
 .weekend{
     color: red;
@@ -207,22 +202,24 @@
     margin-bottom: 15px;
     height: 280px;
     text-align: center;
+    background-color: snow;
 }
 .CoupleCheckList h3{
+    font-weight: lighter;
     font-size: 30px;
-    padding: 3px;
-    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.641);
 }
 .BukitList{
     border: none;
     display: flex;
     width: 100%;
-    
 }
 .BukitList div{
     width: 30%;
     height: 200px;
     margin: 5px;
+    margin-top: 10px;
     border-radius: 10px;
     border: 2px solid #a29f9f;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.251);
@@ -236,6 +233,7 @@
     border: 2px solid #a29f9f;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.251);
     gap: 10px;
+    background-color: snow;
 }
 
 //모바일

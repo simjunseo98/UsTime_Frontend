@@ -1,0 +1,48 @@
+.UpcomingSchedules {
+    padding: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow-y: scroll;
+    height: 220px;
+  }
+  
+  .UpcomingSchedules h3 {
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+    font-weight: lighter;
+    color: #333;
+    text-align: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.327);
+    padding: 10px;
+  }
+  
+  .UpcomingSchedules ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .scheduleItem {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+ 
+  }
+  
+  .scheduleItem:last-child {
+    border-bottom: none;
+  }
+  
+  .scheduleItem h4 {
+    font-size: 1.2rem;
+    margin: 0;
+    color: #444;
+  }
+  
+  .scheduleItem p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    color: #666;
+  }
