@@ -8,6 +8,7 @@ import styles from "../../assets/style/Common/Header.module.scss";
 import { VscBell, VscMenu } from "react-icons/vsc";
 import userImage from "../../assets/img/이미지 없음.jpg";
 import { ToastContainer, toast } from "react-toastify";
+import Logo from "../../assets/img/로고1.png";
 
 // dayjs 라이브러리 설정
 import dayjs from "dayjs";
@@ -157,11 +158,11 @@ const Header = () => {
       </button>
 
       <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />
-
+      <img src={Logo} alt="" className={styles.Logo} ></img>
       <h3 className={styles.ustime} onClick={home}>
-        UsTime
+      <span className={styles.blue}>Us</span>
+      <span className={styles.red}>Time</span>
       </h3>
-
       <button className={styles.alramIcon} onClick={toggleAlarm}>
         <VscBell />
         {alarm.filter((notif) => notif.status === "읽지 않음").length > 0 && (

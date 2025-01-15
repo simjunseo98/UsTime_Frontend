@@ -1,32 +1,25 @@
 .calendarWrapper {
   display: flex;
   flex-direction: row;
-  /* 가로로 나란히 배치 */
   align-items: flex-start;
-  /* 세로 정렬 */
   justify-content: center;
-  /* 수평 가운데 정렬 */
   padding-top: 70px;
   z-index: 1;
 }
 
 .calendarContainer {
   flex: 1;
-  /* 동일한 비율로 크기 조정 */
   height: auto;
-  /* 높이는 내용에 따라 자동 조정 */
 }
 
 .sidepanel {
   flex: 1;
-  /* 동일한 비율로 크기 조정 */
   width: 250px;
   height: 559px;
   padding: 20px;
   background-color: rgb(255, 254, 219);
   transition-duration: 0.1s;
   border: 2px solid #ebebeb;
-  /* box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.337); */
   border-radius: 10px;
 }
 
@@ -34,7 +27,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
 }
 
 .scheduleHeader .left {
@@ -64,7 +56,6 @@
   font-size: 18px;
 }
 
-/* 일정 추가폼 */
 .addSchedule {
   display: flex;
   border: none;
@@ -116,11 +107,11 @@
   border-radius: 100px;
   padding: 10px;
   background-color: #F8F8F8;
+}
 
-  &input::placeholder {
-    color: #999999;
-    text-align: left;
-  }
+.scheduleForm input::placeholder {
+  color: #999999;
+  text-align: left;
 }
 
 .select {
@@ -132,11 +123,11 @@
   border-radius: 100px;
   padding: 3px;
   background-color: snow;
+}
 
-  &input::placeholder {
-    color: #999999;
-    text-align: left;
-  }
+.select::placeholder {
+  color: #999999;
+  text-align: left;
 }
 
 .scheduleForm label {
@@ -175,7 +166,6 @@
   transition-duration: 0.5s;
 }
 
-/* 일정 상세보기 */
 .detailContainer {
   width: 100%;
   height: auto;
@@ -195,11 +185,8 @@
   justify-content: space-between;
   align-content: center;
   white-space: nowrap;
-  /* 텍스트 줄 바꿈 방지 */
   overflow: hidden;
-  /* 넘치는 텍스트 숨김 */
   text-overflow: ellipsis;
-  /* 잘린 부분에 "..." 추가 */
 }
 
 .detailHeader .left {
@@ -307,12 +294,10 @@
   max-height: 260px;
   font-size: 0.8em;
   resize: none;
-  text-decoration: none;
   overflow-y: scroll;
   font-family: 'RixXladywatermelonR';
 }
 
-/* 사이드패널 일정 */
 .scheduleContainer {
   justify-content: space-between;
   border-top: 1px solid rgba(0, 0, 0, 0.145);
@@ -326,7 +311,6 @@
 .coment {
   display: flex;
   justify-content: space-between;
-  justify-items: center;
   gap: 20px;
   align-items: center;
 }
@@ -358,80 +342,58 @@
 }
 
 @media (max-width: 480px) {
-
-  /* 전체 컨테이너 */
   .calendarWrapper {
     flex-direction: column;
-    /* 세로 정렬 */
   }
 
-  /* 캘린더 컨테이너 */
   .calendarContainer {
     width: 100%;
     padding: 10px;
   }
 
-  /* 사이드 패널 */
   .sidepanel {
     width: 100%;
     height: auto;
-    /* 높이 자동 조정 */
     padding: 15px;
     background-color: rgb(255, 254, 219);
     box-shadow: none;
-    /* 그림자 제거 */
     border-left: none;
-    /* 경계선 제거 */
     font-size: 14px;
     overflow-y: auto;
-    /* 스크롤 가능 */
   }
 
-  /* 사이드 패널의 헤더 */
   .scheduleHeader {
     align-items: flex-start;
-    /* 왼쪽 정렬 */
     gap: 10px;
   }
 
   .scheduleHeader .left {
     font-size: 18px;
-    /* 글자 크기 축소 */
   }
 
   .scheduleHeader .right {
     gap: 15px;
-    /* 버튼 간격 조정 */
   }
 
-  /* 일정 추가 버튼 */
   .addSchedule {
     font-size: 20px;
-    /* 크기 조정 */
   }
 
-  /* 일정 리스트 */
   .scheduleTitles {
     font-size: 14px;
-    /* 글자 크기 축소 */
     padding: 8px;
   }
 
-  /* 일정 상세보기 */
   .detailContainer {
     margin-top: 15px;
     padding: 10px;
     border: none;
-    /* 테두리 제거 */
     background-color: #fff;
-    /* 흰색 배경 */
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    /* 약간의 그림자 */
   }
 
   .detailDescription {
     min-height: 200px;
-    /* 최소 높이 축소 */
     font-size: 14px;
   }
 
@@ -439,57 +401,9 @@
     font-size: 16px;
   }
 
-  /* 버튼 스타일 */
   .detailButton,
   .closeButton {
     font-size: 14px;
-    /* 크기 축소 */
     padding: 8px 20px;
-    margin: 5px 0;
-  }
-
-  /* 입력 폼 */
-  .scheduleForm {
-    width: 100%;
-    flex-direction: column;
-    /* 세로 정렬 */
-  }
-
-  .scheduleForm input,
-  .select {
-    width: 100%;
-    /* 입력 필드가 화면을 채우도록 */
-    font-size: 14px;
-    margin: 5px 0;
-    padding: 8px;
-  }
-
-  /* 날짜 표시 */
-  .nowDate {
-    width: auto;
-    /* 너비 자동 */
-    font-size: 14px;
-    padding: 6px 10px;
-  }
-
-  /* 위치 정보 */
-  .location {
-    font-size: 16px;
-    flex-wrap: wrap;
-    /* 텍스트가 넘어가면 줄바꿈 */
-  }
-
-  .location p {
-    font-size: 12px;
-  }
-
-  /* 댓글 컨테이너 */
-  .comentContainer {
-    margin-top: 10px;
-    font-size: 14px;
-  }
-
-  .coment p {
-    font-size: 12px;
   }
 }
