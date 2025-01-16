@@ -4,20 +4,35 @@
     top: 30px;        
     left: 45px;      
     z-index: 1000;   
+    font-size: 30px;
+    display: flex;              /* 플렉스박스 설정 */
+    justify-content: center;    /* 가로 중앙 정렬 */
+    align-items: center;        /* 세로 중앙 정렬 */
 }
 
-.logo {
-    font-size: 35px;    
-    font-weight: lighter; 
-    color: #333;   
-    color: rgb(165, 119, 119);
+.Logo {
+    margin-left: 10px;
+    width: 50px;
+    align-items: center;
+}
+
+.blue {
+    margin-top: 8px;
+    color: rgb(174, 240, 250);
+    font-style: oblique;
+}
+
+.red {
+    margin-top: 8px;
+    color: rgb(248, 188, 234);
+    font-style: oblique;
 }
 .Container{
     width: 620px;
     min-height: 600px;
     border: 2px solid white;
     border-radius: 30px;
-    background-color: snow;
+    background-color: rgb(255,254,219);
     box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.36);
     padding: 10px 0px;
     margin: auto;
@@ -46,7 +61,7 @@
 
 }
 .SignUpGroup{
-    border: 2px solid rgb(176, 131, 131);
+    // border: 2px solid rgb(176, 131, 131);
     border-radius: 5px;
     margin-top: 30px;
     margin-bottom: 5px;
@@ -162,7 +177,11 @@
     width: 30px;
     height: 30px;
     background-color: unset;
-    background-color: snow;
+    background-color: rgb(255, 254, 219);
+    &:hover{
+        transform: scale(1.1);
+        transition-duration: 0.5s;
+    }
 }
 @media (max-width: 480px) { /* 모바일 화면 */
 
