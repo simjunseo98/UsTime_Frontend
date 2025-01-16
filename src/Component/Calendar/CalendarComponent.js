@@ -154,6 +154,28 @@ const CalendarComponent = () => {
         <div className={styles.calendarWrapper}>
             {/* 일정 범위 선택 콤보박스 */}
             <div className={styles.calendarContainer}>
+            <div className={styles.scopeSelector}>
+                    <label htmlFor="scope"></label>
+            <button
+                   className={`${styles.scopeButton} ${
+                              scheduleScope === "개인" ? styles.active : ""}`}
+                   onClick={() => setScheduleScope("개인")}
+                   style={{"backgroundColor":'#f05555'}}>개인</button>
+    {coupleId && (
+      <button
+             className={`${styles.scopeButton} ${
+             scheduleScope === "공유" ? styles.active : ""}`}
+             onClick={() => setScheduleScope("공유")}
+             style={{"backgroundColor":'#fff491'}}>공유</button>
+    )}
+    {coupleId && (
+      <button
+             className={`${styles.scopeButton} ${
+             scheduleScope === "전체" ? styles.active : ""}`}
+             onClick={() => setScheduleScope("전체")}
+             style={{"backgroundColor":'#9cf568'}}>전체</button>
+    )}
+</div>
                 <Calendar
                     onChange={onChange}
                     value={value}
@@ -167,24 +189,12 @@ const CalendarComponent = () => {
                     tileContent={scheduleTileContent}
                     tileClassName={tileClassName}
                 />
+                
                 </div>
                 <CalendarDetail
                     selectedDate={selectedDate}
                     fetchCalendar={fetchCalendar}
                     />
-                <div className={styles.scopeSelector}>
-                    <label htmlFor="scope">일정 표시:</label>
-                    <br/>
-                    <select
-                        id="scope"
-                        value={scheduleScope}
-                        onChange={(e) => setScheduleScope(e.target.value)}
-                    >
-                        <option value="개인">개인</option>
-                        {coupleId && <option value="공유">공유</option>}
-                        {coupleId && <option value="전체">전체</option>}
-                    </select>
-                </div>
         </div>
     );
 };

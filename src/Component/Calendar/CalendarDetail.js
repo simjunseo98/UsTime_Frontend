@@ -4,7 +4,7 @@ import styles from '../../assets/style/Calendar/Main.module.scss';
 import { getLabelColor } from '../../utils/getLabelColor';
 import { VscArrowLeft, VscEdit, VscLocation, VscTrash } from "react-icons/vsc";
 
-const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
+const CalendarDetail = ({ selectedDate,fetchCalendar }) => {
   // 세션에서 coupleId와 createdBy를 가져옵니다.
   const isCoupleId = sessionStorage.getItem('coupleId');
   const coupleId = isCoupleId === null || isCoupleId === 'undefined' ? null : isCoupleId;
@@ -79,7 +79,6 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
       setIsAdd(false);
       setIsEditing(false);
       fetchCalendar();
-      onClose();
     } catch (error) {
       console.error("일정 생성 실패:", error);
     }
@@ -125,7 +124,6 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
       });
       alert('일정이 성공적으로 수정되었습니다.');
       setIsEditing(false);
-      onClose();
       fetchCalendar();
     } catch (error) {
       console.error('일정 수정 실패:', error);
@@ -165,7 +163,7 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
         <div className={styles.left}>Schedule</div>
         <div className={styles.right}>
           <button onClick={() => setIsAdd(true)} className={styles.addSchedule}>+</button>
-          <button onClick={onClose} className={styles.closeButton}>X</button>
+          <button className={styles.closeButton}>X</button>
         </div>
       </div>
 
@@ -274,7 +272,28 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
         // 상세보기 모드
         <div className={styles.detailContainer}>
           <div className={styles.detailHeader}>
-            <div className={styles.left}>
+            <div className={styles.detailHeaderButtons}>
+          <button
+                className={styles.detailScheduleButton}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleEditing(selectedDetailIndex);
+                }}
+              > <VscEdit />
+              </button>
+              {/* 삭제 버튼 */}
+              <button
+                onClick={() => deleteSchedule(selectedDate.details[selectedDetailIndex]?.scheduleId)}
+                className={styles.detailScheduleButton}
+              ><VscTrash />
+              </button>
+              <button
+                onClick={handleBackToList}
+                className={styles.detailScheduleButton}
+              ><VscArrowLeft />
+              </button>
+              </div>
+              <div className={styles.detailTitle}>
               <span>제목:</span>
               {isEditing ? (
                 <input
@@ -287,33 +306,7 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
               ) : (
                 <p>{selectedDate.details[selectedDetailIndex]?.title || '제목 없음'}</p>
               )}
-            </div>
-            <div className={styles.right}>
-              <button
-                className={styles.detailScheduleButton}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleEditing(selectedDetailIndex);
-                }}
-              >
-                <VscEdit />
-              </button>
-
-              {/* 삭제 버튼 */}
-              <button
-                onClick={() => deleteSchedule(selectedDate.details[selectedDetailIndex]?.scheduleId)}
-                className={styles.detailScheduleButton}
-              >
-                <VscTrash />
-              </button>
-
-              <button
-                onClick={handleBackToList}
-                className={styles.detailScheduleButton}
-              >
-                <VscArrowLeft />
-              </button>
-            </div>
+              </div>
           </div>
 
           <div className={styles.detailDescription}>
@@ -330,10 +323,36 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
             )}
           </div>
 
-
-
-          <div className={styles.detailFooter}>
-            <div className={styles.location}>
+          <div className={styles.detailFooter}> 
+          <div className={styles.detailDate}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <label>시작일:</label>
+            {isEditing ? (
+              <input
+                type="date"
+                name="startDate"
+                value={editedSchedule.startDate || ''}
+                onChange={handleInputEditing}
+              />           
+            ) : (
+              <p>{selectedDate.details[selectedDetailIndex]?.startDate}</p>
+            )}
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <label>종료일:</label>
+            {isEditing ? (
+              <input
+                type="date"
+                name="endDate"
+                value={editedSchedule.endDate || ''}
+                onChange={handleInputEditing}
+              />
+            ) : (
+              <p>{selectedDate.details[selectedDetailIndex]?.endDate}</p>
+            )}    
+            </div>     
+          </div> 
+          <div className={styles.location}>
               <VscLocation />
               {isEditing ? (
                 <input
@@ -346,6 +365,7 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
                 <p>{selectedDate.details[selectedDetailIndex]?.location || '위치 없음'}</p>
               )}
             </div>
+
             <div className={styles.detailScope}>
               <label>공유 범위:</label>
               {isEditing ? (
@@ -361,39 +381,11 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
               ) : (
                 <p>{selectedDate.details[selectedDetailIndex]?.scope || ''}</p>
               )}
-          
-              <label>작성일: </label>
-              <p>{selectedDate.details[selectedDetailIndex]?.createdAt || ''}</p>
             </div>
 
-
-          </div>
-          <div className={styles.detailDate}>
-            <label>시작일:</label>
-            {isEditing ? (
-              <input
-                type="date"
-                name="startDate"
-                value={editedSchedule.startDate || ''}
-                onChange={handleInputEditing}
-              />
-           
-            ) : (
-              <p>{selectedDate.details[selectedDetailIndex]?.startDate}</p>
-            )}
- 
-            <label>종료일:</label>
-            {isEditing ? (
-              <input
-                type="date"
-                name="endDate"
-                value={editedSchedule.endDate || ''}
-                onChange={handleInputEditing}
-              />
-            ) : (
-              <p>{selectedDate.details[selectedDetailIndex]?.endDate}</p>
-            )}
-          </div>
+            <div className={styles.detailCreatedAt}>
+          <label>작성일: </label>
+          <p>{selectedDate.details[selectedDetailIndex]?.createdAt || ''}</p></div>
           {/* 수정 버튼 */}
           {isEditing && (
             <div className={styles.buttonContainer}>
@@ -405,6 +397,7 @@ const CalendarDetail = ({ selectedDate, onClose, fetchCalendar }) => {
               </button>
             </div>
           )}
+             </div>
         </div>
       ) : (
         // 일정 목록 표시
