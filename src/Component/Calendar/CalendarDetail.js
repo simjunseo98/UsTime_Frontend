@@ -176,7 +176,7 @@ const CalendarDetail = ({ selectedDate,fetchCalendar }) => {
             day: 'numeric',
           })}</span>
         ) : (
-          <span>...</span>
+          <span>날짜를 선택하세요!</span>
         )}
       </div>
 

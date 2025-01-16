@@ -5,12 +5,9 @@
     max-width: 100%;
     height: 600px;
     max-height: 100%;
-    margin-left: 160px;
     background: rgb(255, 254, 219);
     line-height: 3.525em;
     justify-content: center;
-    border-radius: 10px;
-    border: 2px solid #ebebeb;
   }
   
   .react-calendar--doubleView {
@@ -47,8 +44,8 @@
   }
   
   .react-calendar__navigation {
-    height: 24px;
-    margin-bottom: 1em;
+    height: 50px;
+    background-color: rgba(238, 230, 190, 0.466);
   }  
   
   
@@ -75,6 +72,7 @@
     font-size: 15px;
     font-weight: bold;
     text-decoration: none;
+    border-top: 1px solid #ebebeb;
   }
 
   /*달력 요일 부분*/
@@ -164,7 +162,7 @@
   .react-calendar__tile {
     max-width: 100%;
     padding: 18px 0.6667px;
-    height: 6.25rem;
+    height: 6.14rem;
     background: none;
     text-align: center;
     font: inherit;
@@ -174,7 +172,6 @@
   .react-calendar__month-view__days__day abbr{
    position: relative;
    top: -35px;
-   /* left: -55px; */
   }
 
 
