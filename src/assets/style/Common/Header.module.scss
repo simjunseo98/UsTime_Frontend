@@ -11,7 +11,7 @@
   left: 0; /* 화면 왼쪽에 고정 */
   right: 0; /* 화면 오른쪽에 고정 */
   z-index: 1000;
-  border-bottom: 1px solid #eee;
+  border-bottom: 2px solid #eee;
 }
 .Logo{
   margin-left: 10px;
@@ -44,6 +44,7 @@
   color: #9d9b9b;
   background-color: rgba(243, 235, 219, 0);
   cursor: pointer;
+  ;
 }
 .sidebarIcon:hover{
   transform: scale(1.2);
@@ -52,10 +53,11 @@
 
 .alramIcon {
   text-align: right !important;
-  font-size: 40px;
+  font-size: 30px;
   border: 0;
   background-color: rgba(245, 229, 198, 0);
   cursor: pointer;
+  margin-top: 8px;
 }
 .alramIcon:hover{
 transform: scale(1.2);
@@ -64,43 +66,44 @@ transition-duration:0.5s;
 
 .badge {
   position: absolute;
-  top: 5px;
-  right: 20px;
+  top: 10px;
+  right: 19px;
   background-color: red;
   color: white;
   font-size: 10px;
   border-radius: 50%;
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .alarmDropdown {
   position: absolute;
   z-index: 1000;
   top: 50px;
   right: 0;
   background-color: white;
-  border: 1px solid #ddd;
+  border: 2px solid #ddd;
   border-radius: 5px;
   width: 350px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  
-
+  overflow-y: scroll;
 }
 .alarmDropdown h3{
   padding: 10px;
-  border-bottom: 2px solid #eee;
+  border-bottom: 2px solid #ddd;
 }
 
 .alarmItem {
   justify-content: space-between; /* 메시지와 생성일시, 삭제 버튼을 양쪽으로 배치 */
   align-items: center;
   padding: 10px;
-  border-bottom: 1px solid #eee;
+  // border-bottom: 1px solid #eee;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  overflow-y: scroll;
+  
+  border-bottom: 1px solid #c9c8c8;
   
 }
 
@@ -113,7 +116,11 @@ transition-duration:0.5s;
 }
 
 .alarmContent {
-  flex-direction: unset; 
+  flex-direction: unset;
+}
+
+.alarmContent p {
+  font-size: smaller;
 }
 
 .alarmMessage {
@@ -186,11 +193,13 @@ transition-duration:0.5s;
   margin: 10px;
   padding: 10px;
 }
+
 .modalIcon{
   font-size: 30px;
   animation: slideRight 2s ease-in-out infinite;
   white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 설정 */
 }
+
 .HeaderNavigate{
   display: flex;
   justify-content:space-around;
@@ -210,9 +219,11 @@ transition-duration:0.5s;
     opacity: 0; /* 사라짐 */
   }
 }
+
 .modalDate strong{
   display: flex;
 }
+
 .modalScheduleSectionTitle strong{
   font-size: 25px;
   align-items: center;
@@ -220,14 +231,17 @@ transition-duration:0.5s;
   margin-bottom: 10px;
  text-decoration: none;
 }
+
 .modalScheduleSectionTitle{
  margin-bottom: 10px;
  border-bottom: 2px solid rgba(0, 0, 0, 0.458);
 }
+
 .modalScheduleSectionDescription strong{
    font-size: 25px;
    margin: 10px;
 }
+
 .modalScheduleSectionDescription{
   width: 400px;
   height:200px;

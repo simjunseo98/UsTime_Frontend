@@ -1,74 +1,110 @@
-*{
+* {
     padding: 0;
     margin: 0;
     border: none;
 }
+
 .Header {
-    position: absolute; 
-    top: 30px;        
-    left: 45px;      
-    z-index: 1000;   
+    position: absolute;
+    top: 30px;
+    left: 45px;
+    z-index: 1000;
+    font-size: 30px;
+    display: flex;              /* 플렉스박스 설정 */
+    justify-content: center;    /* 가로 중앙 정렬 */
+    align-items: center;        /* 세로 중앙 정렬 */
 }
 
 .Logo {
-    font-size: 35px;    
-    font-weight: lighter; 
-    color: #333;   
-    color: rgb(165, 119, 119);
-}
-.Login_box{
-    border: 3px solid white;
-    border-radius: 30px;
-    background-color: snow;
- width: 550px;
- height: 470px;
- padding: 50px 30px 50px;
- box-sizing: border-box;
- box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.36);
- margin: auto;
-}
-/* 전체 스크롤바 */
-::-webkit-scrollbar {
-    width: 10px; /* 스크롤바 너비 */
-    max-height: 3px; /* 가로 스크롤바 높이 */
+    margin-left: 10px;
+    width: 50px;
+    align-items: center;
 }
 
-.login{
+.blue {
+    margin-top: 8px;
+    color: rgb(174, 240, 250);
+    font-style: oblique;
+}
+
+.red {
+    margin-top: 8px;
+    color: rgb(248, 188, 234);
+    font-style: oblique;
+}
+
+.Logo {
+    font-size: 35px;
+    font-weight: lighter;
+    color: #333;
+    color: rgb(165, 119, 119);
+}
+
+.Login_box {
+    border: 3px solid #ebebeb;
+    border-radius: 30px;
+    background-color: rgb(255, 254, 219);
+    width: 550px;
+    height: 470px;
+    padding: 50px 30px 50px;
+    box-sizing: border-box;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.36);
+    margin: auto;
+}
+
+/* 전체 스크롤바 */
+::-webkit-scrollbar {
+    width: 10px;
+    /* 스크롤바 너비 */
+    max-height: 3px;
+    /* 가로 스크롤바 높이 */
+}
+
+.login {
     font-size: 40px;
     font-weight: lighter;
     color: rgb(165, 119, 119);
     text-align: center;
     margin-bottom: 50px;
 }
-.Login_form >input{
+
+.Login_form > input {
     width: 100%;
     height: 50px;
     box-sizing: border-box;
     margin-bottom: 16px;
     border-radius: 6px;
+    border: 2px solid #ebebeb;
     padding: 0 10px;
-    background-color: #cbc6c61b;
-    &input::placeholder{
+    background-color: rgb(255, 255, 255);
+
+    &input::placeholder {
         color: #999999;
     }
 }
+
 /* 체크박스 라벨 스타일 */
 .checkboxLabel {
     display: flex;
     align-items: center;
-    padding-left: 30px; /* 아이디 저장하기 텍스트와 간격 조절 */
+    padding-left: 30px;
+    /* 아이디 저장하기 텍스트와 간격 조절 */
     position: relative;
     margin-bottom: 10px;
 }
 
 /* 체크박스 커스터마이징 */
 .checkbox {
-    appearance: none; /* 기본 체크박스 스타일 제거 */
+    appearance: none;
+    /* 기본 체크박스 스타일 제거 */
     position: absolute;
     left: 0;
-    width: 20px; /* 체크박스 너비 */
-    height: 20px; /* 체크박스 높이 */
-    background-image: url('../img/Nocheckbox.png'); /* 체크박스 배경 이미지 */
+    width: 20px;
+    /* 체크박스 너비 */
+    height: 20px;
+    /* 체크박스 높이 */
+    background-image: url('../img/Nocheckbox.png');
+    /* 체크박스 배경 이미지 */
     background-repeat: no-repeat;
     background-size: contain;
     cursor: pointer;
@@ -76,58 +112,73 @@
 
 /* 체크 상태일 때 배경 색상 변경 */
 .checkbox:checked {
-    background-color: rgb(165, 119, 119); /* 선택 시 배경 색상 */
+    background-color: rgb(165, 119, 119);
+    /* 선택 시 배경 색상 */
     left: 0;
     background-image: url('../img/Checkbox.png');
-    width: 20px; /* 체크박스 너비 */
-    height: 20px; /* 체크박스 높이 */
+    width: 20px;
+    /* 체크박스 너비 */
+    height: 20px;
+    /* 체크박스 높이 */
     background-size: contain;
     background-repeat: no-repeat;
 }
 
-.checkboxLabel{
+.checkboxLabel {
     color: #463e3e;
 }
-.Login_button{
+
+.Login_button {
     width: 100%;
     height: 48px;
     box-sizing: border-box;
     border-radius: 6px;
     color: #fff;
-    border: 1px solid black;
+    border: 2px solid #eabdbd;
     font-size: 16px;
     background-color: rgb(165, 119, 119);
-    margin-top:10px;
+    margin-top: 10px;
     cursor: pointer;
-    &.Login_button:hover{
+
+    &.Login_button:hover {
         background-color: #463e3e;
     }
 }
-@media (max-width: 480px) { /* 모바일 화면 */
+
+@media (max-width: 480px) {
+    /* 모바일 화면 */
 
     .Logo {
-        font-size: 40px; /* 로고 크기 축소 */
+        font-size: 40px;
+        /* 로고 크기 축소 */
     }
 
     .Login_box {
-        width: 90%; /* 화면 너비에 맞춤 */
-        border-radius: 30px; /* 모서리 둥글게 */
+        width: 90%;
+        /* 화면 너비에 맞춤 */
+        border-radius: 30px;
+        /* 모서리 둥글게 */
         max-height: 350px;
         padding: 30px;
     }
 
     .login {
-        font-size: 24px; /* 로그인 텍스트 크기 축소 */
+        font-size: 24px;
+        /* 로그인 텍스트 크기 축소 */
         margin-bottom: 30px;
     }
 
-    .Login_form > input {
-        height: 35px; /* 입력창 높이 축소 */
-        font-size: 14px; /* 글자 크기 축소 */
+    .Login_form>input {
+        height: 35px;
+        /* 입력창 높이 축소 */
+        font-size: 14px;
+        /* 글자 크기 축소 */
     }
 
     .Login_button {
-        height: 35px; /* 버튼 높이 축소 */
-        font-size: 12px; /* 글자 크기 축소 */
+        height: 35px;
+        /* 버튼 높이 축소 */
+        font-size: 12px;
+        /* 글자 크기 축소 */
     }
 }

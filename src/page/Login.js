@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Loading from '../Component/Common/Loading';
 import api from '../service/api';
 import { useCookies } from 'react-cookie';
+import Logo from "../assets/img/로고1.png";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -84,7 +85,9 @@ const Login = () => {
   return (
     <>
       <div className={styles.Header}>
-        <h1 className={styles.Logo}>Us_Time</h1>
+      <img src={Logo} alt="" className={styles.Logo} ></img>
+        <span className={styles.blue}>Us</span>
+      <span className={styles.red}>Time</span>
       </div>
       <div className={styles.Login_box}>
         <h2 className={styles.login}>Login</h2>

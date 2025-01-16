@@ -188,7 +188,7 @@ const Header = () => {
               >
                 <div className={styles.alarmContent}>
                   <div className={styles.alarmMessage}>
-                    <p><strong>✅</strong> {notif.message}</p>
+                    <p>✅ {notif.message}</p>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -199,7 +199,7 @@ const Header = () => {
                       X
                     </button>
                   </div>
-                    <p><strong>요약:</strong> {notif.summary}</p>
+                    <p><strong>▶</strong>&nbsp;{notif.summary}</p>
                   <div className={styles.readText}>
                     <p className={styles.timestamp}>
                       {dayjs(notif.createdAt).fromNow()}

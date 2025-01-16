@@ -1,26 +1,45 @@
 import { useNavigate, NavLink } from "react-router-dom";
 import styles from "../../assets/style/Common/Sidebar.module.scss";
+import defaultProfilePicture from "../../assets/img/이미지 없음.jpg";
 
-const Sidebar = ({ isOpen, onClose, }) => {
-  //로그아웃
+
+const Sidebar = ({ isOpen, onClose }) => {
+  // 로그아웃
   const navigate = useNavigate();
+  const name = sessionStorage.getItem("name");
+  const email = sessionStorage.getItem("email");
 
-  //로그아웃 로직
+  // 로그아웃 로직
   const handleLogout = () => {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("userId");
     sessionStorage.removeItem("coupleId");
     sessionStorage.removeItem("name");
     sessionStorage.removeItem("email");
-    alert('로그아웃 되었습니다.')
+    alert('로그아웃 되었습니다.');
     navigate('/');
-  }
+  };
+
+
   return (
-    <div className={`${styles.SidebarContainer} ${isOpen ? styles.open : styles.closed
-      }`}>
+    <div className={`${styles.SidebarContainer} ${isOpen ? styles.open : styles.closed}`}>
       <button className={styles.closeButton} onClick={onClose}>X</button>
 
-      <ul>
+      {/* 프로필 섹션 */}
+      <div className={styles.profileSection}>
+        <img
+          src={ defaultProfilePicture}
+          alt="프로필 사진"
+          className={styles.profilePicture}
+        />
+        <div className={styles.profileText}>
+          <p className={styles.profileName}>{name}</p>
+          <p className={styles.profileEmail}>{email}</p>
+        </div>
+      </div>
+
+      {/* 메뉴 섹션 */}
+      <ul className={styles.menuSection}>
         <NavLink to="/myprofile" className={styles.SidebarNav} aria-current="page">
           <li>프로필 관리</li>
         </NavLink>
@@ -33,8 +52,7 @@ const Sidebar = ({ isOpen, onClose, }) => {
         <NavLink to="/picture" className={styles.SidebarNav} aria-current="page">
           <li>사진첩</li>
         </NavLink>
-        <button className={styles.SidebarNav}
-          onClick={handleLogout}>로그아웃</button>
+        <button className={styles.SidebarNav} onClick={handleLogout}>로그아웃</button>
       </ul>
     </div>
   );

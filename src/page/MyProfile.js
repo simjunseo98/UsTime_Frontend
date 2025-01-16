@@ -42,12 +42,13 @@ const MyProfile = () => {
 
         try {
             await api.delete(`/couple/delete?coupleId=${coupleId}`);
-            alert('커플 관계가 해지되었습니다.');
             setMyProfile((prev) => ({
                 ...prev,
                 coupleId: null,
             }));
             sessionStorage.removeItem("coupleId");
+            alert('커플 관계가 해지되었습니다.');
+            window.location.reload();
         } catch (err) {
             console.error('커플 해지 실패:', err);
             alert('커플 해지에 실패했습니다.');

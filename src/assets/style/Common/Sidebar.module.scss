@@ -1,72 +1,121 @@
 .SidebarContainer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 340px;
-  height: 100%;
-  background-color: white;
-  transition: transform 0.3s ease-in-out;
-  z-index: 1000;
-
-  &.open {
-    transform: translateX(0);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 340px;
+    height: 100%;
+    background-color: rgb(210, 243, 168);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+  
+    &.open {
+      transform: translateX(0);
+    }
+  
+    &.closed {
+      transform: translateX(-100%);
+    }
   }
-
-  &.closed {
-    transform: translateX(-100%);
+  
+/* 프로필 섹션 */
+.profileSection {
+    display: flex;
+    flex-direction: row; /* 좌우 배치 */
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #a5a5a5; /* 메뉴와 구분하는 라인 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
   }
-}
-
+  
+  .profilePicture {
+    width: 80px; /* 크기를 약간 줄임 */
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 35px; /* 사진과 텍스트 간격 */
+    border: 2px solid #6266a5; /* 프로필 사진 테두리 */
+  }
+  
+  .profileText {
+    display: flex;
+    flex-direction: column; /* 이름과 생년월일을 위아래 배치 */
+  }
+  
+  .profileName {
+    font-size: 18px;
+    font-weight: bold;
+    color: #202020;
+    margin-bottom: 5px;
+  }
+  
+  .profileEmail {
+    font-size: 12px;
+    color: #555555;
+  }
+  
+  /* 메뉴 섹션 */
+  .menuSection {
+    padding: 20px 10px;
+    background-color: #ebebeb;
+    height: 100%;
+    list-style: none;
+  }
+  
   .SidebarNav {
     display: block;
-    width: 130px;
-    margin: 30px;
+    width: 88%;
+    margin: 10px 0;
     font-size: 18px;
     color: #202020;
     text-decoration: none;
-  }
-  .SidebarNav:hover{
-     color: #6266a5;
-  }
-
-/* 상단에 프로필 관리 크게 배치 */
-.SidebarNav:first-child {
-    font-size: 30px;
-    font-weight: bold;
     text-align: left;
-}
-
-/* 나머지 항목은 적절히 배치 */
-.SidebarNav:nth-child(2),
-.SidebarNav:nth-child(3) {
-    font-size: 20px;
-    margin: 30px;
-    padding: 12px 10px;
-    text-align: left;
-}
-
-/* 로그아웃은 텍스트 형식으로 하단에 배치 */
+    padding: 12px 20px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    background-color: white;
+    border: 1px solid #ebebeb;
+  }
+  
+  .SidebarNav:hover {
+    background-color: #e8f0ff;
+    color: #6266a5;
+  }
+  
+/* 로그아웃 버튼 */
 .SidebarNav:last-child {
-  margin-top: auto; /* 나머지 공간을 채워 우측 하단으로 이동 */
+  margin-top: auto;
   font-size: 18px;
-  text-align: right; /* 우측 정렬 */
+  font-weight: bold;
   cursor: pointer;
-  position: absolute; /* 절대 위치로 고정 */
-  bottom: 0;
-  right: 0;
-  border: none;
-  background-color: white;
-}
-.closeButton {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size:28px;
-  cursor: pointer;
+  bottom: 20px;
+  right: 20px;  /* 왼쪽은 제거하고 오른쪽에만 붙입니다 */
+  width: 100px;
+  text-align: center;
+  border: 1px solid #6266a5;
+  background-color: rgb(210, 243, 168);
+  padding: 10px;
+  border-radius: 4px;
 }
-.closeButton:hover{
-  transform: scale(1.2);
-  transition-duration: 0.5s;
-}
+  
+  .SidebarNav:last-child:hover {
+    background-color: #f5f5f5;
+    color: #6266a5;
+    width: 100px;
+  }
+  
+  .closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+  }
+  
+  .closeButton:hover {
+    transform: scale(1.2);
+    transition-duration: 0.5s;
+  }
+  
