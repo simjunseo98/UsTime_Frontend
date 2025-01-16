@@ -247,61 +247,100 @@
     line-height: 0.7em; /* 줄 간격을 조정하여 텍스트가 잘리지 않도록 */
     position: absolute;
     left: 8%;
-    margin: 0;
-    
+    margin: 0; 
   }
   
   @media (max-width: 480px) {
-    /* 컨테이너 */
-    .container {
-      flex-direction: column; /* 가로 → 세로로 배치 변경 */
-      align-items: center; /* 가운데 정렬 */
-    }
-  
-    /* 달력 컨테이너 */
-    .calendarContainer {
-      width: 100%; /* 화면 너비에 맞게 조정 */
-      padding: 0 10px; /* 좌우 여백 추가 */
-      margin-bottom: 20px; /* 아래 여백 추가 */
-      background-color: rgba(255, 255, 255, 0.95); /* 약간 밝게 조정 */
-    }
-  
-    /* 달력 */
     .react-calendar {
-      width: 100%; /* 달력 너비를 화면에 맞춤 */
-      font-size: 14px; /* 글자 크기 축소 */
-      height: auto; /* 높이 자동 조정 */
+      width: 100%;
+      height: auto;
+      max-height: none;
+      background: rgb(255, 254, 219);
+      line-height: 2.5em; /* 줄 간격 축소 */
+      font-size: 0.8em; /* 폰트 크기 축소 */
     }
   
     .react-calendar__navigation {
-      height: 40px; /* 네비게이션 높이 축소 */
-      margin-bottom: 0.5em; /* 여백 축소 */
+      height: 40px;
+      background-color: rgba(238, 230, 190, 0.8);
     }
   
     .react-calendar__navigation__label > span {
-      font-size: 16px; /* 네비게이션 텍스트 축소 */
+      font-size: 16px; /* 글씨 크기 조정 */
+      margin: 0;
+      font-weight: bold;
     }
   
-    .react-calendar__month-view__weekdays__weekday abbr {
-      font-size: 12px; /* 요일 글자 크기 축소 */
+    .react-calendar__tile {
+      padding: 10px 0.5px; /* 패딩 축소 */
+      height: 4.5rem; /* 높이 축소 */
+      font-size: 0.7em; /* 타일 글씨 크기 축소 */
     }
+  
+    .react-calendar__month-view__weekdays {
+      font-size: 0.7em;
+      font-weight: bold;
+    }
+  
     .react-calendar__month-view__days__day {
-      width: calc(100% / 7); /* 모바일에서도 한 줄에 7개 유지 */
-      height: 80px; /* 모바일에서는 높이를 줄임 */
-    }
-    .react-calendar__month-view__days__day{
-      abbr{
-        font-size: 18px;
-        font-style: inherit;
-      }
+      flex-direction: column; /* 라벨과 날짜 세로 정렬 유지 */
+      font-size: 0.75em; /* 폰트 크기 축소 */
+      justify-content: center; /* 정렬 방식 조정 */
     }
   
     .react-calendar__month-view__days__day abbr {
-      font-size: 10px; /* 날짜 글자 크기 축소 */
+      font-size: 12px;
+      position: relative;
+      top: -20px;
     }
   
+    .schedule-label {
+      width: 80px; /* 라벨 너비 축소 */
+      font-size: 8px; /* 라벨 글씨 크기 축소 */
+      padding: 3px 0; /* 패딩 축소 */
+      max-height: 14px; /* 최대 높이 축소 */
+      left: 5%; /* 위치 조정 */
+      line-height: 0.6em; /* 줄 간격 축소 */
+    }
   
-    /* 달력의 주말 색상 유지 */
+    .react-calendar__navigation button {
+      min-width: 25px; /* 네비게이션 버튼 크기 축소 */
+    }
+  
+    .react-calendar__tile:enabled:hover {
+      background-color: #f7f3c4ab;
+      border-radius: 8px; /* 테두리 반경 축소 */
+    }
+  
+    .react-calendar__tile--now {
+      background: rgb(244, 207, 137);
+      border-radius: 8px;
+    }
+  
+    .react-calendar__tile--active {
+      background: rgba(247, 232, 120, 0.8);
+    }
+  
+    .react-calendar__tile--active:enabled:hover {
+      background: rgba(247, 232, 120, 0.9);
+    }
+  
+    .react-calendar__tile--hasActive {
+      background: #76baff;
+    }
+  
+    .react-calendar__tile--hasActive:enabled:hover {
+      background: #a9d4ff;
+    }
+  
+    .react-calendar__month-view__days__day--neighboringMonth {
+      color: #ccc;
+    }
+  
+    .react-calendar__month-view__days__day--weekend {
+      color: inherit;
+    }
+  
     .current-saturday {
       color: #001cd1;
     }
@@ -309,8 +348,20 @@
     .current-sunday {
       color: #d10000;
     }
+  
+    .neighboring-saturday {
+      color: #001cd1;
+    }
+  
+    .neighboring-sunday {
+      color: #d10000;
+    }
+  
+    .react-calendar__month-view__weekdays__weekday abbr {
+      font-size: 12px; /* 요일 폰트 크기 축소 */
+    }
   }
-
+  
 
 
 

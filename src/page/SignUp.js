@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import api from "../service/api.js";
 import styles from "../assets/style/SignUp.module.scss";
+import Logo from "../assets/img/로고1.png";
 
 // 유효성 검사
 const valid = yup.object().shape({
@@ -79,7 +80,11 @@ const SignUp = () => {
 
     return (
         <>
-            <div className={styles.header}><h1 className={styles.logo}>Us_Time</h1></div>
+            <div className={styles.header}>
+              <img src={Logo} alt="" className={styles.Logo} ></img>
+                    <span className={styles.blue}>Us</span>
+                  <span className={styles.red}>Time</span>
+            </div>
             <div className={styles.Container}>
                 <h2 className={styles.SignUpTitle}>회원 가입</h2>
 
