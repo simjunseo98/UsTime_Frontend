@@ -11,11 +11,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   // 로그아웃 로직
   const handleLogout = () => {
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("userId");
-    sessionStorage.removeItem("coupleId");
-    sessionStorage.removeItem("name");
-    sessionStorage.removeItem("email");
+    sessionStorage.clear()
     alert('로그아웃 되었습니다.');
     navigate('/');
   };

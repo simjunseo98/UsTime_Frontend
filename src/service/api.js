@@ -21,18 +21,14 @@ api.interceptors.request.use(
     }
 );
 
-// 응답 인터셉터 설정: 401 에러 처리
+// 응답 인터셉터 설정: 401, 403 에러 처리
 api.interceptors.response.use(
     response => response,
     error => {
-        if (error.response && error.response.status === 401) {  // 토큰 만료 시
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {  // 토큰 만료 시
             alert("세션이 만료되었습니다. 다시 로그인해주세요.");
-            sessionStorage.removeItem("token");
-            sessionStorage.removeItem("userId");
-            sessionStorage.removeItem("coupleId");
-            sessionStorage.removeItem("name");
-            sessionStorage.removeItem("email");
-            window.location.reload();
+            sessionStorage.clear();
+            window.location.href = "/";
         }
         return Promise.reject(error);
     }
