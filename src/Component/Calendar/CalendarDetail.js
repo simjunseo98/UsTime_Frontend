@@ -161,14 +161,9 @@ const CalendarDetail = ({ selectedDate,fetchCalendar }) => {
     <div className={styles.sidepanel}>
       <div className={styles.scheduleHeader}>
       <button onClick={() => setIsAdd(true)} className={styles.addSchedule}>+</button>
-        <div className={styles.left}>Schedule</div>
-        <div className={styles.right}>
-          <button className={styles.closeButton}>X</button>
-        </div>
-      </div>
-
-      {/* 날짜 표시 */}
-      <div className={styles.nowDate}>
+        <div className={styles.left}>
+            {/* 날짜 표시 */}
+        <div className={styles.nowDate}>
         {selectedDate && selectedDate.date ? (
           <span>{new Date(selectedDate.date).toLocaleDateString('ko-KR', {
             year: 'numeric',
@@ -179,6 +174,14 @@ const CalendarDetail = ({ selectedDate,fetchCalendar }) => {
           <span>날짜를 선택하세요!</span>
         )}
       </div>
+        </div>
+        <div className={styles.right}>
+          <button className={styles.closeButton}>X</button>
+        </div>
+      </div>
+
+    
+    
 
       {/* 일정 추가 폼 */}
       {isAdd ? (
