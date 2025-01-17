@@ -193,6 +193,7 @@ const CalendarComponent = () => {
                 </div>
                 <CalendarDetail
                     selectedDate={selectedDate}
+                    setSelectedDate = {setSelectedDate}
                     fetchCalendar={fetchCalendar}
                     />
         </div>

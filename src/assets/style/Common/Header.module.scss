@@ -87,7 +87,7 @@ transition-duration:0.5s;
   background-color: white;
   border: 2px solid #ddd;
   border-radius: 5px;
-  width: 350px;
+  width: 380px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow-y: scroll;
 }
@@ -121,6 +121,7 @@ transition-duration:0.5s;
 
 .alarmContent p {
   font-size: smaller;
+  // white-space: pre-line;
 }
 
 .alarmMessage {
@@ -128,7 +129,6 @@ transition-duration:0.5s;
   font-size: 18px;
   justify-content: space-between;
 }
-
 
 .timestamp {
   font-size: 15px;

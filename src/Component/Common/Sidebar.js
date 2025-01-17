@@ -20,7 +20,6 @@ const Sidebar = ({ isOpen, onClose }) => {
     navigate('/');
   };
 
-
   return (
     <div className={`${styles.SidebarContainer} ${isOpen ? styles.open : styles.closed}`}>
       <button className={styles.closeButton} onClick={onClose}>X</button>
