@@ -28,10 +28,7 @@ const Header = () => {
 
   const userId = sessionStorage.getItem("userId");
 
-  // 알림창 열기/닫기 토글
-  const toggleAlarm = () => {
-    setAlarmOpen(!alarmOpen);
-  };
+
 
   // API 요청으로 알림 데이터 가져오기
   const fetchAlarm = useCallback(async () => {
@@ -112,7 +109,7 @@ const Header = () => {
       setAlarm((prev) => prev.filter((notif) => notif.notificationId !== notificationId));
       alert("알림이 삭제되었습니다.");
     } catch (error) {
-      alert("삭제에 실패했습니다:",error);
+      alert("삭제에 실패했습니다:", error);
     }
   };
 
@@ -147,6 +144,11 @@ const Header = () => {
     setSidebarOpen((prev) => !prev);
   };
 
+  // 알림창 열기/닫기 토글
+  const toggleAlarm = () => {
+    setAlarmOpen(!alarmOpen);
+  };
+
   const home = () => {
     navigate("/main");
   };
@@ -160,8 +162,8 @@ const Header = () => {
       <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />
       <img src={Logo} alt="" className={styles.Logo} ></img>
       <h3 className={styles.ustime} onClick={home}>
-      <span className={styles.blue}>Us</span>
-      <span className={styles.red}>Time</span>
+        <span className={styles.blue}>Us</span>
+        <span className={styles.red}>Time</span>
       </h3>
       <button className={styles.alramIcon} onClick={toggleAlarm}>
         <VscBell />
@@ -199,7 +201,7 @@ const Header = () => {
                       X
                     </button>
                   </div>
-                    <p><strong>▶</strong>&nbsp;{notif.summary}</p>
+                  <p><strong>▶</strong>{notif.summary}</p>
                   <div className={styles.readText}>
                     <p className={styles.timestamp}>
                       {dayjs(notif.createdAt).fromNow()}
