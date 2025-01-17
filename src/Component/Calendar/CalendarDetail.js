@@ -2,13 +2,13 @@ import React, {useState, useEffect} from "react";
 import api from "../../service/api";
 import styles from '../../assets/style/Calendar/Main.module.scss';
 import { getLabelColor } from '../../utils/getLabelColor';
-import { VscArrowLeft, VscEdit, VscLocation, VscTrash,VscChevronDown } from "react-icons/vsc";
+import { VscArrowLeft, VscEdit, VscLocation, VscTrash,VscChevronDown,VscAccount} from "react-icons/vsc";
 
 const CalendarDetail = ({ selectedDate,fetchCalendar }) => {
   // 세션에서 coupleId와 createdBy를 가져옵니다.
   const isCoupleId = sessionStorage.getItem('coupleId');
   const coupleId = isCoupleId === null || isCoupleId === 'undefined' ? null : isCoupleId;
-  const createdBy = sessionStorage.getItem('userId');
+  const createdBy = sessionStorage.getItem('name');
 
   const [selectedDetailIndex, setSelectedDetailIndex] = useState(null); // 클릭된 일정의 인덱스
   const [isAdd, setIsAdd] = useState(false); // 일정 추가 여부
@@ -161,8 +161,7 @@ const CalendarDetail = ({ selectedDate,fetchCalendar }) => {
     <div className={styles.sidepanel}>
       <div className={styles.scheduleHeader}>
       <button onClick={() => setIsAdd(true)} className={styles.addSchedule}>+</button>
-        <div className={styles.left}>
-          
+        <div className={styles.left}>        
         <div className={styles.nowDate}>
         {selectedDate && selectedDate.date ? (
           <span>{new Date(selectedDate.date).toLocaleDateString('ko-KR', {
@@ -179,10 +178,6 @@ const CalendarDetail = ({ selectedDate,fetchCalendar }) => {
           <button className={styles.closeButton}>X</button>
         </div>
       </div>
-
-    
-    
-
       {/* 일정 추가 폼 */}
       {isAdd ? (
         <div className={styles.scheduleForm}>
@@ -272,13 +267,9 @@ const CalendarDetail = ({ selectedDate,fetchCalendar }) => {
           <button onClick={() => setIsAdd(false)} className={styles.detailButton}>취소</button>
         </div>
       ) : selectedDetailIndex !== null ? (
-        // 상세보기 모드
-        
-        <div className={styles.detailContainer}>  
-          <div className={styles.detailHeaderButtons}>
-          <div className={styles.detailCreatedAt}>
-          <label>작성일: </label>
-          <p>{selectedDate.details[selectedDetailIndex]?.createdAt || ''}</p></div>
+        // 상세보기 모드      
+        <div className={styles.detailContainer}> 
+         <div className={styles.detailHeaderButtons}>        
           <button
                 className={styles.detailScheduleButton}
                 onClick={(e) => {
@@ -298,8 +289,27 @@ const CalendarDetail = ({ selectedDate,fetchCalendar }) => {
                 className={styles.detailScheduleButton}
               ><VscArrowLeft />
               </button>
-              </div> 
-              <div className={styles.detailDate}>
+              </div>  
+            <div className={styles.detailHeader}>
+              <div className={styles.detailTitle}
+                  style={{color:getLabelColor(selectedDate.details[selectedDetailIndex]?.label)}}>
+              <span>제목:</span>
+              {isEditing ? (
+                <input
+                  type="text"
+                  name="title"
+                  value={editedSchedule.title || ''}
+                  onChange={handleInputEditing}
+                  className={styles.detailEditingInputField}
+                />
+              ) : (
+                <p>{selectedDate.details[selectedDetailIndex]?.title || '제목 없음'}</p>
+              )}
+              </div>        
+          </div>
+         
+        <div className={styles.detailMiddle}>
+         <div className={styles.detailDate}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
           <label>시작일:</label>
             {isEditing ? (
@@ -314,6 +324,7 @@ const CalendarDetail = ({ selectedDate,fetchCalendar }) => {
             )}
             </div>
             <p className={styles.detailDateIcon}
+               style={{color:getLabelColor(selectedDate.details[selectedDetailIndex]?.label)}}
             ><VscChevronDown /></p>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <label>종료일:</label>
@@ -329,8 +340,6 @@ const CalendarDetail = ({ selectedDate,fetchCalendar }) => {
             )}    
             </div>     
           </div> 
-              <div className={styles.Memo}>MEMO</div>
-              <div className={styles.detailFooter}> 
           <div className={styles.location}>
               <VscLocation />
               {isEditing ? (
@@ -344,6 +353,15 @@ const CalendarDetail = ({ selectedDate,fetchCalendar }) => {
                 <p>{selectedDate.details[selectedDetailIndex]?.location || '위치 없음'}</p>
               )}
             </div>
+            <div className={styles.detailUser}>
+            <label><VscAccount /></label>
+            <p>{createdBy}</p>
+          </div>
+            </div>
+              <div className={styles.detailFooter}>
+            <div className={styles.detailCreatedAt}>
+          <label>작성일: </label>
+          <p>{selectedDate.details[selectedDetailIndex]?.createdAt || ''}</p></div>
             <div className={styles.detailScope}>
               <label>범위:</label>
               {isEditing ? (
@@ -361,22 +379,7 @@ const CalendarDetail = ({ selectedDate,fetchCalendar }) => {
               )}
             </div>
              </div>
-          <div className={styles.detailHeader}>
-              <div className={styles.detailTitle}>
-              <span>제목:</span>
-              {isEditing ? (
-                <input
-                  type="text"
-                  name="title"
-                  value={editedSchedule.title || ''}
-                  onChange={handleInputEditing}
-                  className={styles.detailEditingInputField}
-                />
-              ) : (
-                <p>{selectedDate.details[selectedDetailIndex]?.title || '제목 없음'}</p>
-              )}
-              </div>        
-          </div>
+          <div className={styles.Memo}>MEMO</div>
              <div className={styles.detailDescription}>      
             {isEditing ? (
               <textarea
