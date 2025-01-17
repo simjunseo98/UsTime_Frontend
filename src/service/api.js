@@ -25,7 +25,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
     response => response,
     error => {
-        if (error.response && (error.response.status === 401 || error.response.status === 403)) {  // 토큰 만료 시
+        if (error.response && error.response.status === 403) {  // 토큰 만료 시
             alert("세션이 만료되었습니다. 다시 로그인해주세요.");
             sessionStorage.clear();
             window.location.href = "/";
