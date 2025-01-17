@@ -7,8 +7,8 @@ import CheckListCategory from "../Component/Couple/CheckListCategory.js";
 import CheckListModal from "../Component/Couple/CheckListModal.js";
 import CoupleBanner from "../Component/Couple/CoupleBannner.js";
 import CoupleDdayList from "../Component/Couple/CoupleDdayList.js";
-import { Link } from "react-router-dom";
 import CoupleSchedule from "../Component/Couple/CoupleSchedule.js";
+import { Link } from "react-router-dom";
 
 const Couple = () => {
   const [couplePhoto, setCouplePhoto] = useState(null);
@@ -16,7 +16,6 @@ const Couple = () => {
   const [daysPassed, setDaysPassed] = useState(null);
   const [specialDays, setSpecialDays] = useState([]);
   const maxtoday = new Date().toISOString().split("T")[0];
-  const [upcomingSchedules, setUpcomingSchedules] = useState([]);
   //초기화시 한 번만 호출되게 가독성 개선
   const [userId] = useState(() => sessionStorage.getItem("userId"));
   const [coupleId] = useState(() => sessionStorage.getItem("coupleId"));
@@ -38,69 +37,6 @@ const Couple = () => {
     { title: "데이트 체크", key: "데이트" },
   ];
 
-// 다가오는 일정 불러오기
-const fetchUpcomingSchedules = useCallback(async () => {
-  try {
-    const params = {
-      userId,
-      scope: "공유", // 기본 공유 일정만 가져오기
-    };
-
-    if (coupleId) {
-      params.coupleId = coupleId;
-    }
-    const response = await api.get("/calendar/all", { params });
-    // 일정 데이터를 날짜별로 그룹화
-    const schedules = response.data.reduce((acc, curr) => {
-      const startDate = new Date(curr.startDate);
-      const endDate = new Date(curr.endDate);
-      let currentDate = new Date(startDate);
-
-      // startDate부터 endDate까지 반복하며 날짜별로 추가
-      while (currentDate <= endDate) {
-        const dateString = currentDate.toISOString().split("T")[0];
-        if (!acc[dateString]) {
-          acc[dateString] = [];
-        }
-        acc[dateString].push({
-          scheduleId: curr.scheduleId,
-          title: curr.title,
-          description: curr.description,
-          startDate: curr.startDate,
-          endDate: curr.endDate,
-          label: curr.label,
-          location: curr.location,
-          scope: curr.scope,
-          createdAt: curr.createdAt,
-        });
-        currentDate.setDate(currentDate.getDate() + 1); // 다음 날짜로 이동
-      }
-
-      return acc;
-    }, {});
-
-    // 현재 날짜 기준으로 필터링 및 정렬
-    const now = new Date();
-    const filteredSchedules = Object.entries(schedules)
-      .flatMap(([date, events]) =>
-        events.map((event) => ({
-          ...event,
-          date,
-        }))
-      )
-      .filter((event) => new Date(event.startDate) >= now)
-      .sort((a, b) => new Date(a.startDate) - new Date(b.startDate))
-      .slice(0, 3); // 상위 3개 일정만 가져오기
-
-    setUpcomingSchedules(filteredSchedules);
-  } catch (error) {
-    console.error("일정을 불러오는 중 오류가 발생했습니다:", error);
-  }
-}, [coupleId, userId]);
-
-useEffect(() => {
-  fetchUpcomingSchedules();
-}, [fetchUpcomingSchedules]);
 
 
 //체크 리스트 메소드
@@ -372,7 +308,7 @@ const handleDeleteItem = async (checklistId, category) => {
         보러가기
       </Link>
     </div>
-          <CoupleSchedule schedules={upcomingSchedules} />
+          <CoupleSchedule userId={userId} coupleId = {coupleId} />
           <CoupleDdayList specialDays={specialDays} />
         </div>
         <div className={styles.CoupleContentContainer2}>         
@@ -386,7 +322,7 @@ const handleDeleteItem = async (checklistId, category) => {
           title={title}
           items={key === "장소" ? 장소 : key === "음식" ? 음식 : key === "영화" ? 영화 : 데이트}
           onAddItem={() => openModal(key)}
-          onDeleteItem={(checklistId)=> handleDeleteItem(checklistId)}
+          onDeleteItem={(checklistId)=> handleDeleteItem(checklistId,key)}
         />
       );
 })}
