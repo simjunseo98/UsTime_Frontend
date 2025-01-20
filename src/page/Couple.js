@@ -11,7 +11,6 @@ import CoupleSchedule from "../Component/Couple/CoupleSchedule.js";
 import { Link } from "react-router-dom";
 
 const Couple = () => {
-  const [couplePhoto, setCouplePhoto] = useState(null);
   const [dDay, setDDay] = useState("");
   const [daysPassed, setDaysPassed] = useState(null);
   const [specialDays, setSpecialDays] = useState([]);
@@ -195,7 +194,6 @@ const handleDeleteItem = async (checklistId, category) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = () => setCouplePhoto(reader.result);
       reader.readAsDataURL(file);
     }
   };
