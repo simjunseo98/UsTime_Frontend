@@ -13,6 +13,8 @@ const MyProfile = () => {
     const [error, setError] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [openModal, setOpenModal] = useState(false);
+    const [previewImage, setPreviewImage] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -55,6 +57,39 @@ const MyProfile = () => {
         }
     };
 
+    // 프로필 바꾸기
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // 미리보기 이미지 업데이트
+        setPreviewImage(URL.createObjectURL(file));
+        setSelectedFile(file); // 선택된 파일 저장
+    };
+
+    const handleSaveProfileImage = async () => {
+        if (!selectedFile) {
+            alert('변경할 프로필 사진을 선택하세요.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+
+        try {
+            const response = await api.post('/user/profile', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+            alert('프로필 사진이 성공적으로 변경되었습니다.');
+            setMyProfile((prev) => ({
+                ...prev,
+                profileImageUrl: response.data.profileImageUrl, // 서버에서 반환된 새로운 URL로 업데이트
+            }));
+        } catch (err) {
+            console.error('프로필 사진 변경 실패:', err);
+            alert('프로필 사진 변경에 실패했습니다.');
+        }
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -64,6 +99,8 @@ const MyProfile = () => {
         }));
     };
 
+
+    // 정보수정
     const handleSave = async () => {
         const userId = sessionStorage.getItem('userId');
 
@@ -74,7 +111,6 @@ const MyProfile = () => {
             });
             alert('정보가 성공적으로 수정되었습니다.');
             setIsEditing(false);
-            // 페이지 새로 고침 또는 데이터 갱신 필요
             window.location.reload();
         } catch (err) {
             console.error('정보 수정 실패:', err);
@@ -122,7 +158,11 @@ const MyProfile = () => {
                 </div>
                 <div className={styles.profileContent}>
                     <div className={styles.profileImageSection}>
-                        <img src={profileImage} alt="프로필 사진" className={styles.profileImage} />
+                        <img
+                            src={previewImage || myProfile.profileUrl || profileImage}
+                            alt="프로필 사진"
+                            className={styles.profileImage}
+                        />
                         <p>
                             <strong>이름:</strong>{' '}
                             {isEditing ? (
@@ -137,7 +177,18 @@ const MyProfile = () => {
                                 myProfile.name
                             )}
                         </p>
-                        <button className={styles.editButton}>사진 바꾸기</button>
+                        <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleFileChange}
+                                className={styles.fileInput} // 숨김 처리
+                            />
+                    <button
+                        className={styles.editButton}
+                        onClick={handleSaveProfileImage} // 확인 버튼을 눌러서 저장
+                    >
+                        사진바꾸기
+                    </button>
                     </div>
 
                     <div className={styles.profileDetails}>
