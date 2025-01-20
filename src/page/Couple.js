@@ -16,6 +16,7 @@ const Couple = () => {
   const [daysPassed, setDaysPassed] = useState(null);
   const [specialDays, setSpecialDays] = useState([]);
   const maxtoday = new Date().toISOString().split("T")[0];
+
   //초기화시 한 번만 호출되게 가독성 개선
   const [userId] = useState(() => sessionStorage.getItem("userId"));
   const [coupleId] = useState(() => sessionStorage.getItem("coupleId"));
@@ -284,9 +285,10 @@ const handleDeleteItem = async (checklistId, category) => {
 
 
   return (
-    <div className={styles.CoupleContainer}>
+<div className={styles.CoupleContainer}>  
+<div className={styles.CoupleContentContainer}>
+<div className={styles.Banner}>
        <CoupleBanner
-        couplePhoto={couplePhoto}
         dDay={dDay}
         daysPassed={daysPassed}
         handlePhotoUpload={handlePhotoUpload}
@@ -294,10 +296,11 @@ const handleDeleteItem = async (checklistId, category) => {
         maxtoday={maxtoday}
         setDDay={setDDay}
       />
-      <div className={styles.CoupleContent}>
-        <div className={styles.CoupleContentContainer}>
-        <div className={styles.CoupleNavigate}>
-         바로가기:
+</div>
+<div className={styles.ContentContainer}>
+<div className={styles.leftContainer}>
+  <div className={styles.CoupleNavigate}>
+           바로 가기:
       <Link to="/main" className={styles.navigateItem}>
         달력
       </Link>
@@ -310,8 +313,8 @@ const handleDeleteItem = async (checklistId, category) => {
     </div>
           <CoupleSchedule userId={userId} coupleId = {coupleId} />
           <CoupleDdayList specialDays={specialDays} />
-        </div>
-        <div className={styles.CoupleContentContainer2}>         
+    </div>
+    <div className={styles.rightContainer}>
       <div className={styles.CoupleCheckList}>
         <h3>체크리스트</h3>
   <div className={styles.BukitList}> 
@@ -326,24 +329,24 @@ const handleDeleteItem = async (checklistId, category) => {
         />
       );
 })}
-</div>
+    </div>
+    </div>
+    <div className={styles.Couple3}>
+            지난 날의 추억
+    </div>
+     </div>
       </div>
-      {/* 모달 표시 */}
       <CheckListModal
         isOpen={isModalOpen}
         onClose={closeModal}
         selectedCategory={selectedCategory}
         data={{장소,음식,영화,데이트}}
         handleAddItem={handleAddItem}
-        handleDeleteItem={handleDeleteItem}
-      />
-
-          <div className={styles.Couple3}>
-            오늘의 운세
-          </div>
-    </div>
-    </div>
-      </div>
+       handleDeleteItem={handleDeleteItem}
+      /> 
+    </div> 
+ </div>
+     
   );
 };
 
