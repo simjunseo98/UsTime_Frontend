@@ -1,58 +1,19 @@
 .CoupleContainer{
-    width: 100%;
-    height: 90vh;
-    margin-top: 70px;
     display: flex;
-    gap: 30px;
-
-}
-.CoupleBanner{
-    width: 25%;
-    position: relative;
-    height: 87.5vh;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    font-size: 1.5rem;
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.5); /* 사진이 없을 경우 대비 */
-    opacity: 0.9;
-}
-
-//커플 배너 배경 선택부분
-.fileInput {
-    display: none;
-}
-
-.fileLabel {
-    display: inline-block;
-    position: relative;
-    top: 220px;
-    left: -120px;
-    background-color: rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-    border: 2px solid #ffffff;
-    border-radius: 10px;
-    padding: 8px 10px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-
-    &:hover {
-        background-color: rgba(255, 255, 255, 0.4);
-    }
+    justify-content: center;
+    width: 100%;  
+    height: 92%;  
+    margin-top: auto;
+   
 }
 
 //디데이 설정 부분
 .DDayInputLabel {
     display: inline-block;
     background-color: rgba(255, 255, 255, 0.2); /* 투명한 흰색 배경 */
-    color: #ffffff; /* 글씨 색상 */
     border: 2px solid #ffffff; /* 흰색 테두리 */
-    border-radius: 10px; /* 테두리 둥글게 */
-    padding: 8px 10px;
+    width: 50%;
+    height: 50%;
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -60,16 +21,14 @@
 }
 
 .DDayInput {
-     appearance: none; /* 브라우저 기본 스타일 제거 */
+    appearance: none; /* 브라우저 기본 스타일 제거 */
     border: 2px solid #ffffff; /* 테두리 색상 */
     border-radius: 10px; /* 테두리 둥글게 */
     background-color: rgba(255, 255, 255, 0.2); /* 투명한 배경 */
-    color: #ffffff; /* 글씨 색상 */
     padding: 8px 10px;
     font-size: 1rem;
     outline: none;
     cursor: pointer;
-
     &:hover {
         background-color: rgba(255, 255, 255, 0.3);
     }
@@ -80,82 +39,105 @@
     }
 }
 
-.DDayInputWrapper {
-    display: flex; /* label과 button을 가로로 배치 */
-    align-items: center; /* 세로로 중앙 정렬 */
-}
 
+
+//컨텐츠 1
+.CoupleContentContainer{
+    width: 75%;
+    height: 200vh;
+}
+.CoupleBanner{
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+    height: 100%;
+}
+.DDayInputWrapper{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+  }
+.Banner{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height:120px;
+    border: 1px solid #ebebeb;
+    border-radius: 10px;
+    margin-bottom: 50px;
+    background-color: #ebebeb;
+    margin-top: 5px;
+}
+.CoupleUser{
+    display: flex;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-top: 10px;
+}
 .DDayButton {
     border: none;
+    background: none;
     border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.2); /* 투명한 흰색 배경 */
-    color: #ffffff; /* 글씨 색상 */
-    padding: 10px 10px;
     font-size: 0.8rem;
+    width: 100%;
+    height: 30px;
+    color: red;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-    width: auto; /* 너비 자동 설정 */
-    margin-left: 10px; /* label과의 간격을 위한 마진 */
-
     &:hover {
-        background-color: rgba(255, 255, 255, 0.4); /* hover 시 배경 진하게 */
         transform: scale(1.1); /* 살짝 커지도록 */
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+        
     }
-
     &:focus {
         outline: none; /* 포커스 시 테두리 없애기 */
     }
 }
-
-.CoupleBanner p{
-    color: white;
-    font-weight: bold;
-    margin-top: 100px;
-    font-size: 30px;
-    border: 3px solid white;
-    border-radius: 50%;
-    padding: 90px;
+.DDayText{
+    text-align: center;
+    font-size: 25px;
+    font-family:'RixXladywatermelonR';
 }
-.CoupleContent{
+.ContentContainer{
     display: flex;
-    width: 88%;
-    gap: 30px;
+    justify-content: center;
+    width: 100%;
+    height: 160vh;
+    gap: 20px;
 }
-
-//컨텐츠 1
-.CoupleContentContainer{
-    width: 30%;
-    display: grid
+.leftContainer{
+    width: 35%;
+    height: auto;
 }
-.CoupleContentContainer div{
-    border-radius: 10px;
-    border: 1px solid #ebebeb;
-    // box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.251);
-    // background-color:rgb(251, 248, 245);
-    background-color: white;
+.rightContainer{
+    width: 70%;
+    height: auto;
 }
 .CoupleNavigate {
-    display: flex;
-    align-items: center;
-    height: 50px;
-    margin-top: 30px;
-    background-color: #8c8888;
-    border: 2px solid black !important;
+    background-color: rgb(255, 254, 219);
+    align-content: center;
+    padding: 5px;
+    height: 40px;
+    border: 1px solid #ebebeb;
+    border-radius: 10px;
+    margin-bottom: 10px;
   }
   .navigateItem {
     align-items: center;
     cursor: pointer;
     color: black;
     text-decoration: none;
-    padding: 14px;
-    border-radius: 4px;
+    padding: 12px;
     margin-right: 30px;
+    border-radius: 4px;
     transition: background-color 0.3s ease;
   }
   
   .navigateItem:hover {
-    background-color: #55584e;
+    background-color: #e1f5a0;
   }
 
 //기념일 계산기
@@ -163,10 +145,11 @@
     box-sizing: border-box;
     height: 300px;  
     overflow-y: scroll;
+    border: 1px solid #ebebeb;
+    border-radius: 10px;
 }
 .CoupleDdayCalculate h3{
     padding: 10px;
-    text-align: center;
     border-bottom: 1px solid #8c8888;
     font-weight: lighter;
 }
@@ -190,19 +173,13 @@
 }
 
 //커플 컨텐츠2
-.CoupleContentContainer2{
-    width: 65%;
-}
+
 .CoupleCheckList{
     border-radius: 10px;
-    border: 2px solid #a29f9f;
+    border: 1px solid #ebebeb;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.251);
-    gap: 10px;
-    margin-top: 30px;
     margin-bottom: 15px;
-    height: 280px;
-    text-align: center;
-    background-color: snow;
+    height: 280px;  
 }
 .CoupleCheckList h3{
     font-weight: lighter;
@@ -221,7 +198,7 @@
     margin: 5px;
     margin-top: 10px;
     border-radius: 10px;
-    border: 2px solid #a29f9f;
+    border: 1px solid #ebebeb;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.251);
     gap: 10px;
     cursor: pointer;
@@ -230,10 +207,9 @@
 .Couple3{
     height: 315px;
     border-radius: 10px;
-    border: 2px solid #a29f9f;
+    border: 1px solid #ebebeb;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.251);
     gap: 10px;
-    background-color: snow;
 }
 
 //모바일
