@@ -62,6 +62,19 @@ const MyProfile = () => {
         const file = e.target.files[0];
         if (!file) return;
 
+        // 허용된 MIME 타입인지 확인
+        if (!['image/jpeg', 'image/png'].includes(file.type)) {
+            alert('JPEG 또는 PNG 형식의 이미지만 업로드 가능합니다.');
+            return;
+        }
+
+        // 파일 크기 제한 (5MB)
+        const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+        if (file.size > MAX_FILE_SIZE) {
+            alert('파일 크기는 5MB를 초과할 수 없습니다.');
+            return;
+        }
+
         // 미리보기 이미지 업데이트
         setPreviewImage(URL.createObjectURL(file));
         setSelectedFile(file); // 선택된 파일 저장
@@ -178,17 +191,17 @@ const MyProfile = () => {
                             )}
                         </p>
                         <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleFileChange}
-                                className={styles.fileInput} // 숨김 처리
-                            />
-                    <button
-                        className={styles.editButton}
-                        onClick={handleSaveProfileImage} // 확인 버튼을 눌러서 저장
-                    >
-                        사진바꾸기
-                    </button>
+                            type="file"
+                            accept="image/jpeg, image/png"
+                            onChange={handleFileChange}
+                            className={styles.fileInput} // 숨김 처리
+                        />
+                        <button
+                            className={styles.editButton}
+                            onClick={handleSaveProfileImage} // 확인 버튼을 눌러서 저장
+                        >
+                            사진바꾸기
+                        </button>
                     </div>
 
                     <div className={styles.profileDetails}>
