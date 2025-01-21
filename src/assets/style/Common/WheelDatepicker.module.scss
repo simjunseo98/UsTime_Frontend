@@ -1,0 +1,28 @@
+.wheelDatePicker {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  .picker {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .item {
+    width: 80px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px 5px;
+    user-select: none;
+    background-color: #f9f9f9;
+  }
+  
+  .item:hover {
+    background-color: #f1f1f1;
+  }
+  
