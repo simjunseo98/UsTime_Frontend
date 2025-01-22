@@ -44,12 +44,13 @@ const Login = () => {
       });
 
       if (response.status === 200) {
-        const { token, userId, coupleId, name, email } = response.data;
+        const { token, userId, coupleId, name, email, profileUrl } = response.data;
         sessionStorage.setItem('token', token);
         sessionStorage.setItem('userId', userId);
         sessionStorage.setItem('coupleId',coupleId);
         sessionStorage.setItem('name', name);
         sessionStorage.setItem('email', email);
+        sessionStorage.setItem('profileUrl', profileUrl);
         setIsRemember(true);
         setCookies("rememberID", id, { path: '/', expires: new Date(Date.now() + 604800000) });
         alert('로그인 성공했습니다.');

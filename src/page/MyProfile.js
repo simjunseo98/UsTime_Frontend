@@ -96,9 +96,10 @@ const MyProfile = () => {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             alert('프로필 사진이 성공적으로 변경되었습니다.');
+            sessionStorage.setItem('profileUrl', response.data.profileUrl);
             setMyProfile((prev) => ({
                 ...prev,
-                profileImageUrl: response.data.profileImageUrl,
+                profileUrl: response.data.profileUrl,
             }));
         } catch (err) {
             console.error('프로필 사진 변경 실패:', err);

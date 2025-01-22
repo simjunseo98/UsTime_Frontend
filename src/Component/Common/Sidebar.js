@@ -8,6 +8,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const name = sessionStorage.getItem("name");
   const email = sessionStorage.getItem("email");
+  const profileUrl = sessionStorage.getItem("profileUrl") || defaultProfilePicture;
 
   // 로그아웃 로직
   const handleLogout = () => {
@@ -23,7 +24,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       {/* 프로필 섹션 */}
       <div className={styles.profileSection}>
         <img
-          src={ defaultProfilePicture}
+          src={ profileUrl }
           alt="프로필 사진"
           className={styles.profilePicture}
         />
