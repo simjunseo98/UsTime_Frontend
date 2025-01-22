@@ -6,100 +6,65 @@
     margin-top: auto;
    
 }
-
 //디데이 설정 부분
-.DDayInputLabel {
-    display: inline-block;
-    background-color: rgba(255, 255, 255, 0.2); /* 투명한 흰색 배경 */
-    border: 2px solid #ffffff; /* 흰색 테두리 */
-    width: 50%;
-    height: 50%;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-right: 10px; /* 버튼과의 간격을 위한 마진 */
-}
-
-.DDayInput {
-    appearance: none; /* 브라우저 기본 스타일 제거 */
-    border: 2px solid #ffffff; /* 테두리 색상 */
-    border-radius: 10px; /* 테두리 둥글게 */
-    background-color: rgba(255, 255, 255, 0.2); /* 투명한 배경 */
-    padding: 8px 10px;
-    font-size: 1rem;
-    outline: none;
-    cursor: pointer;
-    &:hover {
-        background-color: rgba(255, 255, 255, 0.3);
-    }
-
-    &::-webkit-calendar-picker-indicator { /* 달력 아이콘 스타일 */
-        filter: invert(1); /* 아이콘 색상을 흰색으로 변경 */
-        cursor: pointer;
-    }
-}
-
-
-
+.DDayInputWrapper{
+    align-content: center;
+  }
+  .DDayButton {
+      border: none;
+      background: none;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      width: 100%;
+      height: 30px;
+      margin-bottom: 10px;
+      color: red;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      &:hover {
+          transform: scale(1.1); /* 살짝 커지도록 */
+          box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+          
+      }
+      &:focus {
+          outline: none; /* 포커스 시 테두리 없애기 */
+      }
+  }
+  .DDayText{
+      text-align: center;
+      font-size: 25px;
+      font-family:'RixXladywatermelonR';
+  }
+  .CoupleBanner{
+      display: flex;
+      justify-content: space-between;
+      width: 60%;
+      height: 100%;
+  }
+  .Banner{
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      height:120px;
+      border: 1px solid #ebebeb;
+      border-radius: 10px;
+      margin-bottom: 50px;
+      background-color: #ebebeb;
+      margin-top: 5px;
+  }
+  .CoupleUser{
+      display: flex;
+      justify-content: center;
+      width: 100px;
+      height: 100px;
+      border: 1px solid black;
+      border-radius: 10px;
+      margin-top: 10px;
+  }
 //컨텐츠 1
 .CoupleContentContainer{
     width: 75%;
     height: 200vh;
-}
-.CoupleBanner{
-    display: flex;
-    justify-content: space-between;
-    width: 60%;
-    height: 100%;
-}
-.DDayInputWrapper{
-    display: flex;
-    justify-content: center;
-    align-content: center;
-  }
-.Banner{
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    height:120px;
-    border: 1px solid #ebebeb;
-    border-radius: 10px;
-    margin-bottom: 50px;
-    background-color: #ebebeb;
-    margin-top: 5px;
-}
-.CoupleUser{
-    display: flex;
-    justify-content: center;
-    width: 100px;
-    height: 100px;
-    border: 1px solid black;
-    border-radius: 10px;
-    margin-top: 10px;
-}
-.DDayButton {
-    border: none;
-    background: none;
-    border-radius: 10px;
-    font-size: 0.8rem;
-    width: 100%;
-    height: 30px;
-    color: red;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-    &:hover {
-        transform: scale(1.1); /* 살짝 커지도록 */
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
-        
-    }
-    &:focus {
-        outline: none; /* 포커스 시 테두리 없애기 */
-    }
-}
-.DDayText{
-    text-align: center;
-    font-size: 25px;
-    font-family:'RixXladywatermelonR';
 }
 .ContentContainer{
     display: flex;
