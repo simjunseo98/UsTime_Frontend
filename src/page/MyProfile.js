@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import Loading from '../Component/Common/Loading';
 import api from '../service/api';
 import { useNavigate } from 'react-router-dom';
-import profileImage from '../assets/img/이미지 없음.jpg';
+import defaultImage from '../assets/img/이미지 없음.jpg';
 import styles from '../assets/style/Profile/MyProfile.module.scss';
 import Modal from '../Component/Common/Modal';
 import UserSearch from '../Component/UserSearch';
 
 const MyProfile = () => {
+    const userId = sessionStorage.getItem('userId');
     const [myProfile, setMyProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -19,7 +20,6 @@ const MyProfile = () => {
 
     useEffect(() => {
         const getUserInfo = async () => {
-            const userId = sessionStorage.getItem('userId');
             try {
                 const response = await api.get(`/user/userinfo?userId=${userId}`);
                 setMyProfile(response.data);
@@ -31,7 +31,7 @@ const MyProfile = () => {
         };
 
         getUserInfo();
-    }, [navigate]);
+    }, [userId, navigate]);
 
     // 커플 해지
     const handleUnlinkCouple = async () => {
@@ -80,6 +80,7 @@ const MyProfile = () => {
         setSelectedFile(file); // 선택된 파일 저장
     };
 
+    // 프로필 바꾸기 저장
     const handleSaveProfileImage = async () => {
         if (!selectedFile) {
             alert('변경할 프로필 사진을 선택하세요.');
@@ -88,6 +89,7 @@ const MyProfile = () => {
 
         const formData = new FormData();
         formData.append('file', selectedFile);
+        formData.append('userId', userId);
 
         try {
             const response = await api.post('/user/profile', formData, {
@@ -96,7 +98,7 @@ const MyProfile = () => {
             alert('프로필 사진이 성공적으로 변경되었습니다.');
             setMyProfile((prev) => ({
                 ...prev,
-                profileImageUrl: response.data.profileImageUrl, // 서버에서 반환된 새로운 URL로 업데이트
+                profileImageUrl: response.data.profileImageUrl,
             }));
         } catch (err) {
             console.error('프로필 사진 변경 실패:', err);
@@ -115,8 +117,6 @@ const MyProfile = () => {
 
     // 정보수정
     const handleSave = async () => {
-        const userId = sessionStorage.getItem('userId');
-
         try {
             await api.put(`/user/update`, {
                 userId,
@@ -172,7 +172,7 @@ const MyProfile = () => {
                 <div className={styles.profileContent}>
                     <div className={styles.profileImageSection}>
                         <img
-                            src={previewImage || myProfile.profileUrl || profileImage}
+                            src={previewImage || myProfile.profileUrl || defaultImage}
                             alt="프로필 사진"
                             className={styles.profileImage}
                         />
