@@ -33,7 +33,7 @@ const CoupleSchedule = ({ userId, coupleId }) => {
     }, [fetchWeekSchedules]); 
 
     if (!weekSchedules || weekSchedules.length === 0) {
-        return <p>다가오는 일정이 없습니다.</p>;
+        return <p className={styles.noUpcomingSchedules}>다가오는 일정이 없습니다.</p>;
     }
     const today = moment().startOf('day');
     return (
