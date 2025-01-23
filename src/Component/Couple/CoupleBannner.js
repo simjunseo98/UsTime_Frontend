@@ -2,12 +2,13 @@ import React from "react";
 import styles from "../../assets/style/Couple/Couple.module.scss";
 import { VscHeartFilled } from "react-icons/vsc";
 import WheelDatepicker from "../Common/WheelDatePicker";
-// CoupleBanner 컴포넌트
+
 const CoupleBanner = ({ dDay, daysPassed,handleDDaySet, maxtoday, setDDay }) => {
   return (
     <div className={styles.CoupleBanner}>
       <div className={styles.CoupleUser}>남</div>    
       <div className={styles.DDayInputWrapper}>
+        <p className={styles.Dday}>{dDay} ~</p>
           <WheelDatepicker
             initialDate={dDay} // 초기 날짜
             maxDate={maxtoday} // 선택 가능한 최대 날짜
@@ -18,7 +19,7 @@ const CoupleBanner = ({ dDay, daysPassed,handleDDaySet, maxtoday, setDDay }) => 
         {daysPassed !== null ? `D+${daysPassed}일` : "D-Day를 설정하세요!"}
       </p>
       </div>
-      <div className={styles.CoupleUser}>녀</div>
+      <div className={styles.CoupleUser}>여</div>
     </div>
   );
 };

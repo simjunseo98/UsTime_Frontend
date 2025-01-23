@@ -205,7 +205,7 @@ const handleDeleteItem = async (checklistId, category) => {
     try {
       const today = new Date();
       const targetDate = new Date(dDay);
-      const difference = Math.ceil((today - targetDate) / (1000 * 60 * 60 * 24));
+      const difference = Math.ceil((today - targetDate) / (1000 * 60 * 60 * 24)-1);
       setDaysPassed(difference);
 
       const response = await api.post(`/couple/update?coupleId=${coupleId}&date=${dDay}`);
