@@ -65,7 +65,14 @@ const App = () => {
                 </PrivateRoute>
               }
             />
-            
+              <Route
+              path="/picture"
+              element={
+                <PrivateRoute>
+                  <Header />
+                </PrivateRoute>
+              }
+            />
             {/* 일치하는 라우트가 없는 경우 처리 */}
             <Route path="*" element={<NotFound />} />
           </Routes>
