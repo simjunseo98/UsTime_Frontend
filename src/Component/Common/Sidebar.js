@@ -8,8 +8,8 @@ const Sidebar = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const name = sessionStorage.getItem("name");
   const email = sessionStorage.getItem("email");
-  const isprofileUrl = sessionStorage.getItem("profileUrl") || defaultProfilePicture;
-  const profileUrl = isprofileUrl === null || isprofileUrl === 'undefines' ? null : isprofileUrl;
+  const isprofileUrl = sessionStorage.getItem("profileUrl");
+  const profileUrl = isprofileUrl === null || isprofileUrl === 'undefined' ? defaultProfilePicture : isprofileUrl;
 
   // 로그아웃 로직
   const handleLogout = () => {
