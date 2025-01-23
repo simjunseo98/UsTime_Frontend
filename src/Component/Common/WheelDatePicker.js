@@ -4,15 +4,9 @@ import styles from "../../assets/style/Common/WheelDatepicker.module.scss";
 
 const WheelDatepicker =({initialDate , maxDate , onDateChange})=>{
     const currentDate = new Date();
-    const max =new Date(maxDate+1);
+    const max =new Date(maxDate);
     const [selectDate , setSelectDate] =useState(new Date(initialDate || currentDate));
-    console.log("dd",initialDate);
-    console.log("ddd",maxDate);
     const [activeDropdown, setActiveDropdown] = useState(null);
-
-    // useEffect(() => {
-    //   setSelectDate(initialDate);  // 부모 컴포넌트에서 전달된 초기 날짜로 설정
-    // }, [initialDate]);
 
     const handleWheel = (type, delta) =>{
         const newDate = new Date(selectDate);
@@ -29,8 +23,10 @@ const WheelDatepicker =({initialDate , maxDate , onDateChange})=>{
             default :
             break;
         }
+        const newDateString = newDate.toISOString().split("T")[0];
+        const maxDateString = max.toISOString().split("T")[0];
 
-        if(newDate > max) return;
+        if(newDateString > maxDateString) return;
 
         setSelectDate(newDate);
         onDateChange(newDate.toISOString().split("T")[0]);
