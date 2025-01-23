@@ -56,6 +56,8 @@
 
 .sidepanel p {
   font-size: 18px;
+  display: flex;
+  justify-content: left;
 }
 
 .addSchedule {
@@ -355,7 +357,6 @@
 
 .scheduleContainer {
   justify-content: space-between;
-  border-top: 1px solid rgba(0, 0, 0, 0.145);
   margin-top: 19px;
   padding: 10px;
 }
