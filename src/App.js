@@ -16,6 +16,7 @@ import PrivateRoute from './Component/Common/PrivateRoute';
 
 //css
 import styles from './assets/style/Common/MainLayout.module.scss';
+import Picture from './page/Picture';
 
 
 
@@ -70,6 +71,7 @@ const App = () => {
               element={
                 <PrivateRoute>
                   <Header />
+                <Picture/>
                 </PrivateRoute>
               }
             />
