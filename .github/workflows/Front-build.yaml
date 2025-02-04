@@ -55,7 +55,7 @@ jobs:
         env:
           BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
         run: |
-          aws s3 sync ./build s3://$BUCKET_NAME/web --delete
+          aws s3 sync ./build s3://$BUCKET_NAME --delete
       
       # CloudFront 캐시를 무효화합니다.
       - name: CloudFront Invalidation
