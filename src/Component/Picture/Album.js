@@ -23,7 +23,7 @@ const Album =() =>{
 
     return(
         <div className={styles.PictureAlbum}>
-            <img alt="사진" className={styles.image}></img>
+            <img alt="사진들" className={styles.image}></img>
         </div>
     );
 };
