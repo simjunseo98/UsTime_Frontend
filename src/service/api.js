@@ -7,7 +7,6 @@ const api = axios.create({
     timeout: 30000, 
 });
 
-// 요청 인터셉터 설정: 헤더에 토큰 추가
 api.interceptors.request.use(
     config => {
         const token = sessionStorage.getItem('token');
