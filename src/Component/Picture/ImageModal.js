@@ -1,10 +1,10 @@
-import React from "react";
+// import React from "react";
 
-const ImageModal = ()=>{
-    return(
-        <>
-        </>
-    );
-};
+// const ImageModal = ()=>{
+//     return(
+//         <>
+//         </>
+//     );
+// };
 
-export default ImageModal;
+// export default ImageModal;
