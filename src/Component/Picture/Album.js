@@ -1,8 +1,10 @@
 import React from "react";
 import styles from "../../assets/style/Picture/Picture.module.scss";
 
-const Album =({url}) =>{
+const Album =() =>{
 // const [picture, setPicture]= useState([]);
+// const [loading, setLoading] = useState(true);
+// const [error, setError] = useState(null);
 
 // useEffect(() =>{
 //     const getPictures = async () => {
