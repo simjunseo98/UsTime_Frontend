@@ -29,7 +29,7 @@ api.interceptors.response.use(
         const excludedUrls = ['/user/login', '/user/signup']; // 세션 만료 메시지를 표시하지 않을 URL들
         const requestUrl = error?.config?.url;
 
-        if (error.response && error.response.status === 403 && !excludedUrls.some(url => requestUrl?.includes(url))) {  // 토큰 만료 시
+        if (error.response && error.response.status === 403 && !excludedUrls.some(url => requestUrl?.includes(url))) {
             alert("세션이 만료되었습니다. 다시 로그인해주세요.");
             sessionStorage.clear();
             window.location.href = "/";
