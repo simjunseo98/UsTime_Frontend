@@ -39,7 +39,7 @@ const MyProfile = () => {
         const isConfirmed = window.confirm('정말로 커플 관계를 해지하시겠습니까?');
 
         if (!isConfirmed) {
-            return; // 사용자가 취소하면 메소드 실행을 중지합니다.
+            return; 
         }
 
         try {
