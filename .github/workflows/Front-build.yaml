@@ -50,6 +50,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
       
+      # IAM 사용자 정보 확인
+      - name: Check AWS Identity
+        run: aws sts get-caller-identity
+
       # 빌드된 파일을 S3에 업로드합니다.
       - name: Upload to S3
         env:
