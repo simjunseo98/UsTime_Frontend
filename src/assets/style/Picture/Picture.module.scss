@@ -15,14 +15,16 @@
 }
 .PictureAlbum{
     display: grid;
+    grid-template-columns: repeat(3, 1fr);
     justify-content: center;
     width: 100%;
+    gap: 5px;
 }
 
 .image{
     width: 310px;
     height: 350px;
-    border: 2px solid #ffffff;
+    border: 1px solid rgb(186, 186, 186);
     background: none;
 }
 
