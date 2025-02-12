@@ -7,14 +7,12 @@ const Picture = () =>{
 const coupleId = sessionStorage.getItem("coupleId");
 const [selectedImage, setSelectedImage] = useState(null);
 const [isModalOpen, setIsModalOpen] = useState(false); 
-
       //모달 열기 핸들러
       const handleImageClick = (image) => {
         if(image.photoUrl !== notimage)
         setSelectedImage(image);
         setIsModalOpen(true);
     };
-
     // 모달 닫기
     const closeModal = () => {
         setIsModalOpen(false);
@@ -28,12 +26,9 @@ const [isModalOpen, setIsModalOpen] = useState(false);
            <div className={styles.Album}>
             <Album coupleId={coupleId} onImageClick={handleImageClick}/>
             </div>
-            
             <button className={styles.PictureButton}>+</button>
             {isModalOpen &&<ImageModal image={selectedImage} onClose={closeModal}/>}
-        
         </div>
     );
 };
-
 export default Picture;

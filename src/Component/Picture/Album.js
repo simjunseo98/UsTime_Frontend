@@ -3,17 +3,21 @@ import styles from "../../assets/style/Picture/Picture.module.scss";
 import api from "../../service/api.js";
 import Loading from "../../Component/Common/Loading.js";
 import notimage from "../../assets/img/이미지 없음.jpg";
+
 const Album =({coupleId,onImageClick}) =>{
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [picture, setPicture]= useState([]);
 
      // useMemo로 tempImage 메모이제이션
-  const tempImage = useMemo(() => [
-    { photoId: 0, photoUrl: "https://picsum.photos/800/600", photoTitle: "테스트 이미지 1" },
-    { photoId: 1, photoUrl: "https://picsum.photos/800/600", photoTitle: "테스트 이미지 2" },
-    { photoId: 2, photoUrl: "https://picsum.photos/800/600", photoTitle: "테스트 이미지 3" }
-  ], []); // 의존성 배열이 빈 배열이므로 한 번만 생성
+  const tempImage= useMemo(() => [
+    { photoId: 1, photoUrl: "https://picsum.photos/800/600"},
+    { photoId: 2, photoUrl: "https://picsum.photos/800/600"},
+    { photoId: 3, photoUrl: "https://picsum.photos/800/600"},
+    { photoId: 4, photoUrl: "https://picsum.photos/800/600"},
+    { photoId: 5, photoUrl: "https://picsum.photos/800/600"},
+    { photoId: 6, photoUrl: "https://picsum.photos/800/600" }
+  ], []); // 의존성 배열이 빈 배열이므로 한 번만 생
 
 useEffect(() =>{
     if(!coupleId) return;
@@ -33,6 +37,8 @@ useEffect(() =>{
             }
             setLoading(false);
         }catch(error){
+            console.error("❌ API 요청 실패:", error.response || error);
+            console.log("dd",picture);
           setError(error);
           setLoading(false);
         }
@@ -57,7 +63,7 @@ console.log("디스플레이 이미지:", displayPictures);
                 <img
                     key={image.photoId ? image.photoId: index}
                     src={image.photoUrl}
-                    alt={image.photoTitle || "Gallery"}
+                    alt=""
                     className={styles.image}
                     onClick={image.photoUrl !== notimage ? () => onImageClick(image) : null}
                     />
