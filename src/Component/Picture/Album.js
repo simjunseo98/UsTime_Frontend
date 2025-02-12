@@ -20,7 +20,7 @@ useEffect(() =>{
             console.log("✅ API 응답 성공:", response);
             console.log("사진데이터",response.data);
             if(response.data.length===0){
-                setPicture( Array(9).fill({ photoId: null, photoUrl: notimage, photoTitle: "기본 이미지" }));
+                setPicture( Array(9).fill({ photoId: null, photoUrl: notimage }));
             }else{
                 setPicture(response.data);
             }
@@ -33,7 +33,7 @@ useEffect(() =>{
         }
     }
  getPictures();
-},[coupleId]);
+},[coupleId, picture]);
 
 if (loading) return <Loading/>;
 if (error) return <p>Error: {error.message}</p>;
