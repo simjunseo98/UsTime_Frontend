@@ -12,13 +12,94 @@
 }
 
 .modalContent {
+  display: flex;
+  justify-content: space-between;
   background-color: white;
-  padding: 30px;
-  border-radius: 8px;
+  border-radius: 15px;
   position: relative;
   min-width: 1200px;
+  max-width: 1200px;
+}
+.ImageModalContainer{
+  padding: 20px;
+  width: 60%;
+  border-right:2px solid #cfcfcf;
+ p{
+   text-align: center;
+   font-size: 35px;
+   padding: 10px;
+   color: #777474;
+ }
+}
+.modalImage {
+  max-width: 100%;
+  height: auto;
 }
 
+.ImageModalContainer2{
+  width: 40%;
+  padding: 15px;
+  div{
+    margin: 5px;
+  }
+}
+.ImageModalHeader{
+  display: flex;
+  align-content: center;
+  height: 5%;
+  border-bottom:2px solid #cfcfcf;
+  padding: 10px;
+}
+.ImageModalProfilePicture{
+  width: 40px;
+  height: 30px;
+  background: none;
+  border: 1px solid #898888;
+  border-radius: 50%;
+}
+.ProfileText{
+  margin-left: 15px;
+  font-size: 13px;
+}
+.ProfileEmail{
+  color: #777474;
+  font-size: 10px;
+}
+.ImageModalText{
+  height: 40%;
+  padding: 10px;
+  word-break: nowrap;
+  overflow-y: scroll;
+}
+.ImageModalComment{
+ height: 30%;
+ padding: 10px;
+ border: 2px solid rgb(85, 85, 85);
+}
+.ImageModalCommentInput{
+  display: flex;
+  position: relative;
+  bottom: -20px;
+  margin-top: 15px;
+  height: 7%;
+}
+.Inputstyle{
+  flex: 1;
+  padding: 10px; 
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  margin-right: 10px;
+  font-size: 14px;
+ }
+.CommentButton{
+  padding: 8px 16px;
+  background-color: #3897f0;
+  border: none;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+}
 .closeButton {
   position: absolute;
   top: 10px;
@@ -29,7 +110,3 @@
   cursor: pointer;
 }
 
-.modalImage {
-  max-width: 60%;
-  height: auto;
-}
