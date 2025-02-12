@@ -19,6 +19,7 @@
   position: relative;
   min-width: 1200px;
   max-width: 1200px;
+  max-height: 650px;
 }
 .ImageModalContainer{
   padding: 20px;
@@ -72,6 +73,8 @@
   overflow-y: scroll;
 }
 .ImageModalComment{
+ overflow-y: scroll;
+ word-break: normal;
  height: 30%;
  padding: 10px;
  border: 2px solid rgb(85, 85, 85);
