@@ -15,6 +15,7 @@ const Picture = () => {
     const handleImageClick = (image) => {
         if (image.photoUrl !== notimage) {
             setSelectedImage(image);
+            console.log("d",image);
         }   
         setIsImageModalOpen(true);
     };

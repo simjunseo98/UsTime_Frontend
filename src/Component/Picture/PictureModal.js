@@ -8,10 +8,17 @@ const PictureModal = ({ onClose }) => {
     const [caption, setCaption] = useState(""); // 설명 상태
     const [selectedFile, setSelectedFile] = useState(null); // 선택된 파일 상태
     const [previewImage, setPreviewImage] = useState(null); // 이미지 미리보기 상태
+    const MAX_FILE_SIZE = 1 * 1024 * 1024;
 
     // 파일 선택 핸들러
     const handleFileChange = (e) => {
         const file = e.target.files[0];
+
+        if (file.size > MAX_FILE_SIZE) {
+            alert("파일 크기가 너무 큽니다. 1MB 이하로 업로드해주세요.");
+            return;
+        }
+
         if (file) {
             setSelectedFile(file);
             const reader = new FileReader();
@@ -56,13 +63,15 @@ const PictureModal = ({ onClose }) => {
             <div className={styles.modalContent}>
                 <button className={styles.closeButton} onClick={onClose}>X</button>
                 <h2>게시물 생성</h2>
-                <div className={styles.formGroup}>
                     <label>사진 선택:</label>
-                    <input type="file" onChange={handleFileChange} />
-                    {previewImage && <img src={previewImage} alt="미리보기" className={styles.previewImage} />}
-                </div>
                 <div className={styles.formGroup}>
+                    <div className={styles.PreviewImageContainer}>
+                    {previewImage && <img src={previewImage} alt="미리보기" className={styles.previewImage} />}
+                    <input type="file" onChange={handleFileChange} />
+                    </div>
+                </div>
                     <label>설명:</label>
+                <div className={styles.formGroup}>
                     <textarea
                         value={caption}
                         onChange={(e) => setCaption(e.target.value)}

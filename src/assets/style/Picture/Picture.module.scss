@@ -11,10 +11,11 @@
     width: 60%;
     position: relative;
     left: 300px;
-    border: 2px solid #ebebeb;
+
 }
 .PictureAlbum{
     display: grid;
+    border: 2px solid #ebebeb;
     grid-template-columns: repeat(3, 1fr);
     justify-content: center;
     width: 100%;

@@ -43,10 +43,10 @@ const CoupleSchedule = ({ userId, coupleId }) => {
                 {weekSchedules.map((schedule) => {
                     const startDate = moment(schedule.startDate).startOf('day');
                     const daysRemaining = startDate.diff(today, 'days');
-
+                    const displayDays = daysRemaining < 0 ? `D+${Math.abs(daysRemaining)}` : `D-${daysRemaining}`;
                     return (
                         <li key={schedule.scheduleId} className={styles.scheduleItem}>
-                            <p>D-{daysRemaining}</p>
+                            <p>{displayDays}</p>
                             <h4>{schedule.title}</h4>
                         </li>
                     );
