@@ -13,49 +13,49 @@ useEffect(() =>{
     if(!coupleId) return;
     const getPictures = async () => {
         try{
-            console.log("📢 API 요청 시작");
             const response= await api.get("/photo/all",{
                 params:{coupleId}
             });
-            console.log("✅ API 응답 성공:", response);
-            console.log("사진데이터",response.data);
             if(response.data.length===0){
-                setPicture( Array(9).fill({ photoId: null, photoUrl: notimage }));
+                setPicture([]);
             }else{
                 setPicture(response.data);
             }
             setLoading(false);
         }catch(error){
-            console.error("❌ API 요청 실패:", error.response || error);
-            console.log("dd",picture);
           setError(error);
           setLoading(false);
         }
     }
  getPictures();
-},[coupleId, picture]);
+},[coupleId]);
 
 if (loading) return <Loading/>;
 if (error) return <p>Error: {error.message}</p>;
 
-  // ✅ 기본 이미지도 같은 개수로 맞춰서 배열 생성
-  const displayPictures =
-  picture.length > 0
-      ? picture
-      : Array(9).fill({ photoId: null, photoUrl: notimage });
-console.log("디스플레이 이미지:", displayPictures);
-
+const minLayoutSize = 9;
+const missingCount = Math.max(0, minLayoutSize - picture.length);
+const displayPictures = picture.length > 0 ? picture : new Array(missingCount).fill(null);
     return(
         <div className={styles.PictureAlbum}>
-          {displayPictures.map((image, index) => (
-                <img
-                    key={image.photoId ? image.photoId: index}
-                    src={image.photoUrl}
-                    alt=""
-                    className={styles.image}
-                    onClick={image.photoUrl !== notimage ? () => onImageClick(image) : null}
-                    />
-                ))}
+      {displayPictures.length > 0 ? (
+                displayPictures.map((image, index) => (
+                    <div key={index} className={styles.imageContainer}>
+                        {image ? (
+                            <img
+                                src={image.photoUrl}
+                                alt=""
+                                className={styles.image}
+                                onClick={image.photoUrl !== notimage ? () => onImageClick(image) : null}
+                            />
+                        ) : (
+                            <p className={styles.noImageText}>이미지가 없습니다</p> // 이미지가 없으면 텍스트 표시
+                        )}
+                    </div>
+                ))
+            ) : (
+                <p className={styles.noImageText}>이미지가 없습니다</p> // 데이터가 아예 없을 경우 텍스트 표시
+            )}
         </div>
     );
 };
